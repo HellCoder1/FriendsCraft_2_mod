@@ -2,6 +2,8 @@ package mod.HellCoder.things.Items;
 
 import java.util.List;
 
+import org.lwjgl.input.Keyboard;
+
 import mod.HellCoder.things.FriendsCraft2mod;
 import mod.HellCoder.things.lib.RegItems;
 import net.minecraft.block.Block;
@@ -9,37 +11,66 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumAction;
+import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemSword;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
+import cofh.api.energy.IEnergyContainerItem;
+import cofh.api.item.IEmpowerableItem;
+import cofh.util.DamageHelper;
+import cofh.util.EnergyHelper;
+import cofh.util.KeyBindingEmpower;
+import cofh.util.MathHelper;
+import cofh.util.StringHelper;
 
+import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class NagibatorSword extends Item {
-	private float field_150934_a;
-	private final MatirialNagibator toolMaterial;
-	private static final String __OBFID = "CL_00000072";
+public class NagibatorSword extends ItemSword implements IEmpowerableItem, IEnergyContainerItem{
+	
+	public int maxEnergy = 160000;
+	public int maxTransfer = 1600;
+	public int energyPerUse = 200;
+	public int energyPerUseCharged = 800;
 
-	public NagibatorSword(MatirialNagibator material) {
-		this.toolMaterial = material;
-		this.maxStackSize = 1;
-		this.setMaxDamage(material.getMaxUses());
-		this.setCreativeTab(FriendsCraft2mod.tabsFC);
-		this.field_150934_a = 4.0F + material.getDamageVsEntity();
+	public int damage = 8;
+	public int damageCharged = 4;
+
+	public NagibatorSword(Item.ToolMaterial toolMaterial) {
+		
+		super(toolMaterial);
+		setNoRepair();
+	}
+	
+	protected int useEnergy(ItemStack stack, boolean simulate) {
+
+		int unbreakingLevel = MathHelper.clampI(EnchantmentHelper.getEnchantmentLevel(Enchantment.unbreaking.effectId, stack), 0, 4);
+		return extractEnergy(stack, isEmpowered(stack) ? energyPerUseCharged * (5 - unbreakingLevel) / 5 : energyPerUse * (5 - unbreakingLevel) / 5, simulate);
+	}
+	
+	protected int getEnergyPerUse(ItemStack stack) {
+
+		int unbreakingLevel = MathHelper.clampI(EnchantmentHelper.getEnchantmentLevel(Enchantment.unbreaking.effectId, stack), 0, 4);
+		return (isEmpowered(stack) ? energyPerUseCharged : energyPerUse) * (5 - unbreakingLevel) / 5;
 	}
 
 	public void onCreated(ItemStack itemStack, World world, EntityPlayer player) {
@@ -49,16 +80,37 @@ public class NagibatorSword extends Item {
 				player.getDisplayName());
 	}
 
-	public void addInformation(ItemStack stack, EntityPlayer player, List list,
-			boolean show) {
+	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean show) {
 		initTags(stack);
+		
 		super.addInformation(stack, player, list, show);
+		
 		if ((GuiScreen.isShiftKeyDown()) || (show)) {
-			Integer Md = stack.getMaxDamage();
-			Integer d = stack.getMaxDamage() - stack.getItemDamage();
-
-			list.add("§4Uses: " + "§2" + d + "/" + Md);
-
+			
+			if (stack.stackTagCompound == null) {
+				EnergyHelper.setDefaultEnergyTag(stack, 0);
+			}
+			list.add("Charge: " + stack.stackTagCompound.getInteger("Energy") + " / " + maxEnergy + " RF");
+			
+			list.add(StringHelper.ORANGE + getEnergyPerUse(stack) + " " + StringHelper.localize("info.redstonearsenal.tool.energyPerUse") + StringHelper.END);
+			
+			if (isEmpowered(stack)) {
+				list.add(StringHelper.YELLOW + StringHelper.ITALIC + StringHelper.localize("info.cofh.press") + " "
+						+ Keyboard.getKeyName(KeyBindingEmpower.instance.getKey()) + " " + StringHelper.localize("info.redstonearsenal.tool.chargeOff")
+						+ StringHelper.END);
+			 } else {
+				list.add(StringHelper.BRIGHT_BLUE + StringHelper.ITALIC + StringHelper.localize("info.cofh.press") + " "
+						+ Keyboard.getKeyName(KeyBindingEmpower.instance.getKey()) + " " + StringHelper.localize("info.redstonearsenal.tool.chargeOn")
+						+ StringHelper.END);
+			}
+			
+			if (getEnergyStored(stack) >= getEnergyPerUse(stack)) {
+				list.add("");
+				list.add(StringHelper.LIGHT_BLUE + "+" + damage + " " + StringHelper.localize("info.cofh.damageAttack") + StringHelper.END);
+				list.add(StringHelper.BRIGHT_GREEN + "+" + (isEmpowered(stack) ? damageCharged : 1) + " " + StringHelper.localize("info.cofh.damageFlux")
+						+ StringHelper.END);
+			}
+			
 			if (!getPlayerName(stack).isEmpty()) {
 
 				list.add("Owner: " + getPlayerName(stack));
@@ -89,124 +141,212 @@ public class NagibatorSword extends Item {
 		}
 		return tag;
 	}
+	
+	@Override
+	public EnumRarity getRarity(ItemStack stack) {
 
-	public float func_150931_i() {
-		return this.toolMaterial.getDamageVsEntity();
+		return EnumRarity.uncommon;
 	}
 
-	public float func_150893_a(ItemStack p_150893_1_, Block p_150893_2_) {
-		if (p_150893_2_ == Blocks.web) {
-			return 15.0F;
+	@Override
+	public void getSubItems(Item item, CreativeTabs tab, List list) {
+
+		list.add(EnergyHelper.setDefaultEnergyTag(new ItemStack(item, 1, 0), 0));
+		list.add(EnergyHelper.setDefaultEnergyTag(new ItemStack(item, 1, 0), maxEnergy));
+	}
+	
+	@Override
+	public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
+
+		player.setItemInUse(stack, this.getMaxItemUseDuration(stack));
+		return stack;
+	}
+	
+	@Override
+	public boolean hitEntity(ItemStack stack, EntityLivingBase entity, EntityLivingBase player) {
+
+		if (stack.getItemDamage() > 0) {
+			stack.setItemDamage(0);
+		}
+		EntityPlayer thePlayer = (EntityPlayer) player;
+		float fallingMult = (player.fallDistance > 0.0F && !player.onGround && !player.isOnLadder() && !player.isInWater()
+				&& !player.isPotionActive(Potion.blindness) && player.ridingEntity == null) ? 1.5F : 1.0F;
+
+		if (thePlayer.capabilities.isCreativeMode || useEnergy(stack, false) == getEnergyPerUse(stack)) {
+			float fluxDamage = isEmpowered(stack) ? damageCharged : 1;
+			float enchantDamage = damage + EnchantmentHelper.getEnchantmentModifierLiving(player, entity);
+
+			entity.attackEntityFrom(DamageHelper.causePlayerFluxDamage(thePlayer), fluxDamage);
+			entity.attackEntityFrom(DamageSource.causePlayerDamage(thePlayer), (fluxDamage + enchantDamage) * fallingMult);
 		} else {
-			Material material = p_150893_2_.getMaterial();
-			return material != Material.plants && material != Material.vine
-					&& material != Material.coral
-					&& material != Material.leaves
-					&& material != Material.gourd ? 1.0F : 1.5F;
+			entity.attackEntityFrom(DamageSource.causePlayerDamage(thePlayer), 1 * fallingMult);
+		}
+		return true;
+	}
+	
+	@Override
+	public void onUpdate(ItemStack stack, World world, Entity entity, int slot, boolean isCurrentItem) {
+
+		if (!isEmpowered(stack) || !isCurrentItem) {
+			return;
+		}
+		if (entity instanceof EntityPlayer) {
+			if (((EntityPlayer) entity).isBlocking()) {
+
+				AxisAlignedBB axisalignedbb = entity.boundingBox.expand(2.0D, 1.0D, 2.0D);
+				List<EntityMob> list = entity.worldObj.getEntitiesWithinAABB(EntityMob.class, axisalignedbb);
+
+				for (Entity mob : list) {
+					pushEntityAway(mob, entity);
+				}
+			}
+		}
+	}
+	
+	protected void pushEntityAway(Entity entity, Entity player) {
+
+		double d0 = player.posX - entity.posX;
+		double d1 = player.posZ - entity.posZ;
+		double d2 = MathHelper.maxAbs(d0, d1);
+
+		if (d2 >= 0.01D) {
+			d2 = Math.sqrt(d2);
+			d0 /= d2;
+			d1 /= d2;
+			double d3 = 1.0D / d2;
+
+			if (d3 > 1.0D) {
+				d3 = 1.0D;
+			}
+			d0 *= d3;
+			d1 *= d3;
+			d0 *= 0.2D;
+			d1 *= 0.2D;
+			d0 *= 1.0F - entity.entityCollisionReduction;
+			d1 *= 1.0F - entity.entityCollisionReduction;
+			entity.addVelocity(-d0, 0.0D, -d1);
 		}
 	}
 
-	/**
-	 * Current implementations of this method in child classes do not use the
-	 * entry argument beside ev. They just raise the damage on the stack.
-	 */
-	public boolean hitEntity(ItemStack par1ItemStack, EntityLivingBase par2EntityLivingBase, EntityLivingBase par3EntityLivingBase) {
-		par1ItemStack.damageItem(1, par3EntityLivingBase);
-		return true;
-	}
+	@Override
+	public boolean onBlockDestroyed(ItemStack stack, World world, Block block, int x, int y, int z, EntityLivingBase entity) {
 
-	public boolean onBlockDestroyed(ItemStack p_150894_1_, World p_150894_2_,
-			Block p_150894_3_, int p_150894_4_, int p_150894_5_,
-			int p_150894_6_, EntityLivingBase p_150894_7_) {
-		if ((double) p_150894_3_.getBlockHardness(p_150894_2_, p_150894_4_,
-				p_150894_5_, p_150894_6_) != 0.0D) {
-			p_150894_1_.damageItem(2, p_150894_7_);
+		if (block.getBlockHardness(world, x, y, z) != 0.0D) {
+			extractEnergy(stack, energyPerUse, false);
 		}
-
 		return true;
 	}
+	
+	@Override
+	public boolean getIsRepairable(ItemStack itemToRepair, ItemStack stack) {
 
-	/**
-	 * Returns True is the item is renderer in full 3D when hold.
-	 */
-	@SideOnly(Side.CLIENT)
-	public boolean isFull3D() {
-		return true;
+		return false;
+	}
+	
+	@Override
+	public int getDisplayDamage(ItemStack stack) {
+
+		if (stack.stackTagCompound == null) {
+			EnergyHelper.setDefaultEnergyTag(stack, 0);
+		}
+		return 1 + maxEnergy - stack.stackTagCompound.getInteger("Energy");
+	}
+	
+	@Override
+	public int getMaxDamage(ItemStack stack) {
+
+		return 1 + maxEnergy;
 	}
 
-	/**
-	 * returns the action that specifies what animation to play when the items
-	 * is being used
-	 */
-	public EnumAction getItemUseAction(ItemStack par1ItemStack) {
-		return EnumAction.block;
+	@Override
+	public boolean isDamaged(ItemStack stack) {
+
+		return stack.getItemDamage() != Short.MAX_VALUE;
 	}
 
-	/**
-	 * How long it takes to use or consume an item
-	 */
-	public int getMaxItemUseDuration(ItemStack par1ItemStack) {
-		return 72000;
-	}
-
-	/**
-	 * Called whenever this item is equipped and the right mouse button is
-	 * pressed. Args: itemStack, world, entityPlayer
-	 */
-	public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer) {
-		par3EntityPlayer.setItemInUse(par1ItemStack, this.getMaxItemUseDuration(par1ItemStack));
-		par3EntityPlayer.addPotionEffect(new PotionEffect(Potion.moveSpeed.id, 500, 2));;
-		return par1ItemStack;
-	}
-
-	public boolean func_150897_b(Block p_150897_1_) {
-		return p_150897_1_ == Blocks.web;
-	}
-
-	/**
-	 * Return the enchantability factor of the item, most of the time is based
-	 * on material.
-	 */
-	public int getItemEnchantability() {
-		return this.toolMaterial.getEnchantability();
-	}
-
-	/**
-	 * Return the name for this tool's material.
-	 */
-	public String getToolMaterialName() {
-		return this.toolMaterial.toString();
-	}
-
-	/**
-	 * Return whether this item is repairable in an anvil.
-	 */
-	public boolean getIsRepairable(ItemStack par1ItemStack,
-			ItemStack par2ItemStack) {
-		return this.toolMaterial.func_150995_f() == par2ItemStack.getItem() ? true
-				: super.getIsRepairable(par1ItemStack, par2ItemStack);
-	}
-
-	/**
-	 * Gets a map of item attribute modifiers, used by ItemSword to increase hit
-	 * damage.
-	 */
+	@Override
 	public Multimap getItemAttributeModifiers() {
-		Multimap multimap = super.getItemAttributeModifiers();
-		multimap.put(SharedMonsterAttributes.attackDamage
-				.getAttributeUnlocalizedName(), new AttributeModifier(
-				field_111210_e, "Weapon modifier",
-				(double) this.field_150934_a, 0));
-		return multimap;
+
+		return HashMultimap.create();
+	}
+	
+	/* IEmpowerableItem */
+	@Override
+	public boolean isEmpowered(ItemStack stack) {
+
+		return stack.stackTagCompound == null ? false : stack.stackTagCompound.getBoolean("Empowered");
 	}
 
-	public static class MobInfo {
-		String c;
-		boolean special;
+	@Override
+	public boolean setEmpoweredState(ItemStack stack, boolean state) {
 
-		public MobInfo(String c, boolean special) {
-			this.c = c;
-			this.special = special;
+		if (getEnergyStored(stack) > 0) {
+			stack.stackTagCompound.setBoolean("Empowered", state);
+			return true;
 		}
+		stack.stackTagCompound.setBoolean("Empowered", false);
+		return false;
+	}
+
+	@Override
+	public void onStateChange(EntityPlayer player, ItemStack stack) {
+
+		if (isEmpowered(stack)) {
+			player.worldObj.playSoundAtEntity(player, "ambient.weather.thunder", 0.4F, 1.0F);
+		} else {
+			player.worldObj.playSoundAtEntity(player, "random.orb", 0.2F, 0.6F);
+		}
+	}
+
+	/* IEnergyContainerItem */
+	@Override
+	public int receiveEnergy(ItemStack container, int maxReceive, boolean simulate) {
+
+		if (container.stackTagCompound == null) {
+			EnergyHelper.setDefaultEnergyTag(container, 0);
+		}
+		int stored = container.stackTagCompound.getInteger("Energy");
+		int receive = Math.min(maxReceive, Math.min(maxEnergy - stored, maxTransfer));
+
+		if (!simulate) {
+			stored += receive;
+			container.stackTagCompound.setInteger("Energy", stored);
+		}
+		return receive;
+	}
+
+	@Override
+	public int extractEnergy(ItemStack container, int maxExtract, boolean simulate) {
+
+		if (container.stackTagCompound == null) {
+			EnergyHelper.setDefaultEnergyTag(container, 0);
+		}
+		int stored = container.stackTagCompound.getInteger("Energy");
+		int extract = Math.min(maxExtract, stored);
+
+		if (!simulate) {
+			stored -= extract;
+			container.stackTagCompound.setInteger("Energy", stored);
+
+			if (stored == 0) {
+				setEmpoweredState(container, false);
+			}
+		}
+		return extract;
+	}
+
+	@Override
+	public int getEnergyStored(ItemStack container) {
+
+		if (container.stackTagCompound == null) {
+			EnergyHelper.setDefaultEnergyTag(container, 0);
+		}
+		return container.stackTagCompound.getInteger("Energy");
+	}
+
+	@Override
+	public int getMaxEnergyStored(ItemStack container) {
+
+		return maxEnergy;
 	}
 }

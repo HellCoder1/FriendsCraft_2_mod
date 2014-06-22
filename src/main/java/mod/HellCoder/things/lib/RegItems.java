@@ -26,6 +26,7 @@ public class RegItems {
 	public static int armorFCBootsID;
 	
 	public static ArmorMaterial MaterialArmorDiga = EnumHelper.addArmorMaterial("DIGA", 33, new int[] {3, 8, 6, 3}, 10);
+	public static final Item.ToolMaterial Sword_MATERIAL = EnumHelper.addToolMaterial("DIGA", 3, 100, 8.0F, 0, 25);
 	
 	public static Item diga;
 	public static Item digaingot;
@@ -76,9 +77,8 @@ public class RegItems {
 		/**
 		 * Tools
 		 */
-		NagibatorSword = registerItem(new NagibatorSword(
-				MatirialNagibator.NAGIBATOR).setUnlocalizedName(
-				"NagibatorSword").setTextureName("friendscraft:Nagibator"));
+		NagibatorSword = registerItem(new NagibatorSword(Sword_MATERIAL)
+		.setUnlocalizedName("NagibatorSword").setTextureName("friendscraft:Nagibator").setCreativeTab(FriendsCraft2mod.tabsFC));
 
 		pickaxeWood = registerItem(new Pickaxe(ToolMaterial.WOOD, 0)
 				.setUnlocalizedName("pickaxeWood"));
