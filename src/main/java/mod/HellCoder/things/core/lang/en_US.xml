@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties version="1.0">
+    <entry key="itemGroup.FC">FriendsCraft 2</entry>
+    
+	<entry key="item.diga.name">Diga ball</entry>
+	<entry key="item.digaingot.name">Diga ingot</entry>	   
+    <entry key="item.Upgrade.name">Block place upgrade</entry>
+    <entry key="item.CoolantBlock.name">CoolantBlock</entry>
+    <entry key="item.GoldRedstoneGear.name">GoldRedstoneGear</entry>
+    <entry key="item.HighTemperaturePlate.name">HighTemperaturePlate</entry>
+    <entry key="item.IronRedstoneGear.name">IronRedstoneGear</entry>
+    <entry key="item.MeltingForm.name">MeltingForm</entry>
+    <entry key="item.MeltingPlate.name">MeltingPlate</entry>
+    <entry key="item.Press.name">Press</entry>
+    <entry key="item.Insulator.name">Insulator</entry>
+    <entry key="item.Rollers.name">Rollers</entry>
+    <entry key="item.SpecialPipe.name">SpecialPipe</entry>
+        
+    <entry key="item.NagibatorSword.name">§4NAGIBATOR</entry>
+    
+	<entry key="tile.digaore.name">Diga Ore</entry>
+	<entry key="tile.digablock.name">Diga Block</entry>
+
+</properties>
