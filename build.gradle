@@ -17,9 +17,9 @@ buildscript {
 
 apply plugin: 'forge'
 
-version = "1.7.2-beta0.3"
-group= "mod.HellCoder.Pickaxe_rightclick" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = "Pickaxe_rightclick"
+version = "1.7.2-1.1.0"
+group= "mod.HellCoder.things" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = "FriendsCraft2"
 
 minecraft {
     version = "1.7.2-10.12.2.1130"
