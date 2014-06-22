@@ -78,7 +78,7 @@ public class RegItems {
 		 */
 		NagibatorSword = registerItem(new NagibatorSword(
 				MatirialNagibator.NAGIBATOR).setUnlocalizedName(
-				"NagibatorSword").setTextureName("friendscraft:NagibatorSword"));
+				"NagibatorSword").setTextureName("friendscraft:Nagibator"));
 
 		pickaxeWood = registerItem(new Pickaxe(ToolMaterial.WOOD, 0)
 				.setUnlocalizedName("pickaxeWood"));
