@@ -22,7 +22,7 @@ group= "mod.HellCoder.Pickaxe_rightclick" // http://maven.apache.org/guides/mini
 archivesBaseName = "Pickaxe_rightclick"
 
 minecraft {
-    version = "1.7.2-10.12.2.1127"
+    version = "1.7.2-10.12.2.1130"
     assetDir = "eclipse/assets"
 }
 
