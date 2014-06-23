@@ -96,7 +96,7 @@ public class FriendsCraft2mod {
 		versionChecker.checkVersionWithLogging();
 		}
 	}
-
+//test
 	@Mod.EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
 		if (Loader.isModLoaded("BuildCraft|Transport")) {
