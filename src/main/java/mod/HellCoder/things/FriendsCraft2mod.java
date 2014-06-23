@@ -19,7 +19,7 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import mod.HellCoder.HellCoderCore.Utils.FCLog;
-import mod.HellCoder.HellCoderCore.Utils.ModVersionChecker;
+import mod.HellCoder.HellCoderCore.Utils.VersionChecker;
 import mod.HellCoder.things.TileEntity.TileRM;
 import mod.HellCoder.things.core.Localization.LocalizationHandler;
 import mod.HellCoder.things.handler.RMGuiHandler;
@@ -58,7 +58,7 @@ public class FriendsCraft2mod {
 	
 	public static CreativeTabs tabsFC = new FCTab(CreativeTabs.getNextID(), "FC");
 	
-	protected static ModVersionChecker versionChecker;
+	protected static VersionChecker versionChecker;
 	private final static  String versionURL = "https://dl.dropboxusercontent.com/s/natqj962xnjlipk/PickAxe%20right-click.txt";
 	private final static  String mcfTopic = "http://www.minecraftforum.net/topic/1894204-162forgesspsmppickaxe-right-click-mod/";
 	public static boolean allowUpdateCheck = true;
@@ -104,7 +104,7 @@ public class FriendsCraft2mod {
 		
 		FMLCommonHandler.instance().bus().register(instance);
 		
-        versionChecker = new ModVersionChecker(metadata.name, metadata.version, versionURL, mcfTopic);
+        versionChecker = new VersionChecker(metadata.name, metadata.version, versionURL, mcfTopic);
         versionChecker.checkVersionWithLogging();
 		
 		proxy.registerTickHandler();

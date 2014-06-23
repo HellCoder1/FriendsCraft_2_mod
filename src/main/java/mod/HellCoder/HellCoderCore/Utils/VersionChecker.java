@@ -19,9 +19,9 @@ import com.google.common.collect.Ordering;
  * @author bspkrs
  */
 
-public class ModVersionChecker
+public class VersionChecker
 {
-    private static final Map<String, ModVersionChecker> versionCheckerMap = new HashMap<String, ModVersionChecker>();
+    private static final Map<String, VersionChecker> versionCheckerMap = new HashMap<String, VersionChecker>();
     private URL                                         versionURL;
     private final String                                modID;
     private String                                      newVersion;
@@ -37,12 +37,12 @@ public class ModVersionChecker
     private final boolean                               errorDetected;
     private int                                         runsSinceLastMessage;
     
-    public ModVersionChecker(String modID, String curVer, String versionURL, String updateURL, String[] loadMsg, String[] inGameMsg)
+    public VersionChecker(String modID, String curVer, String versionURL, String updateURL, String[] loadMsg, String[] inGameMsg)
     {
         this(modID, curVer, versionURL, updateURL, loadMsg, inGameMsg, FriendsCraft2mod.instance.updateTimeoutMilliseconds);
     }
     
-    public ModVersionChecker(String modID, String curVer, String versionURL, String updateURL, String[] loadMsg, String[] inGameMsg, int timeoutMS)
+    public VersionChecker(String modID, String curVer, String versionURL, String updateURL, String[] loadMsg, String[] inGameMsg, int timeoutMS)
     {
         this.modID = modID;
         this.currentVersion = curVer;
@@ -119,7 +119,7 @@ public class ModVersionChecker
         versionCheckerMap.put(modID.toLowerCase(Locale.US), this);
     }
     
-    public ModVersionChecker(String modName, String oldVer, String versionURL, String updateURL)
+    public VersionChecker(String modName, String oldVer, String versionURL, String updateURL)
     {
         this(modName, oldVer, versionURL, updateURL,
                 new String[] { "{modID} {oldVer} is out of date! Visit {updateURL} to download the latest release ({newVer})." },
@@ -180,7 +180,7 @@ public class ModVersionChecker
         return updateURL;
     }
     
-    public static Map<String, ModVersionChecker> getVersionCheckerMap()
+    public static Map<String, VersionChecker> getVersionCheckerMap()
     {
         return versionCheckerMap;
     }
@@ -206,7 +206,7 @@ public class ModVersionChecker
         
         if (versionCheckerMap.containsKey(modID.toLowerCase(Locale.US)))
         {
-            ModVersionChecker versionChecker = versionCheckerMap.get(modID.toLowerCase(Locale.US));
+            VersionChecker versionChecker = versionCheckerMap.get(modID.toLowerCase(Locale.US));
             if (!versionChecker.errorDetected)
             {
                 if (!isCurrentVersion(versionChecker.currentVersion, versionChecker.newVersion))
