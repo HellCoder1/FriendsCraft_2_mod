@@ -26,6 +26,7 @@ import mod.HellCoder.things.lib.RegBlocks;
 import mod.HellCoder.things.lib.RegItems;
 import mod.HellCoder.things.lib.Recipes;
 import mod.HellCoder.things.tab.FCTab;
+import mod.HellCoder.things.world.DigaOreGenerator;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
@@ -65,6 +66,7 @@ public class FriendsCraft2mod {
 	public static FriendsCraft2mod instance;
 
 	public static int energyPerPoint = 5;
+	private static DigaOreGenerator DigaWorldGen;
 
 	@Mod.EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
@@ -84,6 +86,9 @@ public class FriendsCraft2mod {
 	@EventHandler
 	public static void init(FMLInitializationEvent event) {
 
+		DigaWorldGen = new DigaOreGenerator();
+		GameRegistry.registerWorldGenerator(DigaWorldGen, 1);
+		
 		FCLog.info("Loading Recipes");
 		Recipes.init();
 		FCLog.info("Load Recipes");

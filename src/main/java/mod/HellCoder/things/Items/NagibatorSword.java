@@ -8,6 +8,7 @@ import mod.HellCoder.things.FriendsCraft2mod;
 import mod.HellCoder.things.lib.RegItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.Enchantment;
@@ -75,6 +76,7 @@ public class NagibatorSword extends ItemSword implements IEmpowerableItem, IEner
 
 	public void onCreated(ItemStack itemStack, World world, EntityPlayer player) {
 		itemStack.stackTagCompound = new NBTTagCompound();
+		player.worldObj.playSoundAtEntity(player, "random.orb", 0.2F, 0.6F);
 
 		itemStack.stackTagCompound.setString("player_name",
 				player.getDisplayName());

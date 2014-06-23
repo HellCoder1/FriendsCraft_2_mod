@@ -14,7 +14,8 @@ public class ContainerRecon extends Container {
 
 	public ContainerRecon(InventoryPlayer inventoryplayer, TileRM t) {
 		this.tile = t;
-		addSlotToContainer(new Slot(t, 0, 80, 41));
+		addSlotToContainer(new Slot(t, 0, 42, 32));
+		addSlotToContainer(new Slot(t, 1, 115, 32));
 		
 		for (int i = 0; i < 3; i++) {
 			for (int k = 0; k < 9; k++) {

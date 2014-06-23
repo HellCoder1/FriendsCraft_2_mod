@@ -130,7 +130,7 @@ public class TileRM extends TileEntity implements IPowerReceptor, IInventory {
 
 	@Override
 	public String getInventoryName() {
-		return "Reconstructor";
+		return "Rolling Machine";
 	}
 
 	@Override
