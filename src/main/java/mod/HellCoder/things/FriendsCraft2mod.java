@@ -21,8 +21,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import mod.HellCoder.HellCoderCore.Utils.FCLog;
 import mod.HellCoder.HellCoderCore.Utils.ModVersionChecker;
 import mod.HellCoder.things.TileEntity.TileRM;
-import mod.HellCoder.things.core.CommonProxy;
-import mod.HellCoder.things.core.FriendsCraftTicker;
 import mod.HellCoder.things.core.Localization.LocalizationHandler;
 import mod.HellCoder.things.handler.RMGuiHandler;
 import mod.HellCoder.things.lib.RegBlocks;
@@ -48,28 +46,29 @@ import net.minecraftforge.fluids.FluidRegistry;
 useMetadata = true, dependencies = "required-after:BuildCraft|Core")
 public class FriendsCraft2mod {
 	
-	public boolean doPipeInteract = false;
-	
-	public static CreativeTabs tabsFC = new FCTab(CreativeTabs.getNextID(), "FC");
+	@Metadata(value = "FC2")
+	public static ModMetadata metadata;
 
-	@SidedProxy(clientSide = "mod.HellCoder.things.core.ClientProxy", serverSide = "mod.HellCoder.things.core.CommonProxy")
+	@Mod.Instance(value = "FC2")
+	public static FriendsCraft2mod instance;
+
+	@SidedProxy(clientSide = "mod.HellCoder.things.ClientProxy", serverSide = "mod.HellCoder.things.CommonProxy")
 	public static CommonProxy proxy;
 
-	public  ModVersionChecker versionChecker;
-	public  String versionURL = "https://dl.dropboxusercontent.com/s/natqj962xnjlipk/PickAxe%20right-click.txt";
-	public  String mcfTopic = "http://www.minecraftforum.net/topic/1894204-162forgesspsmppickaxe-right-click-mod/";
+	
+	public static CreativeTabs tabsFC = new FCTab(CreativeTabs.getNextID(), "FC");
+	
+	protected static ModVersionChecker versionChecker;
+	private final static  String versionURL = "https://dl.dropboxusercontent.com/s/natqj962xnjlipk/PickAxe%20right-click.txt";
+	private final static  String mcfTopic = "http://www.minecraftforum.net/topic/1894204-162forgesspsmppickaxe-right-click-mod/";
 	public static boolean allowUpdateCheck = true;
 
 	public static int updateTimeoutMilliseconds = 3000;
-
-	@Metadata("FC2")
-	public static ModMetadata metadata;
-
-	@Mod.Instance("FC2")
-	public static FriendsCraft2mod instance;
 	
 	public static int energyPerPoint = 5;
 	private static DigaOreGenerator DigaWorldGen;
+	
+	public boolean doPipeInteract = false;
 
 	@Mod.EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
@@ -103,8 +102,12 @@ public class FriendsCraft2mod {
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new RMGuiHandler());
 		GameRegistry.registerTileEntity(TileRM.class, "RollingMachine");
 		
-		proxy.init(event);
 		FMLCommonHandler.instance().bus().register(instance);
+		
+        versionChecker = new ModVersionChecker(metadata.name, metadata.version, versionURL, mcfTopic);
+        versionChecker.checkVersionWithLogging();
+		
+		proxy.registerTickHandler();
 	}
 
 	@Mod.EventHandler

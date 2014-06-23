@@ -1,5 +1,7 @@
-package mod.HellCoder.things.core;
+package mod.HellCoder.things;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.util.ChatComponentText;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -7,39 +9,34 @@ import cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.Phase;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import mod.HellCoder.things.FriendsCraft2mod;
-import net.minecraft.client.Minecraft;
-import net.minecraft.util.ChatComponentText;
 
-
+@SideOnly(Side.CLIENT)
 public class FriendsCraftTicker
 {
-    private Minecraft     mcClient;
-    public static boolean isRegistered     = false;
+    private Minecraft      mcClient;
+    private static boolean isRegistered = false;
     
     public FriendsCraftTicker()
     {
-        if (!isRegistered)
-        {
-            mcClient = FMLClientHandler.instance().getClient();
-            FMLCommonHandler.instance().bus().register(this);
-            isRegistered = true;
-        }
+        mcClient = FMLClientHandler.instance().getClient();
+        isRegistered = true;
     }
     
     @SubscribeEvent
     public void onTick(ClientTickEvent event)
     {
+        boolean keepTicking = !(mcClient != null && mcClient.thePlayer != null && mcClient.theWorld != null);
+        
         if (!event.phase.equals(Phase.START))
         {
-            boolean keepTicking = !(mcClient != null && mcClient.thePlayer != null && mcClient.theWorld != null);
-            
-            if (!keepTicking && isRegistered)
-            {
+            if (FriendsCraft2mod.instance.allowUpdateCheck && !keepTicking)
+                if (FriendsCraft2mod.instance.versionChecker != null)
                     if (!FriendsCraft2mod.instance.versionChecker.isCurrentVersion())
                         for (String msg : FriendsCraft2mod.instance.versionChecker.getInGameMessage())
                             mcClient.thePlayer.addChatMessage(new ChatComponentText(msg));
- 
+            
+            if (!keepTicking)
+            {
                 FMLCommonHandler.instance().bus().unregister(this);
                 isRegistered = false;
             }
@@ -50,5 +47,4 @@ public class FriendsCraftTicker
     {
         return isRegistered;
     }
-
 }
