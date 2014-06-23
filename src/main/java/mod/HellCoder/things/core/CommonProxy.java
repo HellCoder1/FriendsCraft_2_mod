@@ -1,5 +1,7 @@
 package mod.HellCoder.things.core;
  
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -23,5 +25,9 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 public class CommonProxy {
 	
 public static CommonProxy proxy;
+
+public void init(FMLInitializationEvent event) {
+
+}
 
 }

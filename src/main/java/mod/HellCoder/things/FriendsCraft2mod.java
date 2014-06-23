@@ -1,6 +1,7 @@
 package mod.HellCoder.things;
 
 import cpw.mods.fml.client.registry.RenderingRegistry;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.ModMetadata;
@@ -15,11 +16,13 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import mod.HellCoder.HellCoderCore.Utils.FCLog;
 import mod.HellCoder.HellCoderCore.Utils.ModVersionChecker;
 import mod.HellCoder.things.TileEntity.TileRM;
 import mod.HellCoder.things.core.CommonProxy;
-import mod.HellCoder.things.core.HandlerForgeEvents;
+import mod.HellCoder.things.core.FriendsCraftTicker;
 import mod.HellCoder.things.core.Localization.LocalizationHandler;
 import mod.HellCoder.things.handler.RMGuiHandler;
 import mod.HellCoder.things.lib.RegBlocks;
@@ -52,26 +55,31 @@ public class FriendsCraft2mod {
 	@SidedProxy(clientSide = "mod.HellCoder.things.core.ClientProxy", serverSide = "mod.HellCoder.things.core.CommonProxy")
 	public static CommonProxy proxy;
 
-	public static ModVersionChecker versionChecker;
-	private static String versionURL = "https://dl.dropboxusercontent.com/s/natqj962xnjlipk/PickAxe%20right-click.txt";
-	private static String mcfTopic = "http://www.minecraftforum.net/topic/1894204-162forgesspsmppickaxe-right-click-mod/";
+	public  ModVersionChecker versionChecker;
+	public  String versionURL = "https://dl.dropboxusercontent.com/s/natqj962xnjlipk/PickAxe%20right-click.txt";
+	public  String mcfTopic = "http://www.minecraftforum.net/topic/1894204-162forgesspsmppickaxe-right-click-mod/";
 	public static boolean allowUpdateCheck = true;
 
 	public static int updateTimeoutMilliseconds = 3000;
 
-	@Metadata(value = "FC2")
+	@Metadata("FC2")
 	public static ModMetadata metadata;
 
 	@Mod.Instance("FC2")
 	public static FriendsCraft2mod instance;
-
+	
 	public static int energyPerPoint = 5;
 	private static DigaOreGenerator DigaWorldGen;
 
 	@Mod.EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
-		LocalizationHandler.loadLanguages();
 		
+		metadata = event.getModMetadata();
+		
+		MinecraftForge.EVENT_BUS.register(this);
+		
+		LocalizationHandler.loadLanguages();
+ 		
 		FCLog.info("Loading Items");
 		RegItems.init();
 		FCLog.info("Load Items");
@@ -80,10 +88,9 @@ public class FriendsCraft2mod {
 		RegBlocks.init();
 		FCLog.info("Load Blocks");
 		
-		MinecraftForge.EVENT_BUS.register(this);
 	}
 
-	@EventHandler
+	@Mod.EventHandler
 	public static void init(FMLInitializationEvent event) {
 
 		DigaWorldGen = new DigaOreGenerator();
@@ -95,13 +102,11 @@ public class FriendsCraft2mod {
 		
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new RMGuiHandler());
 		GameRegistry.registerTileEntity(TileRM.class, "RollingMachine");
-
-		if(allowUpdateCheck){
-		versionChecker = new ModVersionChecker(metadata.name, metadata.version, versionURL, mcfTopic);
-		versionChecker.checkVersionWithLogging();
-		}
+		
+		proxy.init(event);
+		FMLCommonHandler.instance().bus().register(instance);
 	}
-//test
+
 	@Mod.EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
 		if (Loader.isModLoaded("BuildCraft|Transport")) {
