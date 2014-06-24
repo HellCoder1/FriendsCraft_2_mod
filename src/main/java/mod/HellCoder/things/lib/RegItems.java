@@ -59,8 +59,8 @@ public class RegItems {
 		/**
 		 * Items
 		 */
-		diga = registerItem(new Item().setUnlocalizedName("diga").setTextureName("friendscraft:diga").setCreativeTab(FriendsCraft2mod.tabsFC));
-		digaingot = registerItem(new Item().setUnlocalizedName("digaingot").setTextureName("friendscraft:digaingot").setCreativeTab(FriendsCraft2mod.tabsFC));
+		diga = registerItem(new Item().setUnlocalizedName("diga").setTextureName("friendscraft:digaAnim").setCreativeTab(FriendsCraft2mod.tabsFC));
+		digaingot = registerItem(new Item().setUnlocalizedName("digaingot").setTextureName("friendscraft:digaingotAnim").setCreativeTab(FriendsCraft2mod.tabsFC));
 		Upgrade = registerItem(new Item().setUnlocalizedName("Upgrade").setTextureName("friendscraft:Upgrade").setCreativeTab(FriendsCraft2mod.tabsFC));
 		CoolantBlock = registerItem(new Item().setUnlocalizedName("CoolantBlock").setTextureName("friendscraft:CoolantBlock").setCreativeTab(FriendsCraft2mod.tabsFC));
 		GoldRedstoneGear = registerItem(new Item().setUnlocalizedName("GoldRedstoneGear").setTextureName("friendscraft:GoldRedstoneGear").setCreativeTab(FriendsCraft2mod.tabsFC));
