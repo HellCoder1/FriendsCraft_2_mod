@@ -5,9 +5,8 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import mod.HellCoder.things.FriendsCraft2mod;
 import mod.HellCoder.things.Blocks.DigaOre;
 import mod.HellCoder.things.Blocks.DigaBlock;
-import mod.HellCoder.things.Blocks.ItemBlockRM;
-import mod.HellCoder.things.Blocks.RMBlock;
 import mod.HellCoder.things.Blocks.render.LightItemBlock;
+import mod.HellCoder.things.rollingmachine.RMblock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSkull;
 import net.minecraft.block.material.Material;
@@ -20,13 +19,22 @@ public class RegBlocks {
 	public static Block digablock;
 
 	public static Block rollingmachine;
+	public static Block rollingmachineactive;
 	
 	public static int blockCustomDigaOreRI = -1;
 	public static int DigaBlockRI = -1;
 
 	public static void init() {
 		
-        rollingmachine = registerBlock(new RMBlock(), ItemBlockRM.class).setBlockName("rollingmachine");
+		/**
+		 * Machines
+		 */
+		
+        rollingmachine = new RMblock(false).setBlockName("rollingmachine").setCreativeTab(FriendsCraft2mod.tabsFC);
+        rollingmachineactive = new RMblock(true).setBlockName("rollingmachineactive");
+        
+        GameRegistry.registerBlock(rollingmachine, "rollingmachine");
+		GameRegistry.registerBlock(rollingmachineactive, "rollingmachineactive");
 
         /**
          * Light Blocks

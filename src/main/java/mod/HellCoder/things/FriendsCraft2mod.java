@@ -20,12 +20,13 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import mod.HellCoder.HellCoderCore.Utils.FCLog;
 import mod.HellCoder.HellCoderCore.Utils.VersionChecker;
-import mod.HellCoder.things.TileEntity.TileRM;
 import mod.HellCoder.things.core.Localization.LocalizationHandler;
-import mod.HellCoder.things.handler.RMGuiHandler;
+import mod.HellCoder.things.handler.GuiHandlerFurnace;
 import mod.HellCoder.things.lib.RegBlocks;
 import mod.HellCoder.things.lib.RegItems;
 import mod.HellCoder.things.lib.Recipes;
+import mod.HellCoder.things.rollingmachine.RMRender;
+import mod.HellCoder.things.rollingmachine.TileEntityRM;
 import mod.HellCoder.things.tab.FCTab;
 import mod.HellCoder.things.world.DigaOreGenerator;
 import net.minecraft.block.Block;
@@ -98,9 +99,10 @@ public class FriendsCraft2mod {
 		FCLog.info("Loading Recipes");
 		Recipes.init();
 		FCLog.info("Load Recipes");
-		
-		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new RMGuiHandler());
-		GameRegistry.registerTileEntity(TileRM.class, "RollingMachine");
+
+		GameRegistry.registerTileEntity(TileEntityRM.class, "RollingMachine");
+		RenderingRegistry.registerBlockHandler(2105, RMRender.INSTANCE);
+		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandlerFurnace());
 		
 		FMLCommonHandler.instance().bus().register(instance);
 		
