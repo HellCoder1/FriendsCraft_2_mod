@@ -1,199 +1,110 @@
 package mod.HellCoder.things.Blocks;
 
-import java.util.Random;
+import java.util.ArrayList;
+import java.util.List;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import mod.HellCoder.things.FriendsCraft2mod;
+import mod.HellCoder.things.core.fx.UtilsFX;
 import mod.HellCoder.things.lib.RegBlocks;
+import mod.HellCoder.things.lib.RegItems;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockStone;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.particle.EffectRenderer;
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.IIcon;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.ForgeDirection;
 
-public class DigaOre extends Block {
+public class DigaOre extends Block{
+	 public IIcon[] icon = new IIcon[2];
 
-	private boolean glowing;
-	
-	public DigaOre(boolean par2) {
-		super(Material.rock);
-		this.setHardness(50.0F);
-		this.setResistance(1500.0F);
-		this.setStepSound(Block.soundTypeMetal);
-		this.setHarvestLevel("pickaxe", 3);
-		this.setCreativeTab(FriendsCraft2mod.tabsFC);
-		
-		if (par2)
-        {
-            this.setTickRandomly(true);
-        }
+	  public DigaOre()
+	  {
+	    super(Material.rock);
+		setHardness(50.0F);
+		setResistance(1500.0F);
+		setStepSound(Block.soundTypeMetal);
+		setHarvestLevel("pickaxe", 3);
+	    setCreativeTab(FriendsCraft2mod.tabsFC);
+	    setTickRandomly(true);
+	  }
 
-        this.glowing = par2;
-	}
+	  @SideOnly(Side.CLIENT)
+	  public void registerBlockIcons(IIconRegister ir)
+	  {
+		  this.icon[0] = ir.registerIcon("friendscraft:DigaOreFrame");
+		  this.icon[1] = ir.registerIcon("friendscraft:DigaOre");
+	  }
 
-    public int tickRate(World p_149738_1_)
-    {
-        return 30;
-    }
+	  @SideOnly(Side.CLIENT)
+	  public IIcon getIcon(int par1, int par2) {
+	    return this.icon[0];
+	  }
 
-    /**
-     * Called when a player hits the block. Args: world, x, y, z, player
-     */
-    public void onBlockClicked(World p_149699_1_, int p_149699_2_, int p_149699_3_, int p_149699_4_, EntityPlayer p_149699_5_)
-    {
-        this.func_150185_e(p_149699_1_, p_149699_2_, p_149699_3_, p_149699_4_);
-        super.onBlockClicked(p_149699_1_, p_149699_2_, p_149699_3_, p_149699_4_, p_149699_5_);
-    }
+	  public boolean canSilkHarvest(World world, EntityPlayer player, int x, int y, int z, int metadata)
+	  {
+	    return true;
+	  }
 
-    /**
-     * Called whenever an entity is walking on top of this block. Args: world, x, y, z, entity
-     */
-    public void onEntityWalking(World p_149724_1_, int p_149724_2_, int p_149724_3_, int p_149724_4_, Entity p_149724_5_)
-    {
-        this.func_150185_e(p_149724_1_, p_149724_2_, p_149724_3_, p_149724_4_);
-        super.onEntityWalking(p_149724_1_, p_149724_2_, p_149724_3_, p_149724_4_, p_149724_5_);
-    }
+	  public int damageDropped(int par1)
+	  {
+	    return par1;
+	  }
 
-    /**
-     * Called upon block activation (right click on the block.)
-     */
-    public boolean onBlockActivated(World p_149727_1_, int p_149727_2_, int p_149727_3_, int p_149727_4_, EntityPlayer p_149727_5_, int p_149727_6_, float p_149727_7_, float p_149727_8_, float p_149727_9_)
-    {
-        this.func_150185_e(p_149727_1_, p_149727_2_, p_149727_3_, p_149727_4_);
-        return super.onBlockActivated(p_149727_1_, p_149727_2_, p_149727_3_, p_149727_4_, p_149727_5_, p_149727_6_, p_149727_7_, p_149727_8_, p_149727_9_);
-    }
+	  @SideOnly(Side.CLIENT)
+	  public boolean addHitEffects(World worldObj, MovingObjectPosition target, EffectRenderer effectRenderer)
+	  {
+	    int md = worldObj.getBlockMetadata(target.blockX, target.blockY, target.blockZ);
+	    UtilsFX.infusedStoneSparkle(worldObj, target.blockX, target.blockY, target.blockZ, md);
+	    return super.addHitEffects(worldObj, target, effectRenderer);
+	  }
 
-    private void func_150185_e(World p_150185_1_, int p_150185_2_, int p_150185_3_, int p_150185_4_)
-    {
-        this.func_150186_m(p_150185_1_, p_150185_2_, p_150185_3_, p_150185_4_);
+	  public boolean addDestroyEffects(World world, int x, int y, int z, int meta, EffectRenderer effectRenderer)
+	  {
+	    return super.addDestroyEffects(world, x, y, z, meta, effectRenderer);
+	  }
 
-        if (this == Blocks.redstone_ore)
-        {
-            p_150185_1_.setBlock(p_150185_2_, p_150185_3_, p_150185_4_, Blocks.lit_redstone_ore);
-        }
-    }
+	  public void setBlockBoundsBasedOnState(IBlockAccess par1iBlockAccess, int par2, int par3, int par4)
+	  {
+	    setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+	    super.setBlockBoundsBasedOnState(par1iBlockAccess, par2, par3, par4);
+	  }
 
-    /**
-     * Ticks the block if it's been scheduled
-     */
-    public void updateTick(World p_149674_1_, int p_149674_2_, int p_149674_3_, int p_149674_4_, Random p_149674_5_)
-    {
-        if (this == Blocks.lit_redstone_ore)
-        {
-            p_149674_1_.setBlock(p_149674_2_, p_149674_3_, p_149674_4_, Blocks.redstone_ore);
-        }
-    }
+	  public void addCollisionBoxesToList(World world, int i, int j, int k, AxisAlignedBB axisalignedbb, List arraylist, Entity par7Entity)
+	  {
+	    setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+	    super.addCollisionBoxesToList(world, i, j, k, axisalignedbb, arraylist, par7Entity);
+	  }
 
-    public Item getItemDropped(int p_149650_1_, Random p_149650_2_, int p_149650_3_)
-    {
-        return Items.redstone;
-    }
+	  public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int md, int fortune)
+	  {
+	    ArrayList ret = new ArrayList();
+	    ret.add(new ItemStack(RegBlocks.digaore, 1, 0));
+	    return ret;
+	  }
 
-    /**
-     * Returns the usual quantity dropped by the block plus a bonus of 1 to 'i' (inclusive).
-     */
-    public int quantityDroppedWithBonus(int p_149679_1_, Random p_149679_2_)
-    {
-        return this.quantityDropped(p_149679_2_) + p_149679_2_.nextInt(p_149679_1_ + 1);
-    }
+	  public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side)
+	  {
+	    return true;
+	  }
 
-    /**
-     * Returns the quantity of items to drop on block destruction.
-     */
-    public int quantityDropped(Random p_149745_1_)
-    {
-        return 4 + p_149745_1_.nextInt(2);
-    }
+	  public boolean renderAsNormalBlock()
+	  {
+	    return false;
+	  }
 
-    /**
-     * Drops the block items with a specified chance of dropping the specified items
-     */
-    public void dropBlockAsItemWithChance(World p_149690_1_, int p_149690_2_, int p_149690_3_, int p_149690_4_, int p_149690_5_, float p_149690_6_, int p_149690_7_)
-    {
-        super.dropBlockAsItemWithChance(p_149690_1_, p_149690_2_, p_149690_3_, p_149690_4_, p_149690_5_, p_149690_6_, p_149690_7_);
-    }
-
-    private Random rand = new Random();
-    @Override // World, meta, fortune
-    public int getExpDrop(IBlockAccess p_149690_1_, int p_149690_5_, int p_149690_7_)
-    {
-        if (this.getItemDropped(p_149690_5_, rand, p_149690_7_) != Item.getItemFromBlock(this))
-        {
-            return 1 + rand.nextInt(5);
-        }
-        return 0;
-    }
-
-    /**
-     * A randomly called display update to be able to add particles or other items for display
-     */
-    @SideOnly(Side.CLIENT)
-    public void randomDisplayTick(World p_149734_1_, int p_149734_2_, int p_149734_3_, int p_149734_4_, Random p_149734_5_)
-    {
-        if (this.glowing)
-        {
-            this.func_150186_m(p_149734_1_, p_149734_2_, p_149734_3_, p_149734_4_);
-        }
-    }
-
-    private void func_150186_m(World p_150186_1_, int p_150186_2_, int p_150186_3_, int p_150186_4_)
-    {
-        Random random = p_150186_1_.rand;
-        double d0 = 0.0625D;
-
-        for (int l = 0; l < 6; ++l)
-        {
-            double d1 = (double)((float)p_150186_2_ + random.nextFloat());
-            double d2 = (double)((float)p_150186_3_ + random.nextFloat());
-            double d3 = (double)((float)p_150186_4_ + random.nextFloat());
-
-            if (l == 0 && !p_150186_1_.getBlock(p_150186_2_, p_150186_3_ + 1, p_150186_4_).isOpaqueCube())
-            {
-                d2 = (double)(p_150186_3_ + 1) + d0;
-            }
-
-            if (l == 1 && !p_150186_1_.getBlock(p_150186_2_, p_150186_3_ - 1, p_150186_4_).isOpaqueCube())
-            {
-                d2 = (double)(p_150186_3_ + 0) - d0;
-            }
-
-            if (l == 2 && !p_150186_1_.getBlock(p_150186_2_, p_150186_3_, p_150186_4_ + 1).isOpaqueCube())
-            {
-                d3 = (double)(p_150186_4_ + 1) + d0;
-            }
-
-            if (l == 3 && !p_150186_1_.getBlock(p_150186_2_, p_150186_3_, p_150186_4_ - 1).isOpaqueCube())
-            {
-                d3 = (double)(p_150186_4_ + 0) - d0;
-            }
-
-            if (l == 4 && !p_150186_1_.getBlock(p_150186_2_ + 1, p_150186_3_, p_150186_4_).isOpaqueCube())
-            {
-                d1 = (double)(p_150186_2_ + 1) + d0;
-            }
-
-            if (l == 5 && !p_150186_1_.getBlock(p_150186_2_ - 1, p_150186_3_, p_150186_4_).isOpaqueCube())
-            {
-                d1 = (double)(p_150186_2_ + 0) - d0;
-            }
-
-            if (d1 < (double)p_150186_2_ || d1 > (double)(p_150186_2_ + 1) || d2 < 0.0D || d2 > (double)(p_150186_3_ + 1) || d3 < (double)p_150186_4_ || d3 > (double)(p_150186_4_ + 1))
-            {
-                p_150186_1_.spawnParticle("reddust", d1, d2, d3, 0.0D, 0.0D, 0.0D);
-            }
-        }
-    }
-
-    protected ItemStack createStackedBlock(int par1)
-    {
-        return new ItemStack(RegBlocks.digaore);
-    }
+	  public int getRenderType()
+	  {
+	    return RegBlocks.blockCustomDigaOreRI;
+	  }
 }

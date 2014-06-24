@@ -1,4 +1,4 @@
-package mod.HellCoder.things.Blocks;
+package mod.HellCoder.things.core.fx;
 
 import cpw.mods.fml.client.FMLClientHandler;
 import java.util.Random;

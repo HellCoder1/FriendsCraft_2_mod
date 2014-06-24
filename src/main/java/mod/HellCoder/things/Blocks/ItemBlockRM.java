@@ -1,4 +1,4 @@
-package mod.HellCoder.things.Items;
+package mod.HellCoder.things.Blocks;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;

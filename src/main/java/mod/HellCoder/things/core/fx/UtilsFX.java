@@ -1,4 +1,4 @@
-package mod.HellCoder.things.Blocks;
+package mod.HellCoder.things.core.fx;
 
 import java.util.HashMap;
 import java.util.Map;

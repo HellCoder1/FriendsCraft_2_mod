@@ -1,6 +1,7 @@
 package mod.HellCoder.things;
 
-import mod.HellCoder.things.Blocks.BlockCustomDigaOreRender;
+import mod.HellCoder.things.Blocks.render.BlockCustomDigaOreRender;
+import mod.HellCoder.things.Blocks.render.DigaBlockRender;
 import mod.HellCoder.things.lib.RegBlocks;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
@@ -26,7 +27,10 @@ public class ClientProxy extends CommonProxy
 	  public void registerDisplayInformation()
 	  {
 		  RegBlocks.blockCustomDigaOreRI = RenderingRegistry.getNextAvailableRenderId();
-		    registerBlockRenderer(new BlockCustomDigaOreRender());
+		   registerBlockRenderer(new BlockCustomDigaOreRender());
+		   
+		  RegBlocks.DigaBlockRI = RenderingRegistry.getNextAvailableRenderId();
+		   registerBlockRenderer(new DigaBlockRender());
 	  }
 	
 	  public void registerBlockRenderer(ISimpleBlockRenderingHandler renderer)

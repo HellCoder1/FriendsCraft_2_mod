@@ -19,7 +19,9 @@
         
     <entry key="item.NagibatorSword.name">§4NAGIBATOR</entry>
     
-	<entry key="tile.digaore.name">Diga Ore</entry>
-	<entry key="tile.digablock.name">Diga Block</entry>
+    <entry key="tile.rollingmachine.name">Rolling Machine</entry>
+    
+	<entry key="tile.digaore.0.name">DigaOre</entry>
+	<entry key="tile.digablock.0.name">DigaBlock</entry>
 
 </properties>
