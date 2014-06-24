@@ -4,5 +4,12 @@ public class CommonProxy {
 
 	protected void registerTickHandler() 
 	{}
+	
+	public int particleCount(int base) {
+	    return 0;
+	  }
 
+	public void registerDisplayInformation()
+	  {
+	  }
 }

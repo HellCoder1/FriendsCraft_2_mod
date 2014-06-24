@@ -108,6 +108,7 @@ public class FriendsCraft2mod {
         versionChecker.checkVersionWithLogging();
 		
 		proxy.registerTickHandler();
+		proxy.registerDisplayInformation();
 	}
 
 	@Mod.EventHandler
