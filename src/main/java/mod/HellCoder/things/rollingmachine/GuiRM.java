@@ -42,6 +42,6 @@ public class GuiRM extends GuiContainer
         int i1;
 
         i1 = this.tileFurnace.getCookProgressScaled(40);
-        this.drawTexturedModalRect(k + 67, l + 31, 176, 0, i1 + 1, 17);
+        this.drawTexturedModalRect(k + 67, l + 31, 176, 0, i1 + 1, 18);
     }
 }
