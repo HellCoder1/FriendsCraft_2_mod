@@ -56,6 +56,8 @@ public class FriendsCraft2mod {
 	@SidedProxy(clientSide = "mod.HellCoder.things.ClientProxy", serverSide = "mod.HellCoder.things.CommonProxy")
 	public static CommonProxy proxy;
 
+	public static final int DEFAULT_PERDITION_DRAIN = 1;
+    public static final int DEFAULT_PERDITION_INTERVAL = 20;
 	
 	public static CreativeTabs tabsFC = new FCTab(CreativeTabs.getNextID(), "FC");
 	

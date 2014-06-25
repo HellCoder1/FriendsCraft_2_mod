@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import mod.HellCoder.things.lib.RegItems;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -29,39 +31,10 @@ public class RMRecipes
 
     private RMRecipes()
     {
-        this.func_151393_a(Blocks.iron_ore, new ItemStack(Items.iron_ingot), 0.7F);
-        this.func_151393_a(Blocks.gold_ore, new ItemStack(Items.gold_ingot), 1.0F);
-        this.func_151393_a(Blocks.diamond_ore, new ItemStack(Items.diamond), 1.0F);
-        this.func_151393_a(Blocks.sand, new ItemStack(Blocks.glass), 0.1F);
-        this.func_151396_a(Items.porkchop, new ItemStack(Items.cooked_porkchop), 0.35F);
-        this.func_151396_a(Items.beef, new ItemStack(Items.cooked_beef), 0.35F);
-        this.func_151396_a(Items.chicken, new ItemStack(Items.cooked_chicken), 0.35F);
-        this.func_151393_a(Blocks.cobblestone, new ItemStack(Blocks.stone), 0.1F);
-        this.func_151396_a(Items.clay_ball, new ItemStack(Items.brick), 0.3F);
-        this.func_151393_a(Blocks.clay, new ItemStack(Blocks.hardened_clay), 0.35F);
-        this.func_151393_a(Blocks.cactus, new ItemStack(Items.dye, 1, 2), 0.2F);
-        this.func_151393_a(Blocks.log, new ItemStack(Items.coal, 1, 1), 0.15F);
-        this.func_151393_a(Blocks.log2, new ItemStack(Items.coal, 1, 1), 0.15F);
-        this.func_151393_a(Blocks.emerald_ore, new ItemStack(Items.emerald), 1.0F);
-        this.func_151396_a(Items.potato, new ItemStack(Items.baked_potato), 0.35F);
-        this.func_151393_a(Blocks.netherrack, new ItemStack(Items.netherbrick), 0.1F);
-        ItemFishFood.FishType[] afishtype = ItemFishFood.FishType.values();
-        int i = afishtype.length;
+//        this.func_151393_a(Blocks.iron_ore, new ItemStack(Items.iron_ingot), 0.7F);
+        this.func_151396_a(Items.leather, new ItemStack(RegItems.Insulator), 1.7F);
 
-        for (int j = 0; j < i; ++j)
-        {
-            ItemFishFood.FishType fishtype = afishtype[j];
 
-            if (fishtype.func_150973_i())
-            {
-                this.func_151394_a(new ItemStack(Items.fish, 1, fishtype.func_150976_a()), new ItemStack(Items.cooked_fished, 1, fishtype.func_150976_a()), 0.35F);
-            }
-        }
-
-        this.func_151393_a(Blocks.coal_ore, new ItemStack(Items.coal), 0.1F);
-        this.func_151393_a(Blocks.redstone_ore, new ItemStack(Items.redstone), 0.7F);
-        this.func_151393_a(Blocks.lapis_ore, new ItemStack(Items.dye, 1, 4), 0.2F);
-        this.func_151393_a(Blocks.quartz_ore, new ItemStack(Items.quartz), 0.2F);
     }
 
     public void func_151393_a(Block p_151393_1_, ItemStack p_151393_2_, float p_151393_3_)

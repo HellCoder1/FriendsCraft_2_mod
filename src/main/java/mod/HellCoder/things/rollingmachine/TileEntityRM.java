@@ -1,8 +1,14 @@
 package mod.HellCoder.things.rollingmachine;
 
+import buildcraft.api.power.IPowerReceptor;
+import buildcraft.api.power.PowerHandler;
+import buildcraft.api.power.PowerHandler.PowerReceiver;
+import buildcraft.api.power.PowerHandler.Type;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import mod.HellCoder.HellCoderCore.Utils.Utils;
+import mod.HellCoder.things.FriendsCraft2mod;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
@@ -18,26 +24,51 @@ import net.minecraft.item.ItemTool;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
-public class TileEntityRM extends TileEntity implements ISidedInventory
+public class TileEntityRM extends TileEntity implements  IPowerReceptor, ISidedInventory
 {
-    private static final int[] slotsTop = new int[] {0};
-    private static final int[] slotsBottom = new int[] {2, 1};
-    private static final int[] slotsSides = new int[] {1};
+	static final float maxPowerUsage = 8;
+	static final float minPowerUsage = 2;
+
+	float heat = 0;
+
+	private PowerHandler powerHandler;
+	private PowerHandler powerHandlerDummy;
+
+	static final float powerConst = 1.4f;
+	static final float lossConst = 0.00005f ;
+	static final float coolrate = 0.25f;
+	
+	private static final int[] slotsTop = new int[] {0};
+    private static final int[] slotsBottom = new int[] {1};
+    private static final int[] slotsSides = new int[] {0,1};
+    
+    /** The number of ticks that the current item has been cooking for */
+    int cookTime = 0;
+    final int cookTimeDone = 100;
+    final float cookingTemperature = 100f;
+    final float ticksPerTemp = 0.03f;
+    final int updateInterval = 4;
+    private int updateCounter = Utils.rng.nextInt();
+    
+    private int redstoneSignal = 0;
+    
+    
+    private String displayName = "";
     /**
      * The ItemStacks that hold the items currently being used in the furnace
      */
-    private ItemStack[] furnaceItemStacks = new ItemStack[3];
-    /** The number of ticks that the furnace will keep burning */
-    public int furnaceBurnTime;
-    /**
-     * The number of ticks that a fresh copy of the currently-burning item would keep the furnace burning for
-     */
-    public int currentItemBurnTime;
-    /** The number of ticks that the current item has been cooking for */
-    public int furnaceCookTime;
-    private String field_145958_o;
-    private static final String __OBFID = "CL_00000357";
+    private ItemStack[] furnaceItemStacks = new ItemStack[2]; // 0=input, 1=output
+    
+    public TileEntityRM(){
+    	powerHandler = new PowerHandler(this, Type.MACHINE);
+    	powerHandler.configure(minPowerUsage, maxPowerUsage, minPowerUsage, maxPowerUsage*20);
+    	powerHandler.configurePowerPerdition(FriendsCraft2mod.DEFAULT_PERDITION_DRAIN, FriendsCraft2mod.DEFAULT_PERDITION_INTERVAL);
+    	powerHandlerDummy = new PowerHandler(this, Type.MACHINE);
+    	powerHandlerDummy.configure(0, 0, 0, 0);
+    }
 
     /**
      * Returns the number of slots in the inventory.
@@ -112,12 +143,12 @@ public class TileEntityRM extends TileEntity implements ISidedInventory
      */
     public void setInventorySlotContents(int par1, ItemStack par2ItemStack)
     {
-        this.furnaceItemStacks[par1] = par2ItemStack;
+    	   this.furnaceItemStacks[par1] = par2ItemStack;
 
-        if (par2ItemStack != null && par2ItemStack.stackSize > this.getInventoryStackLimit())
-        {
-            par2ItemStack.stackSize = this.getInventoryStackLimit();
-        }
+           if (par2ItemStack != null && par2ItemStack.stackSize > this.getInventoryStackLimit())
+           {
+               par2ItemStack.stackSize = this.getInventoryStackLimit();
+           }
     }
 
     /**
@@ -125,7 +156,7 @@ public class TileEntityRM extends TileEntity implements ISidedInventory
      */
     public String getInventoryName()
     {
-        return this.hasCustomInventoryName() ? this.field_145958_o : "container.furnace";
+        return this.hasCustomInventoryName() ? this.displayName : "Rolling Machine";
     }
 
     /**
@@ -133,12 +164,12 @@ public class TileEntityRM extends TileEntity implements ISidedInventory
      */
     public boolean hasCustomInventoryName()
     {
-        return this.field_145958_o != null && this.field_145958_o.length() > 0;
+        return this.displayName != null && this.displayName.length() > 0;
     }
 
     public void func_145951_a(String p_145951_1_)
     {
-        this.field_145958_o = p_145951_1_;
+        this.displayName = p_145951_1_;
     }
 
     public void readFromNBT(NBTTagCompound p_145839_1_)
@@ -149,7 +180,7 @@ public class TileEntityRM extends TileEntity implements ISidedInventory
 
         for (int i = 0; i < nbttaglist.tagCount(); ++i)
         {
-            NBTTagCompound nbttagcompound1 = nbttaglist.getCompoundTagAt(i);
+        	 NBTTagCompound nbttagcompound1 = nbttaglist.getCompoundTagAt(i);
             byte b0 = nbttagcompound1.getByte("Slot");
 
             if (b0 >= 0 && b0 < this.furnaceItemStacks.length)
@@ -158,21 +189,25 @@ public class TileEntityRM extends TileEntity implements ISidedInventory
             }
         }
 
-        this.furnaceBurnTime = p_145839_1_.getShort("BurnTime");
-        this.furnaceCookTime = p_145839_1_.getShort("CookTime");
-        this.currentItemBurnTime = getItemBurnTime(this.furnaceItemStacks[1]);
+        this.heat = p_145839_1_.getFloat("Temperature");
+        this.cookTime = p_145839_1_.getShort("CookTime");
+        this.powerHandler.setEnergy(p_145839_1_.getFloat("EnergyBuffer"));
 
-        if (p_145839_1_.hasKey("CustomName", 8))
+        if (p_145839_1_.hasKey("CustomName"))
         {
-            this.field_145958_o = p_145839_1_.getString("CustomName");
+            this.displayName = p_145839_1_.getString("CustomName");
         }
     }
-
-    public void writeToNBT(NBTTagCompound p_145841_1_)
+    
+    /**
+     * Writes a tile entity to NBT.
+     */
+	@Override public void writeToNBT(NBTTagCompound par1NBTTagCompound)
     {
-        super.writeToNBT(p_145841_1_);
-        p_145841_1_.setShort("BurnTime", (short)this.furnaceBurnTime);
-        p_145841_1_.setShort("CookTime", (short)this.furnaceCookTime);
+        super.writeToNBT(par1NBTTagCompound);
+        par1NBTTagCompound.setFloat("Temperature", this.heat);
+        par1NBTTagCompound.setShort("CookTime", (short)this.cookTime);
+        par1NBTTagCompound.setFloat("EnergyBuffer", (float) this.powerHandler.getEnergyStored());
         NBTTagList nbttaglist = new NBTTagList();
 
         for (int i = 0; i < this.furnaceItemStacks.length; ++i)
@@ -186,152 +221,158 @@ public class TileEntityRM extends TileEntity implements ISidedInventory
             }
         }
 
-        p_145841_1_.setTag("Items", nbttaglist);
+        par1NBTTagCompound.setTag("Items", nbttaglist);
 
         if (this.hasCustomInventoryName())
         {
-            p_145841_1_.setString("CustomName", this.field_145958_o);
+            par1NBTTagCompound.setString("CustomName", this.displayName);
         }
     }
 
-    /**
-     * Returns the maximum stack size for a inventory slot.
-     */
-    public int getInventoryStackLimit()
+    @Override
+	public int getInventoryStackLimit()
     {
         return 64;
     }
+    /** just to be sure! */
+    @Override public boolean canUpdate()
+    {
+        return true;
+    }
 
-    /**
-     * Returns an integer between 0 and the passed value representing how close the current item is to being completely
-     * cooked
-     */
     @SideOnly(Side.CLIENT)
-    public int getCookProgressScaled(int p_145953_1_)
+    public int getCookProgressScaled(int par1)
     {
-        return this.furnaceCookTime * p_145953_1_ / 175;
+        return (cookTime * par1) / cookTimeDone;
     }
 
-    /**
-     * Returns an integer between 0 and the passed value representing how much burn time is left on the current fuel
-     * item, where 0 means that the item is exhausted and the passed value means that the item is fresh
-     */
-    @SideOnly(Side.CLIENT)
-    public int getBurnTimeRemainingScaled(int p_145955_1_)
-    {
-        if (this.currentItemBurnTime == 0)
-        {
-            this.currentItemBurnTime = 175;
-        }
-
-        return this.furnaceBurnTime * p_145955_1_ / this.currentItemBurnTime;
-    }
-
-    /**
-     * Furnace isBurning
-     */
-    public boolean isBurning()
-    {
-        return this.furnaceBurnTime > 0;
-    }
 
     public void updateEntity()
     {
-        boolean flag = this.furnaceBurnTime > 0;
-        boolean flag1 = false;
+		// BuildCraft boilerplate
+		if (this.worldObj.isRemote){
+			// client world, do nothing (need to do everything server side to keep everything synchronized
+			return;
+		}
+		// end BuildCraft boilerplate
 
-        if (this.furnaceBurnTime > 0)
-        {
-            --this.furnaceBurnTime;
-        }
+		boolean flagStateChange = false;
 
-        if (!this.worldObj.isRemote)
-        {
-            if (this.furnaceBurnTime == 0 && this.canSmelt())
-            {
-                this.currentItemBurnTime = this.furnaceBurnTime = getItemBurnTime(this.furnaceItemStacks[1]);
+		redstoneSignal = getWorld().getBlockPowerInput(this.xCoord,	this.yCoord, this.zCoord);
 
-                if (this.furnaceBurnTime > 0)
-                {
-                    flag1 = true;
 
-                    if (this.furnaceItemStacks[1] != null)
-                    {
-                        --this.furnaceItemStacks[1].stackSize;
+		powerHandler.update();
 
-                        if (this.furnaceItemStacks[1].stackSize == 0)
-                        {
-                            this.furnaceItemStacks[1] = furnaceItemStacks[1].getItem().getContainerItem(furnaceItemStacks[1]);
-                        }
-                    }
-                }
-            }
+		updateCounter++;
+		if (updateCounter % updateInterval == 0) {
 
-            if (this.isBurning() && this.canSmelt())
-            {
-                ++this.furnaceCookTime;
 
-                if (this.furnaceCookTime == 175)
-                {
-                    this.furnaceCookTime = 0;
-                    this.smeltItem();
-                    flag1 = true;
-                }
-            }
-            else
-            {
-                this.furnaceCookTime = 0;
-            }
+			boolean flag1 = false;
+			boolean wasCooking = (heat > cookingTemperature);
 
-            if (flag != this.furnaceBurnTime > 0)
-            {
-                flag1 = true;
-                RMblock.updateFurnaceBlockState(this.furnaceBurnTime > 0, this.worldObj, this.xCoord, this.yCoord, this.zCoord);
-            }
-        }
 
-        if (flag1)
-        {
-            this.markDirty();
-        }
+			float energy = 0;
+			if(redstoneSignal == 0){
+				energy = (float) powerHandler.useEnergy(0, maxPowerUsage*updateInterval, true);
+			}
+			float oldHeat = heat;
+			updateHeat(updateInterval,energy);
+			if(heat != oldHeat){flagStateChange = true;}
+
+			int oldCookTime = cookTime;
+			if (redstoneSignal == 0) {
+
+				// not disabled by redstone signal
+				if (canSmelt() && heat > cookingTemperature) {
+					// smeltable item in input and temperature is above
+					// threshold
+					cookTime += (int) (ticksPerTemp * heat);
+					if (cookTime >= cookTimeDone) {
+						// done cooking
+						this.smeltItem(); // decrement the input and increment
+											// the output
+						flag1 = true; // flag for inventory update
+						cookTime = 0;
+					}
+				} else {
+					cookTime = 0;
+				}
+			} else {
+
+			}
+			boolean isCooking = (heat > cookingTemperature);
+
+			if(oldCookTime != cookTime){
+				flagStateChange = true;
+			}
+
+			if(wasCooking != isCooking){
+				// change between glowing and non-glowing states
+				RMblock.updateFurnaceBlockState(isCooking, worldObj, xCoord, yCoord, zCoord);
+			}
+			if (flag1 ) {
+				this.markDirty();
+			}
+			if(flagStateChange){
+				worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+			}
+
+			// end of update interval
+		}
     }
 
-    /**
-     * Returns true if the furnace can smelt an item, i.e. has a source item, destination stack isn't full, etc.
-     */
-    private boolean canSmelt()
-    {
-        if (this.furnaceItemStacks[0] == null)
-        {
-            return false;
-        }
-        else
-        {
-            ItemStack itemstack = RMRecipes.smelting().getSmeltingResult(this.furnaceItemStacks[0]);
-            if (itemstack == null) return false;
-            if (this.furnaceItemStacks[2] == null) return true;
-            if (!this.furnaceItemStacks[2].isItemEqual(itemstack)) return false;
-            int result = furnaceItemStacks[2].stackSize + itemstack.stackSize;
-            return result <= getInventoryStackLimit() && result <= this.furnaceItemStacks[2].getMaxStackSize(); //Forge BugFix: Make it respect stack sizes properly.
-        }
-    }
+	public float getTemperature(){
+		return heat;
+	}
 
-    /**
-     * Turn one item from the furnace source stack into the appropriate smelted item in the furnace result stack
-     */
+	public float getEnergyStore(){
+		return (float) powerHandler.getEnergyStored();
+	}
+
+	public float getEnergyStoreMaximum(){
+		return (float) powerHandler.getMaxEnergyStored();
+	}
+    
+	private void updateHeat(int numTicks, float amountOfEnergy ){
+		// current plus gain - loss
+		heat =  heat + ((powerConst * amountOfEnergy)/numTicks) - (lossConst * (heat * heat)) - coolrate;
+		if(heat < 0){
+			heat = 0;
+		}
+	//	powerbuffer = 0;
+
+	}
+
+	 private boolean canSmelt()
+	    {
+	        if (this.furnaceItemStacks[0] == null)
+	        {
+	            return false;
+	        }
+	        else
+	        {
+	            ItemStack itemstack = RMRecipes.smelting().getSmeltingResult(this.furnaceItemStacks[0]);
+	            if (itemstack == null) {return false;}
+	            if (this.furnaceItemStacks[1] == null) return true;
+	            if (!this.furnaceItemStacks[1].isItemEqual(itemstack)) return false;
+	            int result = furnaceItemStacks[1].stackSize + itemstack.stackSize;
+	            return (result <= getInventoryStackLimit() && result <= itemstack.getMaxStackSize());
+	        }
+	    }
+
     public void smeltItem()
     {
         if (this.canSmelt())
         {
             ItemStack itemstack = RMRecipes.smelting().getSmeltingResult(this.furnaceItemStacks[0]);
 
-            if (this.furnaceItemStacks[2] == null)
+            if (this.furnaceItemStacks[1] == null)
             {
-                this.furnaceItemStacks[2] = itemstack.copy();
+                this.furnaceItemStacks[1] = itemstack.copy();
             }
-            else if (this.furnaceItemStacks[2].getItem() == itemstack.getItem())
+            else if (this.furnaceItemStacks[1].isItemEqual(itemstack))
             {
-                this.furnaceItemStacks[2].stackSize += itemstack.stackSize; // Forge BugFix: Results may have multiple items
+                furnaceItemStacks[1].stackSize += itemstack.stackSize;
             }
 
             --this.furnaceItemStacks[0].stackSize;
@@ -343,105 +384,57 @@ public class TileEntityRM extends TileEntity implements ISidedInventory
         }
     }
 
-    /**
-     * Returns the number of ticks that the supplied fuel item will keep the furnace burning, or 0 if the item isn't
-     * fuel
-     */
-    public static int getItemBurnTime(ItemStack p_145952_0_)
-    {
-        if (p_145952_0_ == null)
-        {
-            return 0;
-        }
-        else
-        {
-            Item item = p_145952_0_.getItem();
-
-            if (item instanceof ItemBlock && Block.getBlockFromItem(item) != Blocks.air)
-            {
-                Block block = Block.getBlockFromItem(item);
-
-                if (block == Blocks.wooden_slab)
-                {
-                    return 165;
-                }
-
-                if (block.getMaterial() == Material.wood)
-                {
-                    return 315;
-                }
-
-                if (block == Blocks.coal_block)
-                {
-                    return 16015;
-                }
-            }
-
-            if (item instanceof ItemTool && ((ItemTool)item).getToolMaterialName().equals("WOOD")) return 215;
-            if (item instanceof ItemSword && ((ItemSword)item).getToolMaterialName().equals("WOOD")) return 215;
-            if (item instanceof ItemHoe && ((ItemHoe)item).getToolMaterialName().equals("WOOD")) return 215;
-            if (item == Items.stick) return 115;
-            if (item == Items.coal) return 1615;
-            if (item == Items.lava_bucket) return 20015;
-            if (item == Item.getItemFromBlock(Blocks.sapling)) return 115;
-            if (item == Items.blaze_rod) return 2415;
-            return GameRegistry.getFuelValue(p_145952_0_);
-        }
-    }
-
-    public static boolean isItemFuel(ItemStack p_145954_0_)
-    {
-        /**
-         * Returns the number of ticks that the supplied fuel item will keep the furnace burning, or 0 if the item isn't
-         * fuel
-         */
-        return getItemBurnTime(p_145954_0_) > 0;
-    }
-
-    /**
-     * Do not make give this method the name canInteractWith because it clashes with Container
-     */
+    @Override 
     public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
     {
-        return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) != this ? false : par1EntityPlayer.getDistanceSq((double)this.xCoord + 0.5D, (double)this.yCoord + 0.5D, (double)this.zCoord + 0.5D) <= 64.0D;
+    	return getWorld().getTileEntity(this.xCoord, this.yCoord, this.zCoord) != this ? false : par1EntityPlayer.getDistanceSq((double)this.xCoord + 0.5D, (double)this.yCoord + 0.5D, (double)this.zCoord + 0.5D) <= 64.0D;
     }
 
     public void openInventory() {}
 
     public void closeInventory() {}
+    
 
-    /**
-     * Returns true if automation is allowed to insert the given stack (ignoring stack size) into the given slot.
-     */
     public boolean isItemValidForSlot(int par1, ItemStack par2ItemStack)
     {
-        return par1 == 2 ? false : (par1 == 1 ? isItemFuel(par2ItemStack) : true);
+        return ( par1 == 0 ); // items in input slot only
     }
 
-    /**
-     * Returns an array containing the indices of the slots that can be accessed by automation on the given side of this
-     * block.
-     */
     public int[] getAccessibleSlotsFromSide(int par1)
     {
         return par1 == 0 ? slotsBottom : (par1 == 1 ? slotsTop : slotsSides);
     }
 
-    /**
-     * Returns true if automation can insert the given item in the given slot from the given side. Args: Slot, item,
-     * side
-     */
-    public boolean canInsertItem(int par1, ItemStack par2ItemStack, int par3)
+    public boolean canInsertItem(int slot, ItemStack item, int side)
     {
-        return this.isItemValidForSlot(par1, par2ItemStack);
+        return this.isItemValidForSlot(slot, item);
     }
 
-    /**
-     * Returns true if automation can extract the given item in the given slot from the given side. Args: Slot, item,
-     * side
-     */
-    public boolean canExtractItem(int par1, ItemStack par2ItemStack, int par3)
+    public boolean canExtractItem(int slot, ItemStack item, int side)
     {
-        return par3 != 0 || par1 != 1 || par2ItemStack.getItem() == Items.bucket;
+    	if(slot == 1){
+    		return true;
+    	}else {
+    		return false;
+    	}
     }
+
+	@Override
+	public PowerReceiver getPowerReceiver(ForgeDirection arg0) {
+		if(redstoneSignal > 0){
+			return powerHandlerDummy.getPowerReceiver();
+		}
+		return powerHandler.getPowerReceiver();
+	}
+
+	@Override
+	public void doWork(PowerHandler workProvider) {
+		// TODO Автоматически созданная заглушка метода
+		
+	}
+
+	@Override
+	public World getWorld() {
+		return this.worldObj;
+	}
 }

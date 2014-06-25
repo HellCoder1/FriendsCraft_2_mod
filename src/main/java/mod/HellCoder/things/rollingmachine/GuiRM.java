@@ -12,7 +12,7 @@ import org.lwjgl.opengl.GL11;
 @SideOnly(Side.CLIENT)
 public class GuiRM extends GuiContainer
 {
-    private static final ResourceLocation furnaceGuiTextures = new ResourceLocation("textures/gui/container/furnace.png");
+    private static final ResourceLocation furnaceGuiTextures = new ResourceLocation("friendscraft", "textures/gui/GUIRollingMachine.png");
     private TileEntityRM tileFurnace;
     private static final String __OBFID = "CL_00000758";
 
@@ -41,13 +41,7 @@ public class GuiRM extends GuiContainer
         this.drawTexturedModalRect(k, l, 0, 0, this.xSize, this.ySize);
         int i1;
 
-        if (this.tileFurnace.isBurning())
-        {
-            i1 = this.tileFurnace.getBurnTimeRemainingScaled(12);
-            this.drawTexturedModalRect(k + 56, l + 36 + 12 - i1, 176, 12 - i1, 14, i1 + 2);
-        }
-
-        i1 = this.tileFurnace.getCookProgressScaled(24);
-        this.drawTexturedModalRect(k + 79, l + 34, 176, 14, i1 + 1, 16);
+        i1 = this.tileFurnace.getCookProgressScaled(40);
+        this.drawTexturedModalRect(k + 67, l + 31, 176, 0, i1 + 1, 17);
     }
 }
