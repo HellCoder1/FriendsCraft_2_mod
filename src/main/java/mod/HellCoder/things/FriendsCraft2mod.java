@@ -113,6 +113,7 @@ public class FriendsCraft2mod {
 		
 		proxy.registerTickHandler();
 		proxy.registerDisplayInformation();
+		proxy.initRenderingAndTextures();
 	}
 
 	@Mod.EventHandler

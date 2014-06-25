@@ -3,6 +3,7 @@ package mod.HellCoder.things.lib;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import mod.HellCoder.things.FriendsCraft2mod;
+import mod.HellCoder.things.Blocks.Block3D;
 import mod.HellCoder.things.Blocks.DigaOre;
 import mod.HellCoder.things.Blocks.DigaBlock;
 import mod.HellCoder.things.Blocks.render.LightItemBlock;
@@ -21,10 +22,15 @@ public class RegBlocks {
 	public static Block rollingmachine;
 	public static Block rollingmachineactive;
 	
+	public static Block aludel;
+	
 	public static int blockCustomDigaOreRI = -1;
 	public static int DigaBlockRI = -1;
 
 	public static void init() {
+		
+		aludel = new Block3D().setBlockName("block3d").setCreativeTab(FriendsCraft2mod.tabsFC);
+		GameRegistry.registerBlock(aludel, "block3d");
 		
 		/**
 		 * Machines

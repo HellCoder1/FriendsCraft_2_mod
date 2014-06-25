@@ -12,4 +12,9 @@ public class CommonProxy {
 	public void registerDisplayInformation()
 	  {
 	  }
+
+	public void initRenderingAndTextures() {
+		// TODO Автоматически созданная заглушка метода
+		
+	}
 }

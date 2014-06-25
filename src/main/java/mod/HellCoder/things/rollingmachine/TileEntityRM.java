@@ -32,7 +32,7 @@ public class TileEntityRM extends TileEntity implements  IPowerReceptor, ISidedI
 	static final float maxPowerUsage = 8;
 	static final float minPowerUsage = 2;
 
-	float heat = 0;
+	float pressure = 0;
 
 	private PowerHandler powerHandler;
 	private PowerHandler powerHandlerDummy;
@@ -48,7 +48,7 @@ public class TileEntityRM extends TileEntity implements  IPowerReceptor, ISidedI
     /** The number of ticks that the current item has been cooking for */
     int cookTime = 0;
     final int cookTimeDone = 100;
-    final float cookingTemperature = 100f;
+    final float cookingPressure = 150f;
     final float ticksPerTemp = 0.03f;
     final int updateInterval = 4;
     private int updateCounter = Utils.rng.nextInt();
@@ -189,7 +189,7 @@ public class TileEntityRM extends TileEntity implements  IPowerReceptor, ISidedI
             }
         }
 
-        this.heat = p_145839_1_.getFloat("Temperature");
+        this.pressure = p_145839_1_.getFloat("Pressure");
         this.cookTime = p_145839_1_.getShort("CookTime");
         this.powerHandler.setEnergy(p_145839_1_.getFloat("EnergyBuffer"));
 
@@ -205,7 +205,7 @@ public class TileEntityRM extends TileEntity implements  IPowerReceptor, ISidedI
 	@Override public void writeToNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.writeToNBT(par1NBTTagCompound);
-        par1NBTTagCompound.setFloat("Temperature", this.heat);
+        par1NBTTagCompound.setFloat("Pressure", this.pressure);
         par1NBTTagCompound.setShort("CookTime", (short)this.cookTime);
         par1NBTTagCompound.setFloat("EnergyBuffer", (float) this.powerHandler.getEnergyStored());
         NBTTagList nbttaglist = new NBTTagList();
@@ -268,25 +268,25 @@ public class TileEntityRM extends TileEntity implements  IPowerReceptor, ISidedI
 
 
 			boolean flag1 = false;
-			boolean wasCooking = (heat > cookingTemperature);
+			boolean wasCooking = (pressure > cookingPressure);
 
 
 			float energy = 0;
 			if(redstoneSignal == 0){
 				energy = (float) powerHandler.useEnergy(0, maxPowerUsage*updateInterval, true);
 			}
-			float oldHeat = heat;
+			float oldHeat = pressure;
 			updateHeat(updateInterval,energy);
-			if(heat != oldHeat){flagStateChange = true;}
+			if(pressure != oldHeat){flagStateChange = true;}
 
 			int oldCookTime = cookTime;
 			if (redstoneSignal == 0) {
 
 				// not disabled by redstone signal
-				if (canSmelt() && heat > cookingTemperature) {
+				if (canSmelt() && pressure > cookingPressure) {
 					// smeltable item in input and temperature is above
 					// threshold
-					cookTime += (int) (ticksPerTemp * heat);
+					cookTime += (int) (ticksPerTemp * pressure);
 					if (cookTime >= cookTimeDone) {
 						// done cooking
 						this.smeltItem(); // decrement the input and increment
@@ -300,7 +300,7 @@ public class TileEntityRM extends TileEntity implements  IPowerReceptor, ISidedI
 			} else {
 
 			}
-			boolean isCooking = (heat > cookingTemperature);
+			boolean isCooking = (pressure > cookingPressure);
 
 			if(oldCookTime != cookTime){
 				flagStateChange = true;
@@ -322,7 +322,7 @@ public class TileEntityRM extends TileEntity implements  IPowerReceptor, ISidedI
     }
 
 	public float getTemperature(){
-		return heat;
+		return pressure;
 	}
 
 	public float getEnergyStore(){
@@ -335,9 +335,9 @@ public class TileEntityRM extends TileEntity implements  IPowerReceptor, ISidedI
     
 	private void updateHeat(int numTicks, float amountOfEnergy ){
 		// current plus gain - loss
-		heat =  heat + ((powerConst * amountOfEnergy)/numTicks) - (lossConst * (heat * heat)) - coolrate;
-		if(heat < 0){
-			heat = 0;
+		pressure =  pressure + ((powerConst * amountOfEnergy)/numTicks) - (lossConst * (pressure * pressure)) - coolrate;
+		if(pressure < 0){
+			pressure = 0;
 		}
 	//	powerbuffer = 0;
 

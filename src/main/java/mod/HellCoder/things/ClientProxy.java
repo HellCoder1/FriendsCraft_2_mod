@@ -1,5 +1,9 @@
 package mod.HellCoder.things;
 
+import net.minecraft.item.Item;
+import net.minecraftforge.client.MinecraftForgeClient;
+import mod.HellCoder.things.Blocks.Block3D;
+import mod.HellCoder.things.Blocks.Block3DModelItem;
 import mod.HellCoder.things.Blocks.render.BlockCustomDigaOreRender;
 import mod.HellCoder.things.Blocks.render.DigaBlockRender;
 import mod.HellCoder.things.lib.RegBlocks;
@@ -37,4 +41,12 @@ public class ClientProxy extends CommonProxy
 	  {
 	    RenderingRegistry.registerBlockHandler(renderer);
 	  }
+	  
+	  @Override
+	    public void initRenderingAndTextures()
+	    {
+		  Block3D.aludel = RenderingRegistry.getNextAvailableRenderId();
+		  
+		  MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(RegBlocks.aludel), new Block3DModelItem());
+	    }
 }
