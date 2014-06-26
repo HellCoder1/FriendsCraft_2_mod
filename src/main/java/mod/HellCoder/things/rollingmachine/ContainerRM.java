@@ -1,5 +1,6 @@
 package mod.HellCoder.things.rollingmachine;
 
+import buildcraft.api.power.PowerHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -11,17 +12,17 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class ContainerRM extends Container
 {
-    private TileEntityRM tileFurnace;
+    private TileEntityRM tile;
     private int lastCookTime;
-    private int lastBurnTime;
-    private int lastItemBurnTime;
-    private static final String __OBFID = "CL_00001748";
+    private int energyStore;
+    
 
     public ContainerRM(InventoryPlayer par1InventoryPlayer, TileEntityRM par2TileEntityIronOven)
     {
-        this.tileFurnace = par2TileEntityIronOven;
+        this.tile = par2TileEntityIronOven;
         this.addSlotToContainer(new Slot(par2TileEntityIronOven, 0, 43, 33));
-        this.addSlotToContainer(new Slot(par2TileEntityIronOven, 1, 116, 33));      
+        this.addSlotToContainer(new Slot(par2TileEntityIronOven, 1, 116, 33)); 
+        
         int i;
 
         for (i = 0; i < 3; ++i)
@@ -38,10 +39,14 @@ public class ContainerRM extends Container
         }
     }
 
-    public void addCraftingToCrafters(ICrafting par1ICrafting)
+	public void addCraftingToCrafters(ICrafting par1ICrafting)
     {
         super.addCraftingToCrafters(par1ICrafting);
-        par1ICrafting.sendProgressBarUpdate(this, 0, this.tileFurnace.cookTime);
+        par1ICrafting.sendProgressBarUpdate(this, 0, this.tile.cookTime);
+        
+        PowerHandler.PowerReceiver provider = this.tile.getPowerReceiver(null);
+        if (provider != null)
+        	par1ICrafting.sendProgressBarUpdate(this, 1, (int)provider.getEnergyStored());
 
     }
 
@@ -51,18 +56,22 @@ public class ContainerRM extends Container
     public void detectAndSendChanges()
     {
         super.detectAndSendChanges();
+        PowerHandler.PowerReceiver provider = this.tile.getPowerReceiver(null);
 
         for (int i = 0; i < this.crafters.size(); ++i)
         {
             ICrafting icrafting = (ICrafting)this.crafters.get(i);
 
-            if (this.lastCookTime != this.tileFurnace.cookTime)
+            if (provider != null) {
+                icrafting.sendProgressBarUpdate(this, 1, (int)provider.getEnergyStored());
+            }
+            if (this.lastCookTime != this.tile.cookTime)
             {
-                icrafting.sendProgressBarUpdate(this, 0, this.tileFurnace.cookTime);
+                icrafting.sendProgressBarUpdate(this, 0, this.tile.cookTime);
             }
         }
 
-        this.lastCookTime = this.tileFurnace.cookTime;
+        this.lastCookTime = this.tile.cookTime;
     }
 
     @SideOnly(Side.CLIENT)
@@ -70,14 +79,19 @@ public class ContainerRM extends Container
     {
         if (par1 == 0)
         {
-            this.tileFurnace.cookTime = par2;
+            this.tile.cookTime = par2;
         }
+        if (par1 == 1)
+        {
+        	this.tile.pressure = par2;
+        }
+
 
     }
 
     public boolean canInteractWith(EntityPlayer par1EntityPlayer)
     {
-        return this.tileFurnace.isUseableByPlayer(par1EntityPlayer);
+        return this.tile.isUseableByPlayer(par1EntityPlayer);
     }
 
     /**
@@ -134,13 +148,4 @@ public class ContainerRM extends Container
 
         return itemstack;
     }
-
-/*	protected Slot addSlotToContainer(Slot par1Slot)
-    {
-        par1Slot.slotNumber = this.inventorySlots.size();
-        this.inventorySlots.add(par1Slot);
-        this.inventoryItemStacks.add((Object)null);
-        return par1Slot;
-    }
-*/
 }
