@@ -32,9 +32,10 @@ public class TileEntityRM extends TileEntity implements  IPowerReceptor, ISidedI
 	static final float maxPowerUsage = 8;
 	static final float minPowerUsage = 2;
 
-	float pressure = 0;
+	int pressure = 0;
+	int pressuremax = 500;
 
-	private PowerHandler powerHandler;
+	PowerHandler powerHandler;
 	private PowerHandler powerHandlerDummy;
 
 	static final float powerConst = 1.4f;
@@ -46,6 +47,8 @@ public class TileEntityRM extends TileEntity implements  IPowerReceptor, ISidedI
     private static final int[] slotsSides = new int[] {0,1};
     
     /** The number of ticks that the current item has been cooking for */
+    int energy = 100;
+    int maxenergy = 500;
     int cookTime = 0;
     final int cookTimeDone = 100;
     final float cookingPressure = 150f;
@@ -189,7 +192,7 @@ public class TileEntityRM extends TileEntity implements  IPowerReceptor, ISidedI
             }
         }
 
-        this.pressure = p_145839_1_.getFloat("Pressure");
+        this.pressure = p_145839_1_.getShort("Pressure");
         this.cookTime = p_145839_1_.getShort("CookTime");
         this.powerHandler.setEnergy(p_145839_1_.getFloat("EnergyBuffer"));
 
@@ -197,6 +200,12 @@ public class TileEntityRM extends TileEntity implements  IPowerReceptor, ISidedI
         {
             this.displayName = p_145839_1_.getString("CustomName");
         }
+    }
+    
+    public void setEnergy(int par1){
+    	
+     energy = par1;
+     
     }
     
     /**
@@ -321,9 +330,15 @@ public class TileEntityRM extends TileEntity implements  IPowerReceptor, ISidedI
 		}
     }
 
-	public float getTemperature(){
+	public float getPressure(){
 		return pressure;
 	}
+	
+    @SideOnly(Side.CLIENT)
+    public int getEnergyProgress(int par1)
+    {
+        return (int) ((pressure * par1) / pressuremax);
+    }
 
 	public float getEnergyStore(){
 		return (float) powerHandler.getEnergyStored();
@@ -335,7 +350,7 @@ public class TileEntityRM extends TileEntity implements  IPowerReceptor, ISidedI
     
 	private void updateHeat(int numTicks, float amountOfEnergy ){
 		// current plus gain - loss
-		pressure =  pressure + ((powerConst * amountOfEnergy)/numTicks) - (lossConst * (pressure * pressure)) - coolrate;
+		pressure =  (int) (pressure + ((powerConst * amountOfEnergy)/numTicks) - (lossConst * (pressure * pressure)) - coolrate);
 		if(pressure < 0){
 			pressure = 0;
 		}
