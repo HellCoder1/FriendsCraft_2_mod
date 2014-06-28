@@ -18,8 +18,7 @@ public class RMRecipes
     private static final RMRecipes smeltingBase = new RMRecipes();
     /** The list of smelting results. */
     private Map smeltingList = new HashMap();
-    private Map experienceList = new HashMap();
-    private static final String __OBFID = "CL_00000085";
+	private Map pressureList= new HashMap();
 
     /**
      * Used to call methods addSmelting and getSmeltingResult.
@@ -31,26 +30,26 @@ public class RMRecipes
 
     private RMRecipes()
     {
-//        this.func_151393_a(Blocks.iron_ore, new ItemStack(Items.iron_ingot), 0.7F);
-        this.func_151396_a(Items.leather, new ItemStack(RegItems.Insulator), 1.7F);
+//        this.regBlock(Blocks.iron_ore, new ItemStack(Items.iron_ingot), 0.7);
+        this.reg(Items.leather, new ItemStack(RegItems.Insulator), 20F);
 
 
     }
 
-    public void func_151393_a(Block p_151393_1_, ItemStack p_151393_2_, float p_151393_3_)
+    public void regBlock(Block p_151393_1_, ItemStack p_151393_2_, float pressure)
     {
-        this.func_151396_a(Item.getItemFromBlock(p_151393_1_), p_151393_2_, p_151393_3_);
+        this.reg(Item.getItemFromBlock(p_151393_1_), p_151393_2_, pressure);
     }
 
-    public void func_151396_a(Item p_151396_1_, ItemStack p_151396_2_, float p_151396_3_)
+    public void reg(Item item, ItemStack stack, float pressure)
     {
-        this.func_151394_a(new ItemStack(p_151396_1_, 1, 32767), p_151396_2_, p_151396_3_);
+        this.addList(new ItemStack(item, 1, 32767), stack, pressure);
     }
 
-    public void func_151394_a(ItemStack p_151394_1_, ItemStack p_151394_2_, float p_151394_3_)
+    public void addList(ItemStack stack, ItemStack stack2, float pressure)
     {
-        this.smeltingList.put(p_151394_1_, p_151394_2_);
-        this.experienceList.put(p_151394_2_, Float.valueOf(p_151394_3_));
+        this.smeltingList.put(stack, stack2);
+        this.pressureList.put(stack, Float.valueOf(pressure));
     }
 
     /**
@@ -74,6 +73,31 @@ public class RMRecipes
 
         return (ItemStack)entry.getValue();
     }
+    
+    public float getPressureUse(ItemStack par1)
+    {
+    	
+        Iterator iterator = this.pressureList.entrySet().iterator();
+        Entry entry;
+
+        do
+        {
+            if (!iterator.hasNext())
+            {
+                return 0.1F;
+            }
+
+            entry = (Entry)iterator.next();
+        }
+        while (!this.func_151397_a(par1, (ItemStack)entry.getKey()));
+
+        return ((Float)entry.getValue()).floatValue();
+    }
+    
+    public float getSmeltingExp(ItemStack item)
+    {
+        return -1; //-1 will default to the old lookups.
+    }
 
     private boolean func_151397_a(ItemStack p_151397_1_, ItemStack p_151397_2_)
     {
@@ -83,27 +107,5 @@ public class RMRecipes
     public Map getSmeltingList()
     {
         return this.smeltingList;
-    }
-
-    public float func_151398_b(ItemStack p_151398_1_)
-    {
-        float ret = p_151398_1_.getItem().getSmeltingExperience(p_151398_1_);
-        if (ret != -1) return ret;
-
-        Iterator iterator = this.experienceList.entrySet().iterator();
-        Entry entry;
-
-        do
-        {
-            if (!iterator.hasNext())
-            {
-                return 0.0F;
-            }
-
-            entry = (Entry)iterator.next();
-        }
-        while (!this.func_151397_a(p_151398_1_, (ItemStack)entry.getKey()));
-
-        return ((Float)entry.getValue()).floatValue();
     }
 }

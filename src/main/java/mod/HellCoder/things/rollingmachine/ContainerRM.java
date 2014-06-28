@@ -14,7 +14,7 @@ public class ContainerRM extends Container
 {
     private TileEntityRM tile;
     private int lastCookTime;
-    private int energyStore;
+    private int pressure;
     
 
     public ContainerRM(InventoryPlayer par1InventoryPlayer, TileEntityRM par2TileEntityIronOven)
@@ -43,10 +43,11 @@ public class ContainerRM extends Container
     {
         super.addCraftingToCrafters(par1ICrafting);
         par1ICrafting.sendProgressBarUpdate(this, 0, this.tile.cookTime);
+        par1ICrafting.sendProgressBarUpdate(this, 1, this.tile.pressure);
         
-        PowerHandler.PowerReceiver provider = this.tile.getPowerReceiver(null);
-        if (provider != null)
-        	par1ICrafting.sendProgressBarUpdate(this, 1, (int)provider.getEnergyStored());
+//        PowerHandler.PowerReceiver provider = this.tile.getPowerReceiver(null);
+//        if (provider != null)
+//        	par1ICrafting.sendProgressBarUpdate(this, 1, (int)provider.getEnergyStored());
 
     }
 
@@ -62,16 +63,21 @@ public class ContainerRM extends Container
         {
             ICrafting icrafting = (ICrafting)this.crafters.get(i);
 
-            if (provider != null) {
-                icrafting.sendProgressBarUpdate(this, 1, (int)provider.getEnergyStored());
-            }
+//            if (provider != null) {
+//                icrafting.sendProgressBarUpdate(this, 1, (int)provider.getEnergyStored());
+//            }
             if (this.lastCookTime != this.tile.cookTime)
             {
                 icrafting.sendProgressBarUpdate(this, 0, this.tile.cookTime);
             }
+            if (this.pressure != this.tile.pressure)
+            {
+                icrafting.sendProgressBarUpdate(this, 1, this.tile.pressure);
+            }
         }
 
         this.lastCookTime = this.tile.cookTime;
+        this.pressure = this.tile.pressure;
     }
 
     @SideOnly(Side.CLIENT)
