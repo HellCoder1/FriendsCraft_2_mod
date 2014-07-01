@@ -30,9 +30,11 @@ public class GuiRM extends GuiContainer
     {
         String s = this.tile.hasCustomInventoryName() ? this.tile.getInventoryName() : I18n.format(this.tile.getInventoryName(), new Object[0]);
         String pressure = String.valueOf(this.tile.pressure);
+        String energy = String.valueOf(this.tile.storage.getEnergyStored());
         this.fontRendererObj.drawString(s, this.xSize / 2 - this.fontRendererObj.getStringWidth(s) / 2, 6, 4210752);
         this.fontRendererObj.drawString(I18n.format("container.inventory", new Object[0]), 8, this.ySize - 96 + 2, 4210752);
         this.fontRendererObj.drawString(pressure + " bar", 8, 8, 4210752);
+        this.fontRendererObj.drawString(energy + " RF", 139, 8, 4210752);
     }
 
     @Override
@@ -52,6 +54,8 @@ public class GuiRM extends GuiContainer
         int i2 = this.tile.getPressure(48);
         this.drawTexturedModalRect(k + 8, l + 17 + 48 - i2, 177, 68 - i2, 10, i2);
 
+        int i3 = this.tile.getEnergy(48);
+        this.drawTexturedModalRect(k + 157, l + 17 + 48 - i3, 189, 68 - i3, 10, i3);        
 //      this.drawTexturedModalRect(k + 56, l + 36 + 12 - i1, 176, 12 - i1, 14, i1 + 2);
 
     }

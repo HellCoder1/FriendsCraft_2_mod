@@ -15,6 +15,7 @@ public class ContainerRM extends Container
     private TileEntityRM tile;
     private int lastCookTime;
     private int pressure;
+    private int energy;
     
 
     public ContainerRM(InventoryPlayer par1InventoryPlayer, TileEntityRM par2TileEntityIronOven)
@@ -44,11 +45,7 @@ public class ContainerRM extends Container
         super.addCraftingToCrafters(par1ICrafting);
         par1ICrafting.sendProgressBarUpdate(this, 0, this.tile.cookTime);
         par1ICrafting.sendProgressBarUpdate(this, 1, this.tile.pressure);
-        
-//        PowerHandler.PowerReceiver provider = this.tile.getPowerReceiver(null);
-//        if (provider != null)
-//        	par1ICrafting.sendProgressBarUpdate(this, 1, (int)provider.getEnergyStored());
-
+        par1ICrafting.sendProgressBarUpdate(this, 2, this.tile.storage.getEnergyStored());
     }
 
     /**
@@ -57,15 +54,11 @@ public class ContainerRM extends Container
     public void detectAndSendChanges()
     {
         super.detectAndSendChanges();
-        PowerHandler.PowerReceiver provider = this.tile.getPowerReceiver(null);
 
         for (int i = 0; i < this.crafters.size(); ++i)
         {
             ICrafting icrafting = (ICrafting)this.crafters.get(i);
 
-//            if (provider != null) {
-//                icrafting.sendProgressBarUpdate(this, 1, (int)provider.getEnergyStored());
-//            }
             if (this.lastCookTime != this.tile.cookTime)
             {
                 icrafting.sendProgressBarUpdate(this, 0, this.tile.cookTime);
@@ -74,10 +67,14 @@ public class ContainerRM extends Container
             {
                 icrafting.sendProgressBarUpdate(this, 1, this.tile.pressure);
             }
+            if (this.energy != this.tile.storage.getEnergyStored()) {
+                icrafting.sendProgressBarUpdate(this, 2, this.tile.storage.getEnergyStored());
+            }
         }
 
         this.lastCookTime = this.tile.cookTime;
         this.pressure = this.tile.pressure;
+        this.energy = this.tile.storage.getEnergyStored();
     }
 
     @SideOnly(Side.CLIENT)
@@ -90,6 +87,10 @@ public class ContainerRM extends Container
         if (par1 == 1)
         {
         	this.tile.pressure = par2;
+        }
+        if (par1 == 2){
+        	
+          this.energy = par2;
         }
 
 
