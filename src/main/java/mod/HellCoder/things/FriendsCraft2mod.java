@@ -44,7 +44,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 
-@Mod(modid = "FC2", name = "FriendsCraft2_mod", version = "1.7.10-1.1", acceptedMinecraftVersions = "1.7.10", 
+@Mod(modid = "FC2", name = "FriendsCraft2_mod", version = "1.7.10-1.1", acceptedMinecraftVersions = "1.7.2", 
 useMetadata = true)
 public class FriendsCraft2mod {
 	

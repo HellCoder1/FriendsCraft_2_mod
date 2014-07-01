@@ -1,9 +1,5 @@
 package mod.HellCoder.HellCoderCore.Utils;
 
-/*
- * This code is derived from the Buildcraft class of the same name as it appeared in Buildcraft 4.2.2
- */
-
 import buildcraft.api.core.Position;
 import mod.HellCoder.HellCoderCore.Utils.InventoryIterator.IInvSlot;
 import net.minecraft.inventory.IInventory;

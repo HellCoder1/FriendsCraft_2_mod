@@ -2,6 +2,7 @@ package mod.HellCoder.things;
 
 import net.minecraft.item.Item;
 import net.minecraftforge.client.MinecraftForgeClient;
+import mod.HellCoder.mainmenu.client.MenuClientTickHandler;
 import mod.HellCoder.things.Blocks.Block3D;
 import mod.HellCoder.things.Blocks.Block3DModelItem;
 import mod.HellCoder.things.Blocks.render.BlockCustomDigaOreRender;
@@ -19,6 +20,7 @@ public class ClientProxy extends CommonProxy
 	protected void registerTickHandler()
     {
 		FMLCommonHandler.instance().bus().register(new FriendsCraftTicker());
+		FMLCommonHandler.instance().bus().register(new MenuClientTickHandler());
     }
 	
 	@Override
