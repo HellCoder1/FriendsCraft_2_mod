@@ -2,8 +2,6 @@ package mod.HellCoder.things.lib;
 
 import java.util.List;
 
-import cofh.item.ItemBase;
-import cofh.item.ItemBucket;
 import cpw.mods.fml.common.registry.GameRegistry;
 import mod.HellCoder.things.FriendsCraft2mod;
 import mod.HellCoder.things.Items.*;
@@ -51,8 +49,6 @@ public class RegItems {
 	public static Item Press;
 	public static Item Rollers;
 	public static Item SpecialPipe;
-	
-	public static ItemBase itemMaterial;
 
 	public static void init() {
 
