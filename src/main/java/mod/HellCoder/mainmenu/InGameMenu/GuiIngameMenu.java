@@ -8,7 +8,7 @@ import net.minecraft.client.renderer.texture.TextureManager;
 
 import org.lwjgl.opengl.GL11;
 
-public class GuiIngameMenu extends GuiIngameMenuOLD
+public class GuiIngameMenu extends net.minecraft.client.gui.GuiIngameMenu
 {
   protected GuiButtonPanel buttonPanel;
   protected int updateCounter;

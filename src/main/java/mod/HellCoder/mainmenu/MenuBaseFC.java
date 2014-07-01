@@ -314,11 +314,6 @@ public class MenuBaseFC extends MenuBase
       this.mc.displayGuiScreen(new GuiMultiplayer(this));
     }
 
-    if (par1GuiButton.id == 3)
-    {
-//      this.mc.displayGuiScreen(new GuiScreenOnlineServers(this));
-    }
-
     if (par1GuiButton.id == 4)
     {
       this.mc.shutdown();
