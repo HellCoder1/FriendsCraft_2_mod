@@ -75,7 +75,7 @@ public class RegItems {
 		NagibatorSword = registerItem(new NagibatorSword(Sword_MATERIAL)
 		.setUnlocalizedName("NagibatorSword").setTextureName("friendscraft:Nagibator").setCreativeTab(FriendsCraft2mod.tabsFC));
 		
-		scythe = registerItem((new Scythe(ToolMaterial.IRON).setUnlocalizedName("Scythe").setTextureName("friendscraft:Scythe").setCreativeTab(FriendsCraft2mod.tabsFC)));
+		scythe = registerItem((new Scythe(ToolMaterial.IRON).setUnlocalizedName("Scythe").setTextureName("friendscraft:scythe").setCreativeTab(FriendsCraft2mod.tabsFC)));
 		/**
 		 * Armor
 		 */
