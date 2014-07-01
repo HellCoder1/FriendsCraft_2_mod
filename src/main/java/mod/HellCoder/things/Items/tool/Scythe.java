@@ -1,18 +1,26 @@
 package mod.HellCoder.things.Items.tool;
 
+import java.util.ArrayList;
+import java.util.Random;
+
 import mod.HellCoder.HellCoderCore.Utils.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.stats.StatList;
 import net.minecraft.world.World;
+import net.minecraftforge.common.IShearable;
 
 public class Scythe extends ItemToolFC {
 	
-	public int radius = 3;
+	public int radius = 2;
 
 	public Scythe(Item.ToolMaterial toolMaterial) {
 
@@ -34,7 +42,7 @@ public class Scythe extends ItemToolFC {
 	@Override
 	public boolean canHarvestBlock(Block block, ItemStack stack) {
 
-		return block == Blocks.web || block == Blocks.vine || block == Blocks.grass;
+		return block == Blocks.web || block == Blocks.vine || block == Blocks.tallgrass;
 	}
 
 	@Override
@@ -70,6 +78,7 @@ public class Scythe extends ItemToolFC {
 			}
 			return false;
 		}
+		
 		boolean used = false;
 
 		for (int i = x - radius; i <= x + radius; i++) {
@@ -85,4 +94,44 @@ public class Scythe extends ItemToolFC {
 		}
 		return used;
 	}
+	
+    @Override
+    public boolean onBlockStartBreak(ItemStack itemstack, int x, int y, int z, EntityPlayer player)
+    {
+        if (player.worldObj.isRemote)
+        {
+            return false;
+        }
+        
+      for (int i = x - radius; i <= x + radius; i++) {
+       for (int k = z - radius; k <= z + radius; k++) {  
+        Block block = player.worldObj.getBlock(i, y, k);
+        
+        if (block instanceof IShearable)
+        {
+            IShearable target = (IShearable)block;
+            if (target.isShearable(itemstack, player.worldObj, i, y, k))
+            {
+                ArrayList<ItemStack> drops = target.onSheared(itemstack, player.worldObj, i, y, k,
+                        EnchantmentHelper.getEnchantmentLevel(Enchantment.fortune.effectId, itemstack));
+                Random rand = new Random();
+
+                for(ItemStack stack : drops)
+                {
+                    float f = 0.7F;
+                    double d  = (double)(rand.nextFloat() * f) + (double)(1.0F - f) * 0.5D;
+                    double d1 = (double)(rand.nextFloat() * f) + (double)(1.0F - f) * 0.5D;
+                    double d2 = (double)(rand.nextFloat() * f) + (double)(1.0F - f) * 0.5D;
+                    EntityItem entityitem = new EntityItem(player.worldObj, (double)i + d, (double)y + d1, (double)k + d2, stack);
+                    entityitem.delayBeforeCanPickup = 10;
+                    player.worldObj.spawnEntityInWorld(entityitem);
+                }
+
+                itemstack.damageItem(1, player);
+            }
+        }
+     }
+    }
+      return false;
+   }
 }

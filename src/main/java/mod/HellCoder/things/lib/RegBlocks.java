@@ -27,8 +27,7 @@ public class RegBlocks {
 	public static int DigaBlockRI = -1;
 
 	public static void init() {
-	
-		
+
 		/**
 		 * Machines
 		 */
