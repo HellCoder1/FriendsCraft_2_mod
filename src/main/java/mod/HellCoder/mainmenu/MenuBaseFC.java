@@ -21,7 +21,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
-import mod.HellCoder.mainmenu.InGameMenu.GuiButtonMainMenu;
+import mod.HellCoder.mainmenu.ingamemenu.GuiButtonMainMenu;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
@@ -59,7 +59,7 @@ public class MenuBaseFC extends MenuBase
 {
   private static final ResourceLocation TEXTURE_LOGO = new ResourceLocation("friendscraft", "textures/menu/logo.png");
 
-  private static final ResourceLocation TEXTURE_MAIN_BG = new ResourceLocation("friendscraft", "textures/menu/MAINmenu_background.png");
+  public static final ResourceLocation TEXTURE_MAIN_BG = new ResourceLocation("friendscraft", "textures/menu/MAINmenu_background.png");
   
   private static final ResourceLocation TEXTURE_TUG_BG = new ResourceLocation("friendscraft", "textures/menu/tug/menu_background.jpg");
 
@@ -387,7 +387,7 @@ public class MenuBaseFC extends MenuBase
     }
   }
 
-  public void drawPanorama(int par1, int par2, float par3)
+  public static void drawPanorama(int par1, int par2, float par3)
   {
 	  GL11.glPushMatrix();
 
@@ -398,7 +398,7 @@ public class MenuBaseFC extends MenuBase
 
       GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
       GL11.glEnable(3553);
-      this.mc.renderEngine.bindTexture(TEXTURE_MAIN_BG);
+      mc.renderEngine.bindTexture(TEXTURE_MAIN_BG);
 
       int x = 0;
       int y = 0;

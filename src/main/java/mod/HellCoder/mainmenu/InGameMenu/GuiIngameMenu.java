@@ -1,4 +1,4 @@
-package mod.HellCoder.mainmenu.InGameMenu;
+package mod.HellCoder.mainmenu.ingamemenu;
 
 import java.util.List;
 
@@ -8,7 +8,7 @@ import net.minecraft.client.renderer.texture.TextureManager;
 
 import org.lwjgl.opengl.GL11;
 
-public class GuiIngameMenu extends net.minecraft.client.gui.GuiIngameMenu
+public class GuiIngameMenu extends GuiIngameMenuOLD
 {
   protected GuiButtonPanel buttonPanel;
   protected int updateCounter;

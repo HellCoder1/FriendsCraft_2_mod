@@ -1,5 +1,6 @@
 package mod.HellCoder.mainmenu.client;
  
+import cpw.mods.fml.client.GuiModList;
 import cpw.mods.fml.common.*;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent;
@@ -23,6 +24,7 @@ public class MenuClientTickHandler
 {
 	
  private Minecraft mcClient;
+ private GuiScreen mainMenu;
  private static boolean isRegistered = false;
 	
    public String getLabel()
@@ -33,17 +35,6 @@ public class MenuClientTickHandler
    @SubscribeEvent
    public void onTick(ClientTickEvent event)
    {
-	   if (Minecraft.getMinecraft().isIntegratedServerRunning())
-	     {
-	       MenuBaseConfig.ticks += 1;
-	 
-	       if (Minecraft.getMinecraft().thePlayer != null)
-	       {
-	         MenuBaseConfig.playerPosX = Minecraft.getMinecraft().thePlayer.posX;
-	         MenuBaseConfig.playerPosY = Minecraft.getMinecraft().thePlayer.posY;
-	         MenuBaseConfig.playerPosZ = Minecraft.getMinecraft().thePlayer.posZ;
-	       }
-	     }
 	   
        GuiScreen guiscreen = Minecraft.getMinecraft().currentScreen;
        MenuBaseFC minecraftMenu = new MenuBaseFC();
@@ -53,10 +44,16 @@ public class MenuClientTickHandler
 	             FCLog.info("Patched GuiMainMenu.class");
          Minecraft.getMinecraft().displayGuiScreen(new MenuBaseFC());
        }
-               if (((guiscreen instanceof GuiIngameMenu)) && (guiscreen.getClass() != minecraftMenu.getClass()))
+       
+       if (((guiscreen instanceof GuiIngameMenu)) && (guiscreen.getClass() != minecraftMenu.getClass()))
        { 
             	 FCLog.info("Patched GuiIngameMenu.class");
-         Minecraft.getMinecraft().displayGuiScreen(new mod.HellCoder.mainmenu.InGameMenu.GuiIngameMenu());
+         Minecraft.getMinecraft().displayGuiScreen(new mod.HellCoder.mainmenu.ingamemenu.GuiIngameMenu());
+       }
+       if (((guiscreen instanceof GuiModList)) && (guiscreen.getClass() != minecraftMenu.getClass()))
+       { 
+            	 FCLog.info("Patched GuiModList.class");
+         Minecraft.getMinecraft().displayGuiScreen(new mod.HellCoder.mainmenu.GuiModList(mainMenu));
        } 
    }
 

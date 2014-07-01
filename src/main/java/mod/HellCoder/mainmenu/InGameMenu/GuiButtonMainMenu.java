@@ -1,4 +1,4 @@
-package mod.HellCoder.mainmenu.InGameMenu;
+package mod.HellCoder.mainmenu.ingamemenu;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
