@@ -5,7 +5,10 @@ import java.util.List;
 import cpw.mods.fml.common.registry.GameRegistry;
 import mod.HellCoder.things.FriendsCraft2mod;
 import mod.HellCoder.things.Items.*;
+import mod.HellCoder.things.Items.tool.NagibatorSword;
+import mod.HellCoder.things.Items.tool.Scythe;
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -29,11 +32,6 @@ public class RegItems {
 	public static Item diga;
 	public static Item digaingot;
 	public static Item NagibatorSword;
-	public static Item pickaxeWood;
-	public static Item pickaxeStone;
-	public static Item pickaxeIron;
-	public static Item pickaxeDiamond;
-	public static Item pickaxeGold;
 	public static Item Upgrade;
 	public static Item FCHelmet;
 	public static Item FCChest;
@@ -49,6 +47,7 @@ public class RegItems {
 	public static Item Press;
 	public static Item Rollers;
 	public static Item SpecialPipe;
+	public static Item scythe;
 
 	public static void init() {
 
@@ -75,18 +74,8 @@ public class RegItems {
 		 */
 		NagibatorSword = registerItem(new NagibatorSword(Sword_MATERIAL)
 		.setUnlocalizedName("NagibatorSword").setTextureName("friendscraft:Nagibator").setCreativeTab(FriendsCraft2mod.tabsFC));
-
-		pickaxeWood = registerItem(new Pickaxe(ToolMaterial.WOOD, 0)
-				.setUnlocalizedName("pickaxeWood"));
-		pickaxeStone = registerItem(new Pickaxe(ToolMaterial.STONE, 1)
-				.setUnlocalizedName("pickaxeStone"));
-		pickaxeIron = registerItem(new Pickaxe(ToolMaterial.IRON, 2)
-				.setUnlocalizedName("pickaxeIron"));
-		pickaxeDiamond = registerItem(new Pickaxe(ToolMaterial.EMERALD, 3)
-				.setUnlocalizedName("pickaxeDiamond"));
-		pickaxeGold = registerItem(new Pickaxe(ToolMaterial.GOLD, 4)
-				.setUnlocalizedName("pickaxeGold"));
 		
+		scythe = registerItem((new Scythe(ToolMaterial.IRON).setUnlocalizedName("Scythe").setTextureName("friendscraft:Scythe").setCreativeTab(FriendsCraft2mod.tabsFC)));
 		/**
 		 * Armor
 		 */

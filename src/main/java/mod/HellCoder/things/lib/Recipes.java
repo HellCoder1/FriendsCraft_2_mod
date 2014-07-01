@@ -18,16 +18,6 @@ public class Recipes {
 		/**
 		 * Tools
 		 */
-		GameRegistry.addShapelessRecipe(new ItemStack(RegItems.pickaxeWood),
-				new Object[] { Items.wooden_pickaxe, RegItems.Upgrade });
-		GameRegistry.addShapelessRecipe(new ItemStack(RegItems.pickaxeStone),
-				new Object[] { Items.stone_pickaxe, RegItems.Upgrade });
-		GameRegistry.addShapelessRecipe(new ItemStack(RegItems.pickaxeIron),
-				new Object[] { Items.iron_pickaxe, RegItems.Upgrade });
-		GameRegistry.addShapelessRecipe(new ItemStack(RegItems.pickaxeDiamond),
-				new Object[] { Items.diamond_pickaxe, RegItems.Upgrade });
-		GameRegistry.addShapelessRecipe(new ItemStack(RegItems.pickaxeGold),
-				new Object[] { Items.golden_pickaxe, RegItems.Upgrade });
 
 		GameRegistry.addRecipe(new ItemStack(RegItems.NagibatorSword),
 						new Object[] { " Z ", "CZC", " C ",

@@ -1,4 +1,4 @@
-    package mod.HellCoder.things.Items;
+    package mod.HellCoder.things.Items.tool;
 
     import mod.HellCoder.things.core.MainHelper;
     import mod.HellCoder.things.lib.RegItems;

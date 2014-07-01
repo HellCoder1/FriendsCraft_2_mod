@@ -2,6 +2,7 @@ package mod.HellCoder.HellCoderCore.Utils;
 
 import buildcraft.api.core.Position;
 import mod.HellCoder.HellCoderCore.Utils.InventoryIterator.IInvSlot;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
@@ -15,6 +16,51 @@ public class Utils {
 	public static final Random rng = new Random();
 	private static final List<ForgeDirection> directions = new ArrayList<ForgeDirection>(Arrays.asList(ForgeDirection.VALID_DIRECTIONS));
 
+	public static final boolean isServerWorld(World world) {
+
+		return !world.isRemote;
+	}
+	
+	public static boolean dropItemStackIntoWorld(ItemStack stack, World world, double x, double y, double z) {
+
+		return dropItemStackIntoWorld(stack, world, x, y, z, false);
+	}
+
+	public static boolean dropItemStackIntoWorldWithVelocity(ItemStack stack, World world, double x, double y, double z) {
+
+		return dropItemStackIntoWorld(stack, world, x, y, z, true);
+	}
+
+	public static boolean dropItemStackIntoWorld(ItemStack stack, World world, double x, double y, double z, boolean velocity) {
+
+		if (stack == null) {
+			return false;
+		}
+		float x2 = 0.5F;
+		float y2 = 0.0F;
+		float z2 = 0.5F;
+
+		if (velocity) {
+			x2 = world.rand.nextFloat() * 0.8F + 0.1F;
+			y2 = world.rand.nextFloat() * 0.8F + 0.1F;
+			z2 = world.rand.nextFloat() * 0.8F + 0.1F;
+		}
+		EntityItem entity = new EntityItem(world, x + x2, y + y2, z + z2, stack.copy());
+
+		if (velocity) {
+			entity.motionX = (float) world.rand.nextGaussian() * 0.05F;
+			entity.motionY = (float) world.rand.nextGaussian() * 0.05F + 0.2F;
+			entity.motionZ = (float) world.rand.nextGaussian() * 0.05F;
+		} else {
+			entity.motionY = -0.05F;
+			entity.motionX = 0;
+			entity.motionZ = 0;
+		}
+		world.spawnEntityInWorld(entity);
+
+		return true;
+	}
+	
 	public static ForgeDirection get2dOrientation(Position pos1, Position pos2) {
 		double Dx = pos1.x - pos2.x;
 		double Dz = pos1.z - pos2.z;

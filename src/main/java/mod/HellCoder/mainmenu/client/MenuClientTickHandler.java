@@ -24,7 +24,6 @@ public class MenuClientTickHandler
 {
 	
  private Minecraft mcClient;
- private GuiScreen mainMenu;
  private static boolean isRegistered = false;
 	
    public String getLabel()
@@ -50,11 +49,6 @@ public class MenuClientTickHandler
             	 FCLog.info("Patched GuiIngameMenu.class");
          Minecraft.getMinecraft().displayGuiScreen(new mod.HellCoder.mainmenu.ingamemenu.GuiIngameMenu());
        }
-       if (((guiscreen instanceof GuiModList)) && (guiscreen.getClass() != minecraftMenu.getClass()))
-       { 
-            	 FCLog.info("Patched GuiModList.class");
-         Minecraft.getMinecraft().displayGuiScreen(new mod.HellCoder.mainmenu.GuiModList(mainMenu));
-       } 
    }
 
  public static boolean isRegistered()
