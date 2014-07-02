@@ -52,10 +52,10 @@ public class GuiRM extends GuiContainer
         this.drawTexturedModalRect(k + 67, l + 31, 176, 0, i1 + 1, 18);
         
         int i2 = this.tile.getPressure(48);
-        this.drawTexturedModalRect(k + 8, l + 17 + 48 - i2, 177, 68 - i2, 10, i2);
+        this.drawTexturedModalRect(k + 8, l + 17 + 48 - i2, 176, 68 - i2, 10, i2);
 
         int i3 = this.tile.getEnergy(48);
-        this.drawTexturedModalRect(k + 157, l + 17 + 48 - i3, 189, 68 - i3, 10, i3);        
+        this.drawTexturedModalRect(k + 157, l + 17 + 48 - i3, 186, 68 - i3, 10, i3);        
 //      this.drawTexturedModalRect(k + 56, l + 36 + 12 - i1, 176, 12 - i1, 14, i1 + 2);
 
     }
