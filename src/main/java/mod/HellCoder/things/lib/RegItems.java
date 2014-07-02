@@ -32,7 +32,6 @@ public class RegItems {
 	public static Item diga;
 	public static Item digaingot;
 	public static Item NagibatorSword;
-	public static Item Upgrade;
 	public static Item FCHelmet;
 	public static Item FCChest;
 	public static Item FCLegs;
@@ -43,10 +42,8 @@ public class RegItems {
 	public static Item Insulator;
 	public static Item IronRedstoneGear;
 	public static Item MeltingForm;
-	public static Item MeltingPlate;
 	public static Item Press;
 	public static Item Rollers;
-	public static Item SpecialPipe;
 	public static Item scythe;
 
 	public static void init() {
@@ -56,17 +53,14 @@ public class RegItems {
 		 */
 		diga = registerItem(new Item().setUnlocalizedName("diga").setTextureName("friendscraft:digaAnim").setCreativeTab(FriendsCraft2mod.tabsFC));
 		digaingot = registerItem(new Item().setUnlocalizedName("digaingot").setTextureName("friendscraft:digaingotAnim").setCreativeTab(FriendsCraft2mod.tabsFC));
-		Upgrade = registerItem(new Item().setUnlocalizedName("Upgrade").setTextureName("friendscraft:Upgrade").setCreativeTab(FriendsCraft2mod.tabsFC));
 		CoolantBlock = registerItem(new Item().setUnlocalizedName("CoolantBlock").setTextureName("friendscraft:CoolantBlock").setCreativeTab(FriendsCraft2mod.tabsFC));
 		GoldRedstoneGear = registerItem(new Item().setUnlocalizedName("GoldRedstoneGear").setTextureName("friendscraft:GoldRedstoneGear").setCreativeTab(FriendsCraft2mod.tabsFC));
 		HighTemperaturePlate = registerItem(new Item().setUnlocalizedName("HighTemperaturePlate").setTextureName("friendscraft:HighTemperaturePlate").setCreativeTab(FriendsCraft2mod.tabsFC));
 		IronRedstoneGear = registerItem(new Item().setUnlocalizedName("IronRedstoneGear").setTextureName("friendscraft:IronRedstoneGear").setCreativeTab(FriendsCraft2mod.tabsFC));
 		MeltingForm = registerItem(new Item().setUnlocalizedName("MeltingForm").setTextureName("friendscraft:MeltingForm").setCreativeTab(FriendsCraft2mod.tabsFC));
-		MeltingPlate = registerItem(new Item().setUnlocalizedName("MeltingPlate").setTextureName("friendscraft:MeltingPlate").setCreativeTab(FriendsCraft2mod.tabsFC));
 		Press = registerItem(new Item().setUnlocalizedName("Press").setTextureName("friendscraft:Press").setCreativeTab(FriendsCraft2mod.tabsFC));
 		Rollers = registerItem(new Item().setUnlocalizedName("Rollers").setTextureName("friendscraft:Rollers").setCreativeTab(FriendsCraft2mod.tabsFC));
 		Insulator = registerItem(new Item().setUnlocalizedName("Insulator").setTextureName("friendscraft:Insulator").setCreativeTab(FriendsCraft2mod.tabsFC));
-		SpecialPipe = registerItem(new Item().setUnlocalizedName("SpecialPipe").setTextureName("friendscraft:SpecialPipe").setCreativeTab(FriendsCraft2mod.tabsFC));
 		
 		
 		/**
