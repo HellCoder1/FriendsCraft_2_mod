@@ -23,7 +23,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class blockpipe extends BlockContainer {
 	
 	public IIcon sideIcon;
-	public IIcon copperIcon;
     public int pass = 0;
     
     @Override
@@ -247,7 +246,6 @@ public class blockpipe extends BlockContainer {
     {
         this.blockIcon = par1.registerIcon("friendscraft:blockBrass");
         this.sideIcon = par1.registerIcon("friendscraft:blockBrass" + "_pipe");
-        this.copperIcon = par1.registerIcon("friendscraft:blockCopper");
 
     }
 }

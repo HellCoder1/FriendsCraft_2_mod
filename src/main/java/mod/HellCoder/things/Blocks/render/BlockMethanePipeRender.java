@@ -54,39 +54,6 @@ public class BlockMethanePipeRender implements ISimpleBlockRenderingHandler {
 		block.setBlockBounds(maxX, ringMin, ringMin, 1.0F, ringMax, ringMax);
 	    renderer.setRenderBoundsFromBlock(block);
 	 	this.drawSides(((blockpipe)RegBlocks.methane_pipe).sideIcon, block, renderer);
-
-//	 	if (block == SteamcraftBlocks.valvePipe) {
-//	 		block.setBlockBounds(4.5F*px, 1.0F-5.5F*px, baseMax+1*px, 1.0F-4.5F*px, 1.0F-4.5F*px, baseMax+2*px);
-//		    renderer.setRenderBoundsFromBlock(block);
-//		 	this.drawSides(((BlockPipe)SteamcraftBlocks.pipe).copperIcon, block, renderer);
-//
-//		 	block.setBlockBounds(4.5F*px, 4.5F*px, baseMax+1*px, 1.0F-4.5F*px, 5.5F*px, baseMax+2*px);
-//		    renderer.setRenderBoundsFromBlock(block);
-//		 	this.drawSides(((BlockPipe)SteamcraftBlocks.pipe).copperIcon, block, renderer);
-//
-//		 	block.setBlockBounds(4.5F*px, 5.5F*px, baseMax+1*px, 5.5F*px, 1.0F-5.5F*px, baseMax+2*px);
-//		    renderer.setRenderBoundsFromBlock(block);
-//		 	this.drawSides(((BlockPipe)SteamcraftBlocks.pipe).copperIcon, block, renderer);
-//
-//		 	block.setBlockBounds(1.0F-5.5F*px, 5.5F*px, baseMax+1*px, 1.0F-4.5F*px, 1.0F-5.5F*px, baseMax+2*px);
-//		    renderer.setRenderBoundsFromBlock(block);
-//		 	this.drawSides(((BlockPipe)SteamcraftBlocks.pipe).copperIcon, block, renderer);
-//
-//		 	block.setBlockBounds(5.5F*px, 7.5F*px, baseMax+1*px, 1.0F-5.5F*px, 8.5F*px, baseMax+2*px);
-//		    renderer.setRenderBoundsFromBlock(block);
-//		 	this.drawSides(((BlockPipe)SteamcraftBlocks.pipe).copperIcon, block, renderer);
-//
-//		 	block.setBlockBounds(7.5F*px, 5.5F*px, baseMax+1*px, 8.5F*px, 1.0F-5.5F*px, baseMax+2*px);
-//		    renderer.setRenderBoundsFromBlock(block);
-//		 	this.drawSides(((BlockPipe)SteamcraftBlocks.pipe).copperIcon, block, renderer);
-//
-//		 	block.setBlockBounds(6.5F*px, 6.5F*px, baseMax, 9.5F*px, 9.5F*px, baseMax+2*px);
-//		    renderer.setRenderBoundsFromBlock(block);
-//		 	this.drawSides(((BlockPipe)SteamcraftBlocks.pipe).copperIcon, block, renderer);
-//		//	block.setBlockBounds(4.5F*px, 4.5F*px, baseMax+1*px, 1.0F-4.5F*px, 1.0F-4.5F*px, baseMax+2*px);
-//		    //renderer.setRenderBoundsFromBlock(block);
-//		 	//this.drawSides(((BlockPipe)SteamcraftBlocks.pipe).copperIcon, block, renderer);
-//	 	}
 	}
 
 	private void drawSides(IIcon icon, Block block, RenderBlocks renderer) {
