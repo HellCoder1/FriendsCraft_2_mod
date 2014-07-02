@@ -2,6 +2,7 @@ package mod.HellCoder.things.lib;
 
 import mod.HellCoder.things.core.MainHelper;
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -53,7 +54,38 @@ public class Recipes {
 			"AAZ", "  G", "AAZ", Character.valueOf('Z'), Items.iron_ingot, 
 			Character.valueOf('G'), new ItemStack(Items.stick, 2),
 			Character.valueOf('A'), Blocks.stone});
-
+		
+		GameRegistry.addRecipe(new ItemStack(RegItems.rawOrganicMaterial), new Object[] {
+			"ZZZ", "ZQZ", "ZZZ", Character.valueOf('Z'), RegItems.compressedPlants,
+			Character.valueOf('Q'), Items.water_bucket});
+		GameRegistry.addRecipe(new ItemStack(RegItems.smallTank), new Object[] {
+			" Z ", "Z Z", " Z ", Character.valueOf('Z'), Blocks.glass});
+		GameRegistry.addRecipe(new ItemStack(RegItems.termalDispenser), new Object[] {
+			" A ", "GZG", " Z ", Character.valueOf('Z'), RegItems.copperIngot, 
+			Character.valueOf('G'), Blocks.iron_bars,
+			Character.valueOf('A'), Items.redstone});
+		GameRegistry.addRecipe(new ItemStack(RegItems.CoolantBlock), new Object[] {
+			"ZZZ", "ZGZ", "ABA", Character.valueOf('Z'), Items.snowball, 
+			Character.valueOf('G'), RegItems.IronRedstoneGear,
+			Character.valueOf('B'), Blocks.chest,
+			Character.valueOf('A'), RegItems.smallIronPlate});
+		GameRegistry.addRecipe(new ItemStack(RegItems.pressureRegulator), new Object[] {
+			" A ", "ZGZ", "BZB", Character.valueOf('A'), Blocks.lever, 
+			Character.valueOf('G'), RegItems.IronRedstoneGear,
+			Character.valueOf('Z'), RegBlocks.HermeticPipe,
+			Character.valueOf('B'), RegItems.smallIronPlate});
+		GameRegistry.addRecipe(new ItemStack(RegItems.pressureTank), new Object[] {
+			" A ", "GZG", " A ", Character.valueOf('Z'), RegBlocks.HermeticPipe, 
+			Character.valueOf('G'), RegItems.smallIronPlate,
+			Character.valueOf('A'), Blocks.glass});
+		GameRegistry.addRecipe(new ItemStack(RegBlocks.HermeticPipe), new Object[] {
+			"   ", "GZG", " A ", Character.valueOf('Z'), Blocks.glass, 
+			Character.valueOf('G'), Items.iron_ingot,
+			Character.valueOf('A'), RegItems.Insulator});
+		GameRegistry.addRecipe(new ItemStack(RegItems.scythe), new Object[] {
+			" A ", " Z ", " Z ", Character.valueOf('A'), RegItems.scytheBlade, 
+			Character.valueOf('Z'), Items.stick});
+		
 		/**
 		 * Blocks
 		 */
