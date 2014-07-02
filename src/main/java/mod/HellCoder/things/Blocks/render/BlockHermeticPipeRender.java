@@ -6,7 +6,7 @@ import mod.HellCoder.things.FriendsCraft2mod;
 import mod.HellCoder.things.core.IMethaneTransporter;
 import mod.HellCoder.things.lib.RegBlocks;
 import mod.HellCoder.things.Blocks.blockpipe;
-import mod.HellCoder.things.TileEntity.TileEntityMethanePipe;
+import mod.HellCoder.things.TileEntity.TileEntityHermeticPipe;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
@@ -21,7 +21,7 @@ import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
-public class BlockMethanePipeRender implements ISimpleBlockRenderingHandler {
+public class BlockHermeticPipeRender implements ISimpleBlockRenderingHandler {
 
 	@Override
 	public void renderInventoryBlock(Block block, int metadata, int modelId,
@@ -50,10 +50,10 @@ public class BlockMethanePipeRender implements ISimpleBlockRenderingHandler {
                
 		block.setBlockBounds(0.0F, ringMin, ringMin, minX, ringMax, ringMax);
 	    renderer.setRenderBoundsFromBlock(block);
-	 	this.drawSides(((blockpipe)RegBlocks.methane_pipe).sideIcon, block, renderer);
+	 	this.drawSides(((blockpipe)RegBlocks.HermeticPipe).sideIcon, block, renderer);
 		block.setBlockBounds(maxX, ringMin, ringMin, 1.0F, ringMax, ringMax);
 	    renderer.setRenderBoundsFromBlock(block);
-	 	this.drawSides(((blockpipe)RegBlocks.methane_pipe).sideIcon, block, renderer);
+	 	this.drawSides(((blockpipe)RegBlocks.HermeticPipe).sideIcon, block, renderer);
 	}
 
 	private void drawSides(IIcon icon, Block block, RenderBlocks renderer) {
@@ -96,7 +96,7 @@ public class BlockMethanePipeRender implements ISimpleBlockRenderingHandler {
 	@Override
 	public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z,
 			Block block, int modelId, RenderBlocks renderer) {
-		TileEntityMethanePipe pipe = (TileEntityMethanePipe) world.getTileEntity(x, y, z);
+		TileEntityHermeticPipe pipe = (TileEntityHermeticPipe) world.getTileEntity(x, y, z);
 		float baseMin = 5.0F/16.0F;
 		float baseMax = 11.0F/16.0F;
 		float ringMin = 4.0F/16.0F;
@@ -164,7 +164,7 @@ public class BlockMethanePipeRender implements ISimpleBlockRenderingHandler {
 			}
 		}
 		if (myDirections.size() == 1) {
-		    renderer.overrideBlockTexture = ((blockpipe)RegBlocks.methane_pipe).sideIcon;
+		    renderer.overrideBlockTexture = ((blockpipe)RegBlocks.HermeticPipe).sideIcon;
 		    minX = minX - px;
 		    maxX = maxX + px;
 		    minY = minY - px;
@@ -208,7 +208,7 @@ public class BlockMethanePipeRender implements ISimpleBlockRenderingHandler {
 	    renderer.setRenderBoundsFromBlock(block);
 	    renderer.renderStandardBlock(block, x, y, z);
 
-	    renderer.overrideBlockTexture = ((blockpipe)RegBlocks.methane_pipe).sideIcon;
+	    renderer.overrideBlockTexture = ((blockpipe)RegBlocks.HermeticPipe).sideIcon;
 	    if (minX == 2*px) {
 			block.setBlockBounds(0.0F, ringMin, ringMin, minX, ringMax, ringMax);
 		    renderer.setRenderBoundsFromBlock(block);

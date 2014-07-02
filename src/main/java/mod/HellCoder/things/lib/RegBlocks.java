@@ -1,5 +1,6 @@
 package mod.HellCoder.things.lib;
 
+import cofh.fluid.BlockFluidCoFHBase;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import mod.HellCoder.things.FriendsCraft2mod;
@@ -7,6 +8,7 @@ import mod.HellCoder.things.Blocks.DigaOre;
 import mod.HellCoder.things.Blocks.DigaBlock;
 import mod.HellCoder.things.Blocks.blockpipe;
 import mod.HellCoder.things.Blocks.render.LightItemBlock;
+import mod.HellCoder.things.fluid.TESTmethaneBlockFluid;
 import mod.HellCoder.things.rollingmachine.RMblock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSkull;
@@ -22,11 +24,13 @@ public class RegBlocks {
 	public static Block rollingmachine;
 	public static Block rollingmachineactive;
 	
-	public static Block methane_pipe;
+	public static Block HermeticPipe;
 	
 	public static int blockCustomDigaOreRI = -1;
 	public static int DigaBlockRI = -1;
     public static int tubeRenderID;
+    
+    public static BlockFluidCoFHBase blockFluidMethane;
 
 	public static void init() {
 
@@ -43,8 +47,15 @@ public class RegBlocks {
 		/*
 		 * Pipes
 		 */
-		methane_pipe = new blockpipe().setCreativeTab(FriendsCraft2mod.tabsFC).setBlockName("methane_pipe").setHardness(2.5F).setResistance(5.0F);
-		GameRegistry.registerBlock(methane_pipe, "methane_pipe");
+		HermeticPipe = new blockpipe().setCreativeTab(FriendsCraft2mod.tabsFC).setBlockName("HermeticPipe").setHardness(2.5F).setResistance(5.0F);
+		GameRegistry.registerBlock(HermeticPipe, "HermeticPipe");
+		
+		/*
+		 * Fluids
+		 */
+//		blockFluidMethane = new TESTmethaneBlockFluid();
+//		blockFluidMethane.preInit();
+		
 
         /**
          * Light Blocks

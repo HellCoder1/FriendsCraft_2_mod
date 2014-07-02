@@ -18,7 +18,7 @@ import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
-public class TileEntityMethanePipe extends TileEntity implements IFluidHandler,IMethaneTransporter {
+public class TileEntityHermeticPipe extends TileEntity implements IFluidHandler,IMethaneTransporter {
 	
 	protected int steam;
 	protected FluidTank dummyFluidTank = FluidRegistry.isFluidRegistered("steam") ? new FluidTank(new FluidStack(FluidRegistry.getFluid("steam"), 0),10000) : null;

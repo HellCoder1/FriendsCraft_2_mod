@@ -3,7 +3,7 @@ package mod.HellCoder.things.Blocks;
 import java.util.ArrayList;
 
 import mod.HellCoder.things.FriendsCraft2mod;
-import mod.HellCoder.things.TileEntity.TileEntityMethanePipe;
+import mod.HellCoder.things.TileEntity.TileEntityHermeticPipe;
 import mod.HellCoder.things.core.IMethaneTransporter;
 import mod.HellCoder.things.lib.RegBlocks;
 import net.minecraft.block.BlockContainer;
@@ -37,7 +37,7 @@ public class blockpipe extends BlockContainer {
 
 	@Override
 	public TileEntity createNewTileEntity(World var1, int var2) {
-		return new TileEntityMethanePipe();
+		return new TileEntityHermeticPipe();
 	}
 
     public boolean isOpaqueCube()

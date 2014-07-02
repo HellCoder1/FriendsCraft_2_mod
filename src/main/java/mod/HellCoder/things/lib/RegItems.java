@@ -7,6 +7,7 @@ import mod.HellCoder.things.FriendsCraft2mod;
 import mod.HellCoder.things.Items.*;
 import mod.HellCoder.things.Items.tool.NagibatorSword;
 import mod.HellCoder.things.Items.tool.Scythe;
+import mod.HellCoder.things.fluid.FCFluids;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.gui.GuiScreen;
@@ -18,6 +19,7 @@ import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntitySkull;
 import net.minecraftforge.common.util.EnumHelper;
+import net.minecraftforge.fluids.FluidContainerRegistry;
 
 public class RegItems {
 
@@ -45,7 +47,7 @@ public class RegItems {
 	public static Item Press;
 	public static Item Rollers;
 	public static Item scythe;
-
+	
 	public static void init() {
 
 		/**

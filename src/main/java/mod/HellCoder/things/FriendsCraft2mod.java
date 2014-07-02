@@ -21,8 +21,9 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import mod.HellCoder.HellCoderCore.Utils.FCLog;
 import mod.HellCoder.HellCoderCore.Utils.VersionChecker;
-import mod.HellCoder.things.TileEntity.TileEntityMethanePipe;
+import mod.HellCoder.things.TileEntity.TileEntityHermeticPipe;
 import mod.HellCoder.things.core.Localization.LocalizationHandler;
+import mod.HellCoder.things.fluid.FCFluids;
 import mod.HellCoder.things.handler.GuiHandlerFurnace;
 import mod.HellCoder.things.lib.RegBlocks;
 import mod.HellCoder.things.lib.RegItems;
@@ -81,40 +82,51 @@ public class FriendsCraft2mod {
 		
 		LocalizationHandler.loadLanguages();
  		
+		//items
 		FCLog.info("Loading Items");
 		RegItems.init();
 		FCLog.info("Load Items");
 
+		//blocks
 		FCLog.info("Loading Blocks");
 		RegBlocks.init();
 		FCLog.info("Load Blocks");
+		
+		//fluids
+		FCFluids.preInit();
 		
 	}
 
 	@Mod.EventHandler
 	public static void init(FMLInitializationEvent event) {
 
+		//worldgen
 		DigaWorldGen = new DigaOreGenerator();
 		GameRegistry.registerWorldGenerator(DigaWorldGen, 1);
 		
+		//recipes
 		FCLog.info("Loading Recipes");
 		Recipes.init();
 		FCLog.info("Load Recipes");
 
+		// tile Entity register
 		GameRegistry.registerTileEntity(TileEntityRM.class, "RollingMachine");
 		RenderingRegistry.registerBlockHandler(2105, RMRender.INSTANCE);
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandlerFurnace());
 		
-		GameRegistry.registerTileEntity(TileEntityMethanePipe.class, "MethanePipe");
+		GameRegistry.registerTileEntity(TileEntityHermeticPipe.class, "HermeticPipe");
 		
-		FMLCommonHandler.instance().bus().register(instance);
-		
+		//versionchecker
         versionChecker = new VersionChecker(metadata.name, metadata.version, versionURL, mcfTopic);
         versionChecker.checkVersionWithLogging();
 		
+        //proxy
 		proxy.registerTickHandler();
 		proxy.registerDisplayInformation();
 		proxy.initRenderingAndTextures();
+		
+		MinecraftForge.EVENT_BUS.register(proxy);
+		FMLCommonHandler.instance().bus().register(instance);
 		
 		FMLInterModComms.sendMessage("Waila", "register", "mod.HellCoder.things.core.ProviderDemo.callbackRegister");
 	}
