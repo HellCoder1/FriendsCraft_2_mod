@@ -244,8 +244,8 @@ public class blockpipe extends BlockContainer {
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister par1)
     {
-        this.blockIcon = par1.registerIcon("friendscraft:blockBrass");
-        this.sideIcon = par1.registerIcon("friendscraft:blockBrass" + "_pipe");
+        this.blockIcon = par1.registerIcon("friendscraft:blockHermetic");
+        this.sideIcon = par1.registerIcon("friendscraft:blockHermetic" + "_pipe");
 
     }
 }
