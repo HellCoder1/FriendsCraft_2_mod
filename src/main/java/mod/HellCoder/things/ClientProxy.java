@@ -4,6 +4,7 @@ import net.minecraft.item.Item;
 import net.minecraftforge.client.MinecraftForgeClient;
 import mod.HellCoder.mainmenu.client.MenuClientTickHandler;
 import mod.HellCoder.things.Blocks.render.BlockCustomDigaOreRender;
+import mod.HellCoder.things.Blocks.render.BlockMethanePipeRender;
 import mod.HellCoder.things.Blocks.render.DigaBlockRender;
 import mod.HellCoder.things.lib.RegBlocks;
 import cpw.mods.fml.client.FMLClientHandler;
@@ -35,6 +36,11 @@ public class ClientProxy extends CommonProxy
 		   
 		  RegBlocks.DigaBlockRI = RenderingRegistry.getNextAvailableRenderId();
 		   registerBlockRenderer(new DigaBlockRender());
+		    
+//		   RenderingRegistry.registerBlockHandler(RegBlocks.tubeRenderID, new BlockMethanePipeRender());
+		   
+		   RegBlocks.tubeRenderID = RenderingRegistry.getNextAvailableRenderId();
+		   registerBlockRenderer(new BlockMethanePipeRender());
 	  }
 	
 	  public void registerBlockRenderer(ISimpleBlockRenderingHandler renderer)
