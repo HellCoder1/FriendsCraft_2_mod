@@ -45,7 +45,7 @@ public class ContainerRM extends Container
         super.addCraftingToCrafters(par1ICrafting);
         par1ICrafting.sendProgressBarUpdate(this, 0, this.tile.cookTime);
         par1ICrafting.sendProgressBarUpdate(this, 1, this.tile.pressure);
-        par1ICrafting.sendProgressBarUpdate(this, 2, this.tile.storage.getEnergyStored());
+        par1ICrafting.sendProgressBarUpdate(this, 2, (int) this.tile.mjStored);
     }
 
     /**
@@ -67,14 +67,14 @@ public class ContainerRM extends Container
             {
                 icrafting.sendProgressBarUpdate(this, 1, this.tile.pressure);
             }
-            if (this.energy != this.tile.storage.getEnergyStored()) {
-                icrafting.sendProgressBarUpdate(this, 2, this.tile.storage.getEnergyStored());
+            if (this.energy != (int) this.tile.mjStored) {
+                icrafting.sendProgressBarUpdate(this, 2, (int) this.tile.mjStored);
             }
         }
 
         this.lastCookTime = this.tile.cookTime;
         this.pressure = this.tile.pressure;
-        this.energy = this.tile.storage.getEnergyStored();
+        this.energy = (int) this.tile.mjStored;
     }
 
     @SideOnly(Side.CLIENT)
@@ -90,7 +90,7 @@ public class ContainerRM extends Container
         }
         if (par1 == 2){
         	
-          this.energy = par2;
+        	this.tile.mjStored = par2;
         }
 
 

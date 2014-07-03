@@ -1,7 +1,6 @@
 package mod.HellCoder.things.rollingmachine;
 
-import cofh.api.energy.EnergyStorage;
-import cofh.api.energy.IEnergyHandler;
+import buildcraft.api.mj.MjBattery;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -26,15 +25,12 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class TileEntityRM extends TileEntity implements  IEnergyHandler, ISidedInventory
+public class TileEntityRM extends TileEntity implements ISidedInventory
 {
 
 	public int pressure = 0;
 	final float cookingPressure = 100f;
-	int pressuremax = 250;
-	
-	public static final int capacity = 100000;
-	 protected EnergyStorage storage = new EnergyStorage(100000);
+	int pressuremax = 248;
 
 	static final float powerConst = 1.4f;
 	static final float lossConst = 0.00005f ;
@@ -43,6 +39,11 @@ public class TileEntityRM extends TileEntity implements  IEnergyHandler, ISidedI
 	private static final int[] slotsTop = new int[] {0};
     private static final int[] slotsBottom = new int[] {1};
     private static final int[] slotsSides = new int[] {0,1};
+    
+    private static int maxCapacity = 500;
+    private static int POWER_USAGE = 25;
+    @MjBattery (maxReceivedPerCycle = 10, maxCapacity = 500) 
+    double mjStored = 0;
 
     int cookTime = 0;
     final int cookTimeDone = 100;
@@ -176,7 +177,7 @@ public class TileEntityRM extends TileEntity implements  IEnergyHandler, ISidedI
 
         this.pressure = p_145839_1_.getShort("Pressure");
         this.cookTime = p_145839_1_.getShort("CookTime");
-        this.storage.setEnergyStored(p_145839_1_.getShort("Energy"));
+        this.mjStored = p_145839_1_.getShort("Energy");
 
         if (p_145839_1_.hasKey("CustomName"))
         {
@@ -192,7 +193,7 @@ public class TileEntityRM extends TileEntity implements  IEnergyHandler, ISidedI
         super.writeToNBT(par1NBTTagCompound);
         par1NBTTagCompound.setShort("Pressure", (short) this.pressure);
         par1NBTTagCompound.setShort("CookTime", (short)this.cookTime);
-        par1NBTTagCompound.setShort("Energy", (short) this.storage.getEnergyStored());
+        par1NBTTagCompound.setShort("Energy", (short) this.mjStored);
         NBTTagList nbttaglist = new NBTTagList();
 
         for (int i = 0; i < this.furnaceItemStacks.length; ++i)
@@ -240,7 +241,8 @@ public class TileEntityRM extends TileEntity implements  IEnergyHandler, ISidedI
     @SideOnly(Side.CLIENT)
     public int getEnergy(int par1){
     	
-		return (this.storage.getEnergyStored() * par1) / this.storage.getMaxEnergyStored();
+		return (int) ((this.mjStored * par1) / maxCapacity);
+		
     }
 
     public void updateEntity()
@@ -261,16 +263,11 @@ public class TileEntityRM extends TileEntity implements  IEnergyHandler, ISidedI
 			boolean flag1 = false;
 			boolean wasCooking = (pressure > cookingPressure);
 
-			float energy = 0;
-			if(redstoneSignal == 0){
-				energy = (float) this.storage.getEnergyStored();
-			}
-			float oldHeat = pressure;
+			float oldpressure = pressure;
 			if(pressure <= pressuremax){
-			updateHeat(updateInterval,energy);
-
+			updateHeat();
 			}
-			if(pressure != oldHeat){flagStateChange = true;}
+			if(pressure != oldpressure){flagStateChange = true;}
 
 			int oldCookTime = cookTime;
 			if (redstoneSignal == 0) {
@@ -314,12 +311,20 @@ public class TileEntityRM extends TileEntity implements  IEnergyHandler, ISidedI
         pressure = pressure - (int)RMRecipes.smelting().getPressureUse(this.furnaceItemStacks[0]);
 	}
     
-	private void updateHeat(int numTicks, float amountOfEnergy ){
-
-		pressure =  (int) (pressure + ((powerConst * amountOfEnergy)/numTicks));
+	private void updateHeat(){
+		
+		if((int)mjStored < 0){
+			mjStored = 0;
+		}
+		
+		if((int)mjStored > 20){
+		mjStored = mjStored - 20;
+		pressure = pressure + 1;
+		}
+		
 		if(pressure < 0){
 			pressure = 0;
-       }
+        }
 	}
 
 	 private boolean canSmelt()
@@ -400,35 +405,5 @@ public class TileEntityRM extends TileEntity implements  IEnergyHandler, ISidedI
 
 	public World getWorld() {
 		return this.worldObj;
-	}
-
-	@Override
-	public boolean canConnectEnergy(ForgeDirection from) {
-		return true;
-	}
-
-	@Override
-	public int receiveEnergy(ForgeDirection from, int maxReceive,
-			boolean simulate) {
-		
-		return this.storage.receiveEnergy(maxReceive, simulate);
-	}
-
-	@Override
-	public int extractEnergy(ForgeDirection from, int maxExtract,
-			boolean simulate) {
-		return this.storage.receiveEnergy(maxExtract, simulate);
-	}
-
-	@Override
-	public int getEnergyStored(ForgeDirection from) {
-		
-		return this.storage.getEnergyStored();
-	}
-
-	@Override
-	public int getMaxEnergyStored(ForgeDirection from) {
-		
-		return this.storage.getEnergyStored();
 	}
 }
