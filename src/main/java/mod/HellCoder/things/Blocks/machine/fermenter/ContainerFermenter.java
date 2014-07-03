@@ -1,4 +1,4 @@
-package mod.HellCoder.things.rollingmachine;
+package mod.HellCoder.things.Blocks.machine.fermenter;
 
 import buildcraft.api.power.PowerHandler;
 import net.minecraft.entity.player.EntityPlayer;
@@ -10,19 +10,19 @@ import net.minecraft.item.ItemStack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class ContainerRM extends Container
+public class ContainerFermenter extends Container
 {
-    private TileEntityRM tile;
+    private TileEntityFermenter tile;
     private int lastCookTime;
     private int pressure;
     private int energy;
     
 
-    public ContainerRM(InventoryPlayer par1InventoryPlayer, TileEntityRM par2TileEntityIronOven)
+    public ContainerFermenter(InventoryPlayer par1InventoryPlayer, TileEntityFermenter par2TileEntityIronOven)
     {
         this.tile = par2TileEntityIronOven;
-        this.addSlotToContainer(new Slot(par2TileEntityIronOven, 0, 43, 33));
-        this.addSlotToContainer(new Slot(par2TileEntityIronOven, 1, 116, 33)); 
+        this.addSlotToContainer(new Slot(par2TileEntityIronOven, 0, 24, 33));
+        this.addSlotToContainer(new Slot(par2TileEntityIronOven, 1, 135, 33)); 
         
         int i;
 
@@ -123,7 +123,7 @@ public class ContainerRM extends Container
                 slot.onSlotChange(itemstack1, itemstack);
             } else if (slotIndex != 1 && slotIndex != 0) {
             	// player inventory, send to input slot or to toolbar
-                if (RMRecipes.init().getSmeltingResult(itemstack1) != null) {
+                if (FermenterRecipes.init().getSmeltingResult(itemstack1) != null) {
                 	// stick it in the input slot
                     if (!this.mergeItemStack(itemstack1, 0, 1, false)) {
                         return null;

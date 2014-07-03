@@ -1,4 +1,4 @@
-package mod.HellCoder.things.rollingmachine;
+package mod.HellCoder.things.Blocks.machine.rollingmachine;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

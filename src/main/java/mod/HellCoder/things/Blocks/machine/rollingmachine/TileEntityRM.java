@@ -1,4 +1,4 @@
-package mod.HellCoder.things.rollingmachine;
+package mod.HellCoder.things.Blocks.machine.rollingmachine;
 
 import buildcraft.api.mj.MjBattery;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -43,8 +43,8 @@ public class TileEntityRM extends TileEntity implements ISidedInventory
     
     private static int maxCapacity = 500;
     private static int POWER_USAGE = 25;
-    @MjBattery (maxReceivedPerCycle = 10, maxCapacity = 500) 
-    double mjStored = 0;
+    @MjBattery (maxReceivedPerCycle = 10, maxCapacity = 500)
+	public double mjStored = 0;
 
     int cookTime = 0;
     final int cookTimeDone = 100;

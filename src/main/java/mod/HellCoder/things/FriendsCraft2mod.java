@@ -21,6 +21,8 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import mod.HellCoder.HellCoderCore.Utils.FCLog;
 import mod.HellCoder.HellCoderCore.Utils.VersionChecker;
+import mod.HellCoder.things.Blocks.machine.fermenter.TileEntityFermenter;
+import mod.HellCoder.things.Blocks.machine.rollingmachine.TileEntityRM;
 import mod.HellCoder.things.TileEntity.TileEntityHermeticPipe;
 import mod.HellCoder.things.core.Localization.LocalizationHandler;
 import mod.HellCoder.things.fluid.FCFluids;
@@ -29,7 +31,6 @@ import mod.HellCoder.things.handler.GuiHandler;
 import mod.HellCoder.things.lib.RegBlocks;
 import mod.HellCoder.things.lib.RegItems;
 import mod.HellCoder.things.lib.Recipes;
-import mod.HellCoder.things.rollingmachine.TileEntityRM;
 import mod.HellCoder.things.tab.FCTab;
 import mod.HellCoder.things.world.DigaOreGenerator;
 import net.minecraft.block.Block;
@@ -116,10 +117,10 @@ public class FriendsCraft2mod {
 
 		// tile Entity register
 		GameRegistry.registerTileEntity(TileEntityRM.class, "RollingMachine");
+		GameRegistry.registerTileEntity(TileEntityFermenter.class, "Fermenter");		
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
 		
 		GameRegistry.registerTileEntity(TileEntityHermeticPipe.class, "HermeticPipe");
-		
 		//versionchecker
         versionChecker = new VersionChecker(metadata.name, metadata.version, versionURL, mcfTopic);
         versionChecker.checkVersionWithLogging();
@@ -132,7 +133,7 @@ public class FriendsCraft2mod {
 		MinecraftForge.EVENT_BUS.register(proxy);
 		FMLCommonHandler.instance().bus().register(instance);
 		
-		FMLInterModComms.sendMessage("Waila", "register", "mod.HellCoder.things.core.ProviderDemo.callbackRegister");
+		FMLInterModComms.sendMessage("Waila", "register", "mod.HellCoder.things.core.WailaProvider.callbackRegister");
 	}
 
 	@Mod.EventHandler

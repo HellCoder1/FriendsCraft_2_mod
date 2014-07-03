@@ -10,9 +10,10 @@ import mod.HellCoder.things.Blocks.BlockOre;
 import mod.HellCoder.things.Blocks.DigaOre;
 import mod.HellCoder.things.Blocks.DigaBlock;
 import mod.HellCoder.things.Blocks.blockpipe;
+import mod.HellCoder.things.Blocks.machine.fermenter.FermenterBlock;
+import mod.HellCoder.things.Blocks.machine.rollingmachine.RMblock;
 import mod.HellCoder.things.Blocks.render.LightItemBlock;
 import mod.HellCoder.things.fluid.TESTmethaneBlockFluid;
-import mod.HellCoder.things.rollingmachine.RMblock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSkull;
 import net.minecraft.block.material.Material;
@@ -26,6 +27,7 @@ public class RegBlocks {
 	public static Block digablock;
 
 	public static Block rollingmachine;
+	public static Block fermenter;
 	
 	public static Block HermeticPipe;
 	
@@ -44,8 +46,11 @@ public class RegBlocks {
 		 * Machines
 		 */
 		
-        rollingmachine = new RMblock(false).setBlockName("rollingmachine").setCreativeTab(FriendsCraft2mod.tabsFC);       
+        rollingmachine = new RMblock(false).setBlockName("rollingmachine").setCreativeTab(FriendsCraft2mod.tabsFC);
+        fermenter = new FermenterBlock().setBlockName("Fermenter").setCreativeTab(FriendsCraft2mod.tabsFC); 
+        
         GameRegistry.registerBlock(rollingmachine, "rollingmachine");
+        GameRegistry.registerBlock(fermenter, "Fermenter");
 		
 		/*
 		 * Pipes

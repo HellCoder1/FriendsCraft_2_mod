@@ -1,8 +1,12 @@
 package mod.HellCoder.things.handler;
 
-import mod.HellCoder.things.rollingmachine.ContainerRM;
-import mod.HellCoder.things.rollingmachine.GuiRM;
-import mod.HellCoder.things.rollingmachine.TileEntityRM;
+import mod.HellCoder.things.Blocks.machine.fermenter.ContainerFermenter;
+import mod.HellCoder.things.Blocks.machine.fermenter.GuiFermenter;
+import mod.HellCoder.things.Blocks.machine.fermenter.TileEntityFermenter;
+import mod.HellCoder.things.Blocks.machine.rollingmachine.ContainerRM;
+import mod.HellCoder.things.Blocks.machine.rollingmachine.GuiRM;
+import mod.HellCoder.things.Blocks.machine.rollingmachine.TileEntityRM;
+import mod.HellCoder.things.gui.client.GuiFactory;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -17,6 +21,7 @@ public class GuiHandler implements IGuiHandler
 		switch(id)
 		{
 		case 0: return new ContainerRM(player.inventory, (TileEntityRM) tile_entity);
+		case 1: return new ContainerFermenter(player.inventory, (TileEntityFermenter) tile_entity);
 		}
 		return null;
 	}
@@ -28,6 +33,7 @@ public class GuiHandler implements IGuiHandler
 		switch(id)
 		{
 		case 0: return new GuiRM(player.inventory, (TileEntityRM) tile_entity);
+		case 1: return new GuiFermenter(player.inventory, (TileEntityFermenter) tile_entity);
 		}
 		return null;
 	}

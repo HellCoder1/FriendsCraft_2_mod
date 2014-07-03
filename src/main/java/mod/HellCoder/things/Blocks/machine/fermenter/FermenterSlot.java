@@ -1,4 +1,4 @@
-package mod.HellCoder.things.rollingmachine;
+package mod.HellCoder.things.Blocks.machine.fermenter;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import net.minecraft.entity.item.EntityXPOrb;
@@ -10,13 +10,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.stats.AchievementList;
 import net.minecraft.util.MathHelper;
 
-public class RMSlot extends Slot
+public class FermenterSlot extends Slot
 {
     /** The player that is using the GUI where this slot resides. */
     private EntityPlayer thePlayer;
     private int field_75228_b;
 
-    public RMSlot(EntityPlayer par1EntityPlayer, IInventory par2IInventory, int par3, int par4, int par5)
+    public FermenterSlot(EntityPlayer par1EntityPlayer, IInventory par2IInventory, int par3, int par4, int par5)
     {
         super(par2IInventory, par3, par4, par5);
         this.thePlayer = par1EntityPlayer;
