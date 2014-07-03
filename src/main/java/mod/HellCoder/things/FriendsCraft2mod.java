@@ -29,7 +29,6 @@ import mod.HellCoder.things.handler.GuiHandler;
 import mod.HellCoder.things.lib.RegBlocks;
 import mod.HellCoder.things.lib.RegItems;
 import mod.HellCoder.things.lib.Recipes;
-import mod.HellCoder.things.rollingmachine.RMRender;
 import mod.HellCoder.things.rollingmachine.TileEntityRM;
 import mod.HellCoder.things.tab.FCTab;
 import mod.HellCoder.things.world.DigaOreGenerator;
@@ -117,7 +116,6 @@ public class FriendsCraft2mod {
 
 		// tile Entity register
 		GameRegistry.registerTileEntity(TileEntityRM.class, "RollingMachine");
-		RenderingRegistry.registerBlockHandler(2105, RMRender.INSTANCE);
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
 		
 		GameRegistry.registerTileEntity(TileEntityHermeticPipe.class, "HermeticPipe");
