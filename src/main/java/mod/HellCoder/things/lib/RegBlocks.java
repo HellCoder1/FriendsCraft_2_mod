@@ -1,9 +1,12 @@
 package mod.HellCoder.things.lib;
 
 import cofh.fluid.BlockFluidCoFHBase;
+import cofh.util.ItemHelper;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import mod.HellCoder.things.FriendsCraft2mod;
+import mod.HellCoder.things.Blocks.BlockMetals;
+import mod.HellCoder.things.Blocks.BlockOre;
 import mod.HellCoder.things.Blocks.DigaOre;
 import mod.HellCoder.things.Blocks.DigaBlock;
 import mod.HellCoder.things.Blocks.blockpipe;
@@ -14,6 +17,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockSkull;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.BlockFluidClassic;
 
 public class RegBlocks {
@@ -32,9 +36,12 @@ public class RegBlocks {
     
     public static BlockFluidCoFHBase blockFluidMethane;
 
+    public static BlockOre blockOre;
+    public static BlockMetals blockMetal;
+    
 	public static void init() {
 
-		/**
+		/*
 		 * Machines
 		 */
 		
@@ -57,7 +64,7 @@ public class RegBlocks {
 //		blockFluidMethane.preInit();
 		
 
-        /**
+        /*
          * Light Blocks
          */
         digaore = new DigaOre().setBlockName("digaore");      
@@ -66,6 +73,17 @@ public class RegBlocks {
         digablock = new DigaBlock().setBlockName("digablock");
         GameRegistry.registerBlock(digablock, LightItemBlock.class, "digablock");
         
+        /*
+         * Metals
+         */
+        blockMetal = new BlockMetals();
+        blockMetal.init();
+        
+        /*
+         * Ores
+         */
+        blockOre = new BlockOre();
+        blockOre.init();
     }
 
 	public static Block registerBlock(Block block) {

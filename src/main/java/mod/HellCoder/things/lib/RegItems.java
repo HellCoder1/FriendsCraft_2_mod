@@ -84,7 +84,7 @@ public class RegItems {
 		ironPlate = registerItem(new Item().setUnlocalizedName("IronPlate").setTextureName("friendscraft:IronPlate").setCreativeTab(FriendsCraft2mod.tabsFC));
 		smallIronPlate = registerItem(new Item().setUnlocalizedName("SmallIronPlate").setTextureName("friendscraft:SmallIronPlate").setCreativeTab(FriendsCraft2mod.tabsFC));
 		compressedPlants = registerItem(new Item().setUnlocalizedName("CompressedPlants").setTextureName("friendscraft:CompressedPlants").setCreativeTab(FriendsCraft2mod.tabsFC));
-		rawOrganicMaterial = registerItem(new Item().setUnlocalizedName("Raw Organic Material").setTextureName("friendscraft:RawOrganicMaterial").setCreativeTab(FriendsCraft2mod.tabsFC));
+		rawOrganicMaterial = registerItem(new Item().setUnlocalizedName("Raw_Organic_Material").setTextureName("friendscraft:RawOrganicMaterial").setCreativeTab(FriendsCraft2mod.tabsFC));
 		smallTank = registerItem(new Item().setUnlocalizedName("SmallTank").setTextureName("friendscraft:SmallTank").setCreativeTab(FriendsCraft2mod.tabsFC));
 		scytheBlade = registerItem(new Item().setUnlocalizedName("ScytheBlade").setTextureName("friendscraft:ScytheBlade").setCreativeTab(FriendsCraft2mod.tabsFC));
 		scissors = registerItem(new Item().setUnlocalizedName("Scissors").setTextureName("friendscraft:Scissors").setCreativeTab(FriendsCraft2mod.tabsFC));
@@ -113,9 +113,9 @@ public class RegItems {
 		 */
 		copperIngot = itemMaterial.addOreDictItem(64, "ingotCopper");
 		
-		/* Storage */
-		ItemHelper.addStorageRecipe(copperIngot, "nuggetCopper");
-		ItemHelper.addReverseStorageRecipe(copperIngot, "blockCopper");
+		     /* Storage */
+		     ItemHelper.addStorageRecipe(copperIngot, "nuggetCopper");
+		     ItemHelper.addReverseStorageRecipe(copperIngot, "blockCopper");
 	}
 
 	public static Item registerItem(Item item) {
