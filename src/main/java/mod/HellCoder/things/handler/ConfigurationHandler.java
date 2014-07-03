@@ -12,7 +12,7 @@ public class ConfigurationHandler
 {
     public static Configuration configuration;
     
-    public static boolean digaOreworldgen;
+    public static boolean copperOreworldgen;
 
     public static void init(File configFile)
     {
@@ -20,8 +20,18 @@ public class ConfigurationHandler
         if (configuration == null)
         {
             configuration = new Configuration(configFile);
+            loadConfiguration();
         }
-        
+    }
+
+    private static void loadConfiguration()
+    {
+    	copperOreworldgen = configuration.getBoolean("Copper Ore world gen", Configuration.CATEGORY_GENERAL, false, "Add Copper Ore to world gen?");
+
+        if (configuration.hasChanged())
+        {
+            configuration.save();
+        }
     }
 
     @SubscribeEvent
@@ -30,16 +40,6 @@ public class ConfigurationHandler
         if (event.modID.equalsIgnoreCase(FriendsCraft2mod.MOD_ID))
         {
             loadConfiguration();
-        }
-    }
-
-    public void loadConfiguration()
-    {
-    	digaOreworldgen = configuration.getBoolean("configValue", Configuration.CATEGORY_GENERAL, false, "Add diga ore to WorldGen?");
-
-        if (configuration.hasChanged())
-        {
-            configuration.save();
         }
     }
 }

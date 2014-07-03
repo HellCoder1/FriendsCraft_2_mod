@@ -87,7 +87,8 @@ public class FriendsCraft2mod {
 		LocalizationHandler.loadLanguages();
 		
 		ConfigurationHandler.init(event.getSuggestedConfigurationFile());
- 		
+		FMLCommonHandler.instance().bus().register(new ConfigurationHandler());
+		
 		//items
 		FCLog.info("Loading Items");
 		RegItems.init();
