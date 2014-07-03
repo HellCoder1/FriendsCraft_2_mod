@@ -30,8 +30,9 @@ public class RMRecipes
 
     private RMRecipes()
     {
-//        this.regBlock(Blocks.iron_ore, new ItemStack(Items.iron_ingot), 0.7);
-        this.reg(Items.leather, new ItemStack(RegItems.Insulator), 20F);
+        this.regBlock(Blocks.iron_block, new ItemStack(RegItems.ironPlate), 250F);
+        this.reg(Items.iron_ingot, new ItemStack(RegItems.smallIronPlate), 150F);
+        this.reg(Items.leather, new ItemStack(RegItems.Insulator), 100F);
 
 
     }
