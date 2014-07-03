@@ -26,7 +26,6 @@ public class RegBlocks {
 	public static Block digablock;
 
 	public static Block rollingmachine;
-	public static Block rollingmachineactive;
 	
 	public static Block HermeticPipe;
 	
@@ -45,11 +44,8 @@ public class RegBlocks {
 		 * Machines
 		 */
 		
-        rollingmachine = new RMblock(false).setBlockName("rollingmachine").setCreativeTab(FriendsCraft2mod.tabsFC);
-        rollingmachineactive = new RMblock(true).setBlockName("rollingmachineactive");
-        
+        rollingmachine = new RMblock(false).setBlockName("rollingmachine").setCreativeTab(FriendsCraft2mod.tabsFC);       
         GameRegistry.registerBlock(rollingmachine, "rollingmachine");
-		GameRegistry.registerBlock(rollingmachineactive, "rollingmachineactive");
 		
 		/*
 		 * Pipes

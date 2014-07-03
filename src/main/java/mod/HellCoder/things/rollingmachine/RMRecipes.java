@@ -30,24 +30,24 @@ public class RMRecipes
 
     private RMRecipes()
     {
-        this.regBlock(Blocks.iron_block, new ItemStack(RegItems.ironPlate), 250F);
-        this.reg(Items.iron_ingot, new ItemStack(RegItems.smallIronPlate), 150F);
-        this.reg(Items.leather, new ItemStack(RegItems.Insulator), 100F);
+        this.regBlock(Blocks.iron_block, new ItemStack(RegItems.ironPlate), 250);
+        this.reg(Items.iron_ingot, new ItemStack(RegItems.smallIronPlate), 150);
+        this.reg(Items.leather, new ItemStack(RegItems.Insulator), 100);
 
 
     }
 
-    public void regBlock(Block p_151393_1_, ItemStack p_151393_2_, float pressure)
+    public void regBlock(Block p_151393_1_, ItemStack p_151393_2_, int pressure)
     {
         this.reg(Item.getItemFromBlock(p_151393_1_), p_151393_2_, pressure);
     }
 
-    public void reg(Item item, ItemStack stack, float pressure)
+    public void reg(Item item, ItemStack stack, int pressure)
     {
         this.addList(new ItemStack(item, 1, 32767), stack, pressure);
     }
 
-    public void addList(ItemStack stack, ItemStack stack2, float pressure)
+    public void addList(ItemStack stack, ItemStack stack2, int pressure)
     {
         this.recipeList.put(stack, stack2);
         this.pressureList.put(stack, Float.valueOf(pressure));

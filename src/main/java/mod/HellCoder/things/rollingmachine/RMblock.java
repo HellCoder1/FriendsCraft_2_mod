@@ -114,6 +114,49 @@ public class RMblock extends BlockContainer
     }
 
     /**
+     * Called upon block activation (right click on the block.)
+     */
+    /*public boolean onBlockActivated(World p_149727_1_, int p_149727_2_, int p_149727_3_, int p_149727_4_, EntityPlayer p_149727_5_, int p_149727_6_, float p_149727_7_, float p_149727_8_, float p_149727_9_)
+    {
+        if (p_149727_1_.isRemote)
+        {
+            return true;
+        }
+        else
+        {
+            TileEntityIronOvenIdle tileentityfurnace = (TileEntityIronOvenIdle)p_149727_1_.getTileEntity(p_149727_2_, p_149727_3_, p_149727_4_);
+
+            if (tileentityfurnace != null)
+            {
+                p_149727_5_.func_146101_a(tileentityfurnace);
+            }
+
+            return true;
+        }
+    }*/
+    
+    public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9)
+    {
+    	if (par1World.isRemote)
+    	{
+    		return true;
+    	}
+    	else if (!par5EntityPlayer.isSneaking())
+    	{
+    		TileEntityRM var10 = (TileEntityRM) par1World.getTileEntity(par2, par3, par4);
+    		if (var10 != null)
+    		{
+    			par5EntityPlayer.openGui(FriendsCraft2mod.instance, 0, par1World, par2, par3, par4);
+    		}
+    		return true;
+    	}
+    	else
+    	{
+    		return false;
+    	}
+    }
+
+    /**
      * Returns a new instance of a block's tile entity class. Called on placing the block.
      */
     public TileEntity createNewTileEntity(World p_149915_1_, int p_149915_2_)
