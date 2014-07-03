@@ -123,7 +123,7 @@ public class ContainerRM extends Container
                 slot.onSlotChange(itemstack1, itemstack);
             } else if (slotIndex != 1 && slotIndex != 0) {
             	// player inventory, send to input slot or to toolbar
-                if (RMRecipes.smelting().getSmeltingResult(itemstack1) != null) {
+                if (RMRecipes.init().getSmeltingResult(itemstack1) != null) {
                 	// stick it in the input slot
                     if (!this.mergeItemStack(itemstack1, 0, 1, false)) {
                         return null;

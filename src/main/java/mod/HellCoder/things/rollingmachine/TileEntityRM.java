@@ -31,6 +31,7 @@ public class TileEntityRM extends TileEntity implements ISidedInventory
 	public int pressure = 0;
 	final float cookingPressure = 100f;
 	int pressuremax = 250;
+	public int usePressurePerUse = 0;
 
 	static final float powerConst = 1.4f;
 	static final float lossConst = 0.00005f ;
@@ -258,8 +259,8 @@ public class TileEntityRM extends TileEntity implements ISidedInventory
 
 		updateCounter++;
 		if (updateCounter % updateInterval == 0) {
-
-
+			
+			
 			boolean flag1 = false;
 			boolean wasCooking = (pressure > cookingPressure);
 
@@ -276,11 +277,12 @@ public class TileEntityRM extends TileEntity implements ISidedInventory
 
 					cookTime += (ticksPerTemp * pressure);
 					if (cookTime >= cookTimeDone) {
-
+//                        if(pressure >= usePressurePerUse){
 						this.smeltItem();
 						
 						flag1 = true;
 						cookTime = 0;
+//                        }
 					}
 				} else {
 					cookTime = 0;
@@ -308,7 +310,7 @@ public class TileEntityRM extends TileEntity implements ISidedInventory
     }
 
 	public void UsePressure(){		
-        pressure = pressure - (int)RMRecipes.smelting().getPressureUse(this.furnaceItemStacks[0]);
+        pressure = pressure - (int)RMRecipes.init().getPressureUse(this.furnaceItemStacks[0]);
 	}
     
 	private void updatePressure(){
@@ -338,12 +340,17 @@ public class TileEntityRM extends TileEntity implements ISidedInventory
 	        }
 	        else
 	        {   
-	            ItemStack itemstack = RMRecipes.smelting().getSmeltingResult(this.furnaceItemStacks[0]);
-	            if (itemstack == null) {return false;}
-	            if (this.furnaceItemStacks[1] == null) return true;
-	            if (!this.furnaceItemStacks[1].isItemEqual(itemstack)) return false;
-	            int result = furnaceItemStacks[1].stackSize + itemstack.stackSize;
-	            return (result <= getInventoryStackLimit() && result <= itemstack.getMaxStackSize());
+	        	usePressurePerUse = (int)RMRecipes.init().getPressureUse(this.furnaceItemStacks[0]);
+	        	if (pressure >= usePressurePerUse){
+	              ItemStack itemstack = RMRecipes.init().getSmeltingResult(this.furnaceItemStacks[0]);
+	              if (itemstack == null) {return false;}
+	              if (this.furnaceItemStacks[1] == null) return true;
+	              if (!this.furnaceItemStacks[1].isItemEqual(itemstack)) return false;
+	              int result = furnaceItemStacks[1].stackSize + itemstack.stackSize;
+	              return (result <= getInventoryStackLimit() && result <= itemstack.getMaxStackSize());
+	        	}else{
+	        		return false;
+	        	}
 	        }
 	    }
 
@@ -351,7 +358,7 @@ public class TileEntityRM extends TileEntity implements ISidedInventory
     {
         if (this.canSmelt())
         {
-            ItemStack itemstack = RMRecipes.smelting().getSmeltingResult(this.furnaceItemStacks[0]);
+            ItemStack itemstack = RMRecipes.init().getSmeltingResult(this.furnaceItemStacks[0]);
             UsePressure();
             if (this.furnaceItemStacks[1] == null)
             {

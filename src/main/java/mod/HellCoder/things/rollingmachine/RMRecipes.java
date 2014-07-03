@@ -15,17 +15,17 @@ import net.minecraft.item.ItemStack;
 
 public class RMRecipes
 {
-    private static final RMRecipes smeltingBase = new RMRecipes();
+    private static final RMRecipes recipeBase = new RMRecipes();
     /** The list of smelting results. */
-    private Map smeltingList = new HashMap();
+    private Map recipeList = new HashMap();
 	private Map pressureList= new HashMap();
 
     /**
      * Used to call methods addSmelting and getSmeltingResult.
      */
-    public static RMRecipes smelting()
+    public static RMRecipes init()
     {
-        return smeltingBase;
+        return recipeBase;
     }
 
     private RMRecipes()
@@ -49,7 +49,7 @@ public class RMRecipes
 
     public void addList(ItemStack stack, ItemStack stack2, float pressure)
     {
-        this.smeltingList.put(stack, stack2);
+        this.recipeList.put(stack, stack2);
         this.pressureList.put(stack, Float.valueOf(pressure));
     }
 
@@ -58,7 +58,7 @@ public class RMRecipes
      */
     public ItemStack getSmeltingResult(ItemStack p_151395_1_)
     {
-        Iterator iterator = this.smeltingList.entrySet().iterator();
+        Iterator iterator = this.recipeList.entrySet().iterator();
         Entry entry;
 
         do
@@ -107,6 +107,6 @@ public class RMRecipes
 
     public Map getSmeltingList()
     {
-        return this.smeltingList;
+        return this.recipeList;
     }
 }
