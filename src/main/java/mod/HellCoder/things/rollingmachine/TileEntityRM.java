@@ -264,8 +264,8 @@ public class TileEntityRM extends TileEntity implements ISidedInventory
 			boolean wasCooking = (pressure > cookingPressure);
 
 			float oldpressure = pressure;
-			if(pressure <= pressuremax){
-			updateHeat();
+			if(pressure < pressuremax){
+				updatePressure();
 			}
 			if(pressure != oldpressure){flagStateChange = true;}
 
@@ -311,7 +311,7 @@ public class TileEntityRM extends TileEntity implements ISidedInventory
         pressure = pressure - (int)RMRecipes.smelting().getPressureUse(this.furnaceItemStacks[0]);
 	}
     
-	private void updateHeat(){
+	private void updatePressure(){
 		
 		if((int)mjStored < 0){
 			mjStored = 0;
@@ -325,7 +325,7 @@ public class TileEntityRM extends TileEntity implements ISidedInventory
 		if(pressure < 0){
 			pressure = 0;
         }
-		if(pressure > pressuremax){
+		if(pressure >= (pressuremax + 1)){
 			pressure = pressuremax;
         }
 	}
