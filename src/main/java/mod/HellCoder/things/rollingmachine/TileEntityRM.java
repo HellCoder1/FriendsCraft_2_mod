@@ -30,7 +30,7 @@ public class TileEntityRM extends TileEntity implements ISidedInventory
 
 	public int pressure = 0;
 	final float cookingPressure = 100f;
-	int pressuremax = 248;
+	int pressuremax = 250;
 
 	static final float powerConst = 1.4f;
 	static final float lossConst = 0.00005f ;
@@ -324,6 +324,9 @@ public class TileEntityRM extends TileEntity implements ISidedInventory
 		
 		if(pressure < 0){
 			pressure = 0;
+        }
+		if(pressure > pressuremax){
+			pressure = pressuremax;
         }
 	}
 
