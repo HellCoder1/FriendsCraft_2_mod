@@ -2,6 +2,8 @@ package mod.HellCoder.things.lib;
 
 import java.util.List;
 
+import cofh.item.ItemBase;
+import cofh.util.ItemHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 import mod.HellCoder.things.FriendsCraft2mod;
 import mod.HellCoder.things.Items.*;
@@ -55,11 +57,17 @@ public class RegItems {
 	public static Item scytheBlade;
 	public static Item scissors;
 	public static Item termalDispenser;
-	public static Item copperIngot;
 	public static Item pressureRegulator;
 	public static Item pressureTank;
+	
+	public static ItemBase itemMaterial;
+	
+	public static ItemStack copperIngot;
+	
 	public static void init() {
 
+		itemMaterial = (ItemBase) new ItemBase("friendscraft").setUnlocalizedName("material").setCreativeTab(FriendsCraft2mod.tabsFC);
+		
 		/**
 		 * Items
 		 */
@@ -81,7 +89,6 @@ public class RegItems {
 		scytheBlade = registerItem(new Item().setUnlocalizedName("ScytheBlade").setTextureName("friendscraft:ScytheBlade").setCreativeTab(FriendsCraft2mod.tabsFC));
 		scissors = registerItem(new Item().setUnlocalizedName("Scissors").setTextureName("friendscraft:Scissors").setCreativeTab(FriendsCraft2mod.tabsFC));
 		termalDispenser = registerItem(new Item().setUnlocalizedName("TermalDispenser").setTextureName("friendscraft:TermalDispenser").setCreativeTab(FriendsCraft2mod.tabsFC));
-		copperIngot = registerItem(new Item().setUnlocalizedName("CopperIngot").setTextureName("friendscraft:CopperIngot").setCreativeTab(FriendsCraft2mod.tabsFC));
 		pressureRegulator = registerItem(new Item().setUnlocalizedName("PressureRegulator").setTextureName("friendscraft:PressureRegulator").setCreativeTab(FriendsCraft2mod.tabsFC));
 		pressureTank = registerItem(new Item().setUnlocalizedName("PressureTank").setTextureName("friendscraft:PressureTank").setCreativeTab(FriendsCraft2mod.tabsFC));
 		
@@ -92,15 +99,23 @@ public class RegItems {
 		.setUnlocalizedName("NagibatorSword").setTextureName("friendscraft:Nagibator").setCreativeTab(FriendsCraft2mod.tabsFC));
 		
 		scythe = registerItem((new Scythe(ToolMaterial.IRON).setUnlocalizedName("Scythe").setTextureName("friendscraft:scythe").setCreativeTab(FriendsCraft2mod.tabsFC)));
+		
 		/**
 		 * Armor
 		 */
-
 		FCHelmet = registerItem(new FCArmor(MaterialArmorDiga, armorFCHelmetID, 0).setUnlocalizedName("FCHelmet"));
 		FCChest = registerItem(new FCArmor(MaterialArmorDiga, armorFCHelmetID, 1).setUnlocalizedName("FCChest"));
 		FCLegs = registerItem(new FCArmor(MaterialArmorDiga, armorFCHelmetID, 2).setUnlocalizedName("FCLegs"));
 		FCBoots = registerItem(new FCArmor(MaterialArmorDiga, armorFCHelmetID, 3).setUnlocalizedName("FCBoots"));
 		
+		/**
+		 * Materials
+		 */
+		copperIngot = itemMaterial.addOreDictItem(64, "ingotCopper");
+		
+		/* Storage */
+		ItemHelper.addStorageRecipe(copperIngot, "nuggetCopper");
+		ItemHelper.addReverseStorageRecipe(copperIngot, "blockCopper");
 	}
 
 	public static Item registerItem(Item item) {
