@@ -109,79 +109,8 @@ public class RMblock extends BlockContainer
     public void registerBlockIcons(IIconRegister p_149651_1_)
     {
         this.blockIcon = p_149651_1_.registerIcon("friendscraft:RollingMachine_top");
-        this.field_149936_O = p_149651_1_.registerIcon(this.field_149932_b ? "friendscraft:RollingMachine_face" : "friendscraft:RollingMachine_face");
+        this.field_149936_O = p_149651_1_.registerIcon("friendscraft:RollingMachine_face");
         this.field_149935_N = p_149651_1_.registerIcon("friendscraft:RollingMachine_top");
-    }
-
-    /**
-     * Called upon block activation (right click on the block.)
-     */
-    /*public boolean onBlockActivated(World p_149727_1_, int p_149727_2_, int p_149727_3_, int p_149727_4_, EntityPlayer p_149727_5_, int p_149727_6_, float p_149727_7_, float p_149727_8_, float p_149727_9_)
-    {
-        if (p_149727_1_.isRemote)
-        {
-            return true;
-        }
-        else
-        {
-            TileEntityIronOvenIdle tileentityfurnace = (TileEntityIronOvenIdle)p_149727_1_.getTileEntity(p_149727_2_, p_149727_3_, p_149727_4_);
-
-            if (tileentityfurnace != null)
-            {
-                p_149727_5_.func_146101_a(tileentityfurnace);
-            }
-
-            return true;
-        }
-    }*/
-    
-    public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9)
-    {
-    	if (par1World.isRemote)
-    	{
-    		return true;
-    	}
-    	else if (!par5EntityPlayer.isSneaking())
-    	{
-    		TileEntityRM var10 = (TileEntityRM) par1World.getTileEntity(par2, par3, par4);
-    		if (var10 != null)
-    		{
-    			par5EntityPlayer.openGui(FriendsCraft2mod.instance, 0, par1World, par2, par3, par4);
-    		}
-    		return true;
-    	}
-    	else
-    	{
-    		return false;
-    	}
-    }
-
-    /**
-     * Update which block the furnace is using depending on whether or not it is burning
-     */
-    public static void updateFurnaceBlockState(boolean p_149931_0_, World p_149931_1_, int p_149931_2_, int p_149931_3_, int p_149931_4_)
-    {
-        int l = p_149931_1_.getBlockMetadata(p_149931_2_, p_149931_3_, p_149931_4_);
-        TileEntity tileentity = p_149931_1_.getTileEntity(p_149931_2_, p_149931_3_, p_149931_4_);
-        field_149934_M = true;
-
-        if (p_149931_0_)
-        {
-            p_149931_1_.setBlock(p_149931_2_, p_149931_3_, p_149931_4_, RegBlocks.rollingmachineactive);
-        }
-        else
-        {
-            p_149931_1_.setBlock(p_149931_2_, p_149931_3_, p_149931_4_, RegBlocks.rollingmachine);
-        }
-
-        field_149934_M = false;
-        p_149931_1_.setBlockMetadataWithNotify(p_149931_2_, p_149931_3_, p_149931_4_, l, 2);
-
-        if (tileentity != null)
-        {
-            tileentity.validate();
-            p_149931_1_.setTileEntity(p_149931_2_, p_149931_3_, p_149931_4_, tileentity);
-        }
     }
 
     /**

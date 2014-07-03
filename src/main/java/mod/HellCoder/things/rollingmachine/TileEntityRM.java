@@ -262,7 +262,6 @@ public class TileEntityRM extends TileEntity implements ISidedInventory
 			
 			
 			boolean flag1 = false;
-			boolean wasCooking = (pressure > cookingPressure);
 
 			float oldpressure = pressure;
 			if(pressure < pressuremax){
@@ -290,16 +289,11 @@ public class TileEntityRM extends TileEntity implements ISidedInventory
 			} else {
 
 			}
-			boolean isCooking = (pressure > cookingPressure);
 
 			if(oldCookTime != cookTime){
 				flagStateChange = true;
 			}
 
-			if(wasCooking != isCooking){
-				// change between glowing and non-glowing states
-				RMblock.updateFurnaceBlockState(isCooking, worldObj, xCoord, yCoord, zCoord);
-			}
 			if (flag1 ) {
 				this.markDirty();
 			}
@@ -319,7 +313,7 @@ public class TileEntityRM extends TileEntity implements ISidedInventory
 			mjStored = 0;
 		}
 		
-		if((int)mjStored > 20){
+		if((int)mjStored >= 20){
 		mjStored = mjStored - 20;
 		pressure = pressure + 1;
 		}
