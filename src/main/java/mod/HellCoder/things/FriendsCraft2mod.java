@@ -24,7 +24,8 @@ import mod.HellCoder.HellCoderCore.Utils.VersionChecker;
 import mod.HellCoder.things.TileEntity.TileEntityHermeticPipe;
 import mod.HellCoder.things.core.Localization.LocalizationHandler;
 import mod.HellCoder.things.fluid.FCFluids;
-import mod.HellCoder.things.handler.GuiHandlerFurnace;
+import mod.HellCoder.things.handler.ConfigurationHandler;
+import mod.HellCoder.things.handler.GuiHandler;
 import mod.HellCoder.things.lib.RegBlocks;
 import mod.HellCoder.things.lib.RegItems;
 import mod.HellCoder.things.lib.Recipes;
@@ -46,14 +47,17 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 
-@Mod(modid = "FC2", name = "FriendsCraft2_mod", version = "1.7.10-1.1", acceptedMinecraftVersions = "1.7.2", 
-useMetadata = true)
+@Mod(modid = FriendsCraft2mod.MOD_ID, name = FriendsCraft2mod.modname, version = "1.7.10-1.1", acceptedMinecraftVersions = "1.7.10", 
+useMetadata = true, guiFactory = "mod.HellCoder.things.gui.client.GuiFactory")
 public class FriendsCraft2mod {
 	
-	@Metadata(value = "FC2")
+	public static final String MOD_ID = "FC2";
+	public static final String modname = "FriendsCraft2_mod";
+	
+	@Metadata(value = FriendsCraft2mod.MOD_ID)
 	public static ModMetadata metadata;
 
-	@Mod.Instance(value = "FC2")
+	@Mod.Instance(value = FriendsCraft2mod.MOD_ID)
 	public static FriendsCraft2mod instance;
 
 	@SidedProxy(clientSide = "mod.HellCoder.things.ClientProxy", serverSide = "mod.HellCoder.things.CommonProxy")
@@ -81,6 +85,8 @@ public class FriendsCraft2mod {
 		MinecraftForge.EVENT_BUS.register(this);
 		
 		LocalizationHandler.loadLanguages();
+		
+		ConfigurationHandler.init(event.getSuggestedConfigurationFile());
  		
 		//items
 		FCLog.info("Loading Items");
@@ -112,7 +118,7 @@ public class FriendsCraft2mod {
 		// tile Entity register
 		GameRegistry.registerTileEntity(TileEntityRM.class, "RollingMachine");
 		RenderingRegistry.registerBlockHandler(2105, RMRender.INSTANCE);
-		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandlerFurnace());
+		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
 		
 		GameRegistry.registerTileEntity(TileEntityHermeticPipe.class, "HermeticPipe");
 		
