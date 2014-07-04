@@ -106,9 +106,9 @@ public class FermenterBlock extends BlockContainer
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister p_149651_1_)
     {
-        this.blockIcon = p_149651_1_.registerIcon("friendscraft:blockHermetic");
-        this.field_149936_O = p_149651_1_.registerIcon("friendscraft:blockHermetic");
-        this.field_149935_N = p_149651_1_.registerIcon("friendscraft:blockHermetic");
+        this.blockIcon = p_149651_1_.registerIcon("friendscraft:Fermenter_top");
+        this.field_149936_O = p_149651_1_.registerIcon("friendscraft:Fermenter_face");
+        this.field_149935_N = p_149651_1_.registerIcon("friendscraft:Fermenter_top");
     }
     
     public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9)
