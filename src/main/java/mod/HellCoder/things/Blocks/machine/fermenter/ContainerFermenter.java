@@ -44,7 +44,7 @@ public class ContainerFermenter extends Container
     {
         super.addCraftingToCrafters(par1ICrafting);
         par1ICrafting.sendProgressBarUpdate(this, 0, this.tile.cookTime);
-        par1ICrafting.sendProgressBarUpdate(this, 1, this.tile.pressure);
+        par1ICrafting.sendProgressBarUpdate(this, 1, this.tile.heat);
         par1ICrafting.sendProgressBarUpdate(this, 2, (int) this.tile.mjStored);
     }
 
@@ -63,9 +63,9 @@ public class ContainerFermenter extends Container
             {
                 icrafting.sendProgressBarUpdate(this, 0, this.tile.cookTime);
             }
-            if (this.pressure != this.tile.pressure)
+            if (this.pressure != this.tile.heat)
             {
-                icrafting.sendProgressBarUpdate(this, 1, this.tile.pressure);
+                icrafting.sendProgressBarUpdate(this, 1, this.tile.heat);
             }
             if (this.energy != (int) this.tile.mjStored) {
                 icrafting.sendProgressBarUpdate(this, 2, (int) this.tile.mjStored);
@@ -73,7 +73,7 @@ public class ContainerFermenter extends Container
         }
 
         this.lastCookTime = this.tile.cookTime;
-        this.pressure = this.tile.pressure;
+        this.pressure = this.tile.heat;
         this.energy = (int) this.tile.mjStored;
     }
 
@@ -86,7 +86,7 @@ public class ContainerFermenter extends Container
         }
         if (par1 == 1)
         {
-        	this.tile.pressure = par2;
+        	this.tile.heat = par2;
         }
         if (par1 == 2){
         	

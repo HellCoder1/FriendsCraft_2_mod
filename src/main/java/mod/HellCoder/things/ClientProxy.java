@@ -80,8 +80,8 @@ public class ClientProxy extends CommonProxy
 		public static void registerFluidIcons(Fluid fluid, IIconRegister ir) {
 
 			String name = StringHelper.titleCase(fluid.getName());
-			IconRegistry.addIcon("Fluid" + name, "friendscraft:fluid/Fluid_" + name + "_Still", ir);
-			IconRegistry.addIcon("Fluid" + name + 1, "friendscraft:fluid/Fluid_" + name + "_Flow", ir);
+			IconRegistry.addIcon("Fluid" + name, "friendscraft:fluid/" + name + "_Still", ir);
+			IconRegistry.addIcon("Fluid" + name + 1, "friendscraft:fluid/" + name + "_Flow", ir);
 		}
 
 		public static void setFluidIcons(Fluid fluid) {

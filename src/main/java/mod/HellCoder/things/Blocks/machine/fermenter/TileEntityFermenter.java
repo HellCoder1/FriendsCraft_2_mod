@@ -20,12 +20,16 @@ import net.minecraft.item.ItemSword;
 import net.minecraft.item.ItemTool;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
@@ -34,10 +38,10 @@ import net.minecraftforge.fluids.IFluidHandler;
 public class TileEntityFermenter extends TileEntity implements ISidedInventory, IFluidHandler
 {
 
-	public int pressure = 0;
+	public int heat = 0;
 	final float cookingPressure = 100f;
 	int pressuremax = 250;
-	public int usePressurePerUse = 0;
+	public int useHeatPerUse = 0;
 
 	static final float powerConst = 1.4f;
 	static final float lossConst = 0.00005f ;
@@ -64,7 +68,7 @@ public class TileEntityFermenter extends TileEntity implements ISidedInventory, 
        
     private String displayName = "";
     
-    private ItemStack[] furnaceItemStacks = new ItemStack[2]; // 0=input, 1=output
+    private ItemStack[] fermenterItemStacks = new ItemStack[2]; // 0=input, 1=output
     
     public TileEntityFermenter(){
 
@@ -75,7 +79,7 @@ public class TileEntityFermenter extends TileEntity implements ISidedInventory, 
      */
     public int getSizeInventory()
     {
-        return this.furnaceItemStacks.length;
+        return this.fermenterItemStacks.length;
     }
 
     /**
@@ -83,28 +87,28 @@ public class TileEntityFermenter extends TileEntity implements ISidedInventory, 
      */
     public ItemStack getStackInSlot(int par1)
     {
-        return this.furnaceItemStacks[par1];
+        return this.fermenterItemStacks[par1];
     }
     
     public ItemStack decrStackSize(int par1, int par2)
     {
-        if (this.furnaceItemStacks[par1] != null)
+        if (this.fermenterItemStacks[par1] != null)
         {
             ItemStack itemstack;
 
-            if (this.furnaceItemStacks[par1].stackSize <= par2)
+            if (this.fermenterItemStacks[par1].stackSize <= par2)
             {
-                itemstack = this.furnaceItemStacks[par1];
-                this.furnaceItemStacks[par1] = null;
+                itemstack = this.fermenterItemStacks[par1];
+                this.fermenterItemStacks[par1] = null;
                 return itemstack;
             }
             else
             {
-                itemstack = this.furnaceItemStacks[par1].splitStack(par2);
+                itemstack = this.fermenterItemStacks[par1].splitStack(par2);
 
-                if (this.furnaceItemStacks[par1].stackSize == 0)
+                if (this.fermenterItemStacks[par1].stackSize == 0)
                 {
-                    this.furnaceItemStacks[par1] = null;
+                    this.fermenterItemStacks[par1] = null;
                 }
 
                 return itemstack;
@@ -122,10 +126,10 @@ public class TileEntityFermenter extends TileEntity implements ISidedInventory, 
      */
     public ItemStack getStackInSlotOnClosing(int par1)
     {
-        if (this.furnaceItemStacks[par1] != null)
+        if (this.fermenterItemStacks[par1] != null)
         {
-            ItemStack itemstack = this.furnaceItemStacks[par1];
-            this.furnaceItemStacks[par1] = null;
+            ItemStack itemstack = this.fermenterItemStacks[par1];
+            this.fermenterItemStacks[par1] = null;
             return itemstack;
         }
         else
@@ -139,7 +143,7 @@ public class TileEntityFermenter extends TileEntity implements ISidedInventory, 
      */
     public void setInventorySlotContents(int par1, ItemStack par2ItemStack)
     {
-    	   this.furnaceItemStacks[par1] = par2ItemStack;
+    	   this.fermenterItemStacks[par1] = par2ItemStack;
 
            if (par2ItemStack != null && par2ItemStack.stackSize > this.getInventoryStackLimit())
            {
@@ -167,31 +171,60 @@ public class TileEntityFermenter extends TileEntity implements ISidedInventory, 
     {
         this.displayName = p_145951_1_;
     }
+    
+	@Override
+	public Packet getDescriptionPacket()
+	{
+    	super.getDescriptionPacket();
+        NBTTagCompound access = new NBTTagCompound();
+        access.setInteger("methane",tank.getFluidAmount());
+        access.setShort("Heat", (short)this.heat);
+        access.setShort("CookTime", (short)this.cookTime);
 
-    public void readFromNBT(NBTTagCompound p_145839_1_)
+        return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, access);
+	}
+	    
+
+    @Override
+    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
     {
-        super.readFromNBT(p_145839_1_);
-        NBTTagList nbttaglist = p_145839_1_.getTagList("Items", 10);
-        this.furnaceItemStacks = new ItemStack[this.getSizeInventory()];
+    	super.onDataPacket(net, pkt);
+    	NBTTagCompound access = pkt.func_148857_g();
+    	this.tank.setFluid(new FluidStack(FluidRegistry.getFluid("methane"),access.getInteger("methane")));
+    	this.heat = access.getShort("Heat");
+    	this.cookTime = access.getShort("CookTime");
+        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+    }
+
+    public void readFromNBT(NBTTagCompound par1NBTTagCompound)
+    {
+        super.readFromNBT(par1NBTTagCompound);
+        NBTTagList nbttaglist = par1NBTTagCompound.getTagList("Items", 10);
+        this.fermenterItemStacks = new ItemStack[this.getSizeInventory()];
 
         for (int i = 0; i < nbttaglist.tagCount(); ++i)
         {
         	 NBTTagCompound nbttagcompound1 = nbttaglist.getCompoundTagAt(i);
             byte b0 = nbttagcompound1.getByte("Slot");
 
-            if (b0 >= 0 && b0 < this.furnaceItemStacks.length)
+            if (b0 >= 0 && b0 < this.fermenterItemStacks.length)
             {
-                this.furnaceItemStacks[b0] = ItemStack.loadItemStackFromNBT(nbttagcompound1);
+                this.fermenterItemStacks[b0] = ItemStack.loadItemStackFromNBT(nbttagcompound1);
             }
         }
 
-        this.pressure = p_145839_1_.getShort("Pressure");
-        this.cookTime = p_145839_1_.getShort("CookTime");
-        this.mjStored = p_145839_1_.getShort("Energy");
-
-        if (p_145839_1_.hasKey("CustomName"))
+        this.heat = par1NBTTagCompound.getShort("Heat");
+        this.cookTime = par1NBTTagCompound.getShort("CookTime");
+        this.mjStored = par1NBTTagCompound.getShort("Energy");
+        
+        if (par1NBTTagCompound.hasKey("methane"))
         {
-            this.displayName = p_145839_1_.getString("CustomName");
+        	this.tank.setFluid(new FluidStack(FluidRegistry.getFluid("methane"),par1NBTTagCompound.getShort("methane")));
+        }
+
+        if (par1NBTTagCompound.hasKey("CustomName"))
+        {
+            this.displayName = par1NBTTagCompound.getString("CustomName");
         }
     }
     
@@ -201,18 +234,19 @@ public class TileEntityFermenter extends TileEntity implements ISidedInventory, 
 	@Override public void writeToNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.writeToNBT(par1NBTTagCompound);
-        par1NBTTagCompound.setShort("Pressure", (short) this.pressure);
+        par1NBTTagCompound.setShort("Heat", (short) this.heat);
         par1NBTTagCompound.setShort("CookTime", (short)this.cookTime);
         par1NBTTagCompound.setShort("Energy", (short) this.mjStored);
+        par1NBTTagCompound.setShort("methane", (short) this.tank.getFluidAmount());
         NBTTagList nbttaglist = new NBTTagList();
 
-        for (int i = 0; i < this.furnaceItemStacks.length; ++i)
+        for (int i = 0; i < this.fermenterItemStacks.length; ++i)
         {
-            if (this.furnaceItemStacks[i] != null)
+            if (this.fermenterItemStacks[i] != null)
             {
                 NBTTagCompound nbttagcompound1 = new NBTTagCompound();
                 nbttagcompound1.setByte("Slot", (byte)i);
-                this.furnaceItemStacks[i].writeToNBT(nbttagcompound1);
+                this.fermenterItemStacks[i].writeToNBT(nbttagcompound1);
                 nbttaglist.appendTag(nbttagcompound1);
             }
         }
@@ -245,13 +279,13 @@ public class TileEntityFermenter extends TileEntity implements ISidedInventory, 
     @SideOnly(Side.CLIENT)
 	public int getHeat(int par1){
     	
-		return (pressure * par1) / pressuremax;
+		return (heat * par1) / pressuremax;
 	}
     
     @SideOnly(Side.CLIENT)
     public int getFluidScale(int par1){
     	
-    	return (tank.getFluidAmount() * par1) / tank.getCapacity();
+    	return (tank.getFluidAmount() * par1) / 10;
     }
     
     @SideOnly(Side.CLIENT)
@@ -278,18 +312,18 @@ public class TileEntityFermenter extends TileEntity implements ISidedInventory, 
 			
 			boolean flag1 = false;
 
-			float oldpressure = pressure;
-			if(pressure < pressuremax){
+			float oldpressure = heat;
+			if(heat < pressuremax){
 				updatePressure();
 			}
-			if(pressure != oldpressure){flagStateChange = true;}
+			if(heat != oldpressure){flagStateChange = true;}
 
 			int oldCookTime = cookTime;
 			if (redstoneSignal == 0) {
 
 				if (canSmelt()) {
 
-					cookTime += (ticksPerTemp * pressure);
+					cookTime += (ticksPerTemp * heat);
 					if (cookTime >= cookTimeDone) {
 						this.smeltItem();
 						
@@ -315,10 +349,6 @@ public class TileEntityFermenter extends TileEntity implements ISidedInventory, 
 			}
 		}
     }
-
-	public void UsePressure(){		
-        pressure = pressure - (int)FermenterRecipes.init().getPressureUse(this.furnaceItemStacks[0]);
-	}
     
 	private void updatePressure(){
 		
@@ -328,33 +358,33 @@ public class TileEntityFermenter extends TileEntity implements ISidedInventory, 
 		
 		if((int)mjStored >= 20){
 		mjStored = mjStored - 20;
-		pressure = pressure + 1;
+		heat = heat + 1;
 		}
 		
-		if(pressure < 0){
-			pressure = 0;
+		if(heat < 0){
+			heat = 0;
         }
-		if(pressure >= (pressuremax + 1)){
-			pressure = pressuremax;
+		if(heat >= (pressuremax + 1)){
+			heat = pressuremax;
         }
 	}
 
 	 private boolean canSmelt()
 	    {
-	        if (this.furnaceItemStacks[0] == null)
+	        if (this.fermenterItemStacks[0] == null)
 	        {
 	            return false;
 	        }
 	        else
 	        {   
-	        	usePressurePerUse = (int)FermenterRecipes.init().getPressureUse(this.furnaceItemStacks[0]);
-	        	if (pressure >= usePressurePerUse){
-	              ItemStack itemstack = FermenterRecipes.init().getSmeltingResult(this.furnaceItemStacks[0]);
-	              if (itemstack == null) {return false;}
-	              if (this.furnaceItemStacks[1] == null) return true;
-	              if (!this.furnaceItemStacks[1].isItemEqual(itemstack)) return false;
-	              int result = furnaceItemStacks[1].stackSize + itemstack.stackSize;
-	              return (result <= getInventoryStackLimit() && result <= itemstack.getMaxStackSize());
+	        	useHeatPerUse = (int)FermenterRecipes.init().getPressureUse(this.fermenterItemStacks[0]);
+	        	if (heat >= useHeatPerUse){
+	        		FluidStack fluidstack = FermenterRecipes.init().getSmeltingResult(this.fermenterItemStacks[0]);
+	              if (fluidstack == null) {return false;}
+	              if (this.fermenterItemStacks[1] == null) return true;
+	              if (!this.tank.equals(fluidstack)) return false;
+	              int result = this.tank.getFluidAmount() + fluidstack.amount;
+	              return (result <= FluidContainerRegistry.BUCKET_VOLUME);
 	        	}else{
 	        		return false;
 	        	}
@@ -365,22 +395,23 @@ public class TileEntityFermenter extends TileEntity implements ISidedInventory, 
     {
         if (this.canSmelt())
         {
-            ItemStack itemstack = FermenterRecipes.init().getSmeltingResult(this.furnaceItemStacks[0]);
-            UsePressure();
-            if (this.furnaceItemStacks[1] == null)
-            {
-                this.furnaceItemStacks[1] = itemstack.copy();
-            }
-            else if (this.furnaceItemStacks[1].isItemEqual(itemstack))
-            {
-                furnaceItemStacks[1].stackSize += itemstack.stackSize;
-            }
+        	FluidStack fluidstack = FermenterRecipes.init().getSmeltingResult(this.fermenterItemStacks[0]);
 
-            --this.furnaceItemStacks[0].stackSize;
+//            if (this.tank.getFluidAmount() == 0)
+//            {
+//                fluidstack.copy();
+//            }
+//            else if (this.tank.equals(fluidstack))
+//            {
+//                this.tank.fill(fluidstack, true);
+//            }
+        	this.tank.fill(fluidstack, true);
 
-            if (this.furnaceItemStacks[0].stackSize <= 0)
+            --this.fermenterItemStacks[0].stackSize;
+
+            if (this.fermenterItemStacks[0].stackSize <= 0)
             {
-                this.furnaceItemStacks[0] = null;
+                this.fermenterItemStacks[0] = null;
             }
         }
     }

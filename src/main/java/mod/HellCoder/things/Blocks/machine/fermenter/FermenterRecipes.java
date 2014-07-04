@@ -12,13 +12,15 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemFishFood;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 
 public class FermenterRecipes
 {
     private static final FermenterRecipes recipeBase = new FermenterRecipes();
     /** The list of smelting results. */
     private Map recipeList = new HashMap();
-	private Map pressureList= new HashMap();
+	private Map heatList= new HashMap();
 
     /**
      * Used to call methods addSmelting and getSmeltingResult.
@@ -30,33 +32,28 @@ public class FermenterRecipes
 
     private FermenterRecipes()
     {
-        this.regBlock(Blocks.iron_block, new ItemStack(RegItems.ironPlate), 250);
-        this.reg(Items.iron_ingot, new ItemStack(RegItems.smallIronPlate), 150);
-        this.reg(Items.leather, new ItemStack(RegItems.Insulator), 100);
+//        this.regBlock(Blocks.iron_block, new ItemStack(RegItems.ironPlate), 250);
+//        this.reg(Items.iron_ingot, new ItemStack(RegItems.smallIronPlate), 150);
+        this.reg(Items.leather, new FluidStack(FluidRegistry.getFluid("methane"), 1000), 100);
 
 
     }
 
-    public void regBlock(Block p_151393_1_, ItemStack p_151393_2_, int pressure)
-    {
-        this.reg(Item.getItemFromBlock(p_151393_1_), p_151393_2_, pressure);
-    }
-
-    public void reg(Item item, ItemStack stack, int pressure)
+    public void reg(Item item, FluidStack stack, int pressure)
     {
         this.addList(new ItemStack(item, 1, 32767), stack, pressure);
     }
 
-    public void addList(ItemStack stack, ItemStack stack2, int pressure)
+    public void addList(ItemStack stack, FluidStack stack2, int pressure)
     {
         this.recipeList.put(stack, stack2);
-        this.pressureList.put(stack, Float.valueOf(pressure));
+        this.heatList.put(stack, Float.valueOf(pressure));
     }
 
     /**
      * Returns the smelting result of an item.
      */
-    public ItemStack getSmeltingResult(ItemStack p_151395_1_)
+    public FluidStack getSmeltingResult(ItemStack p_151395_1_)
     {
         Iterator iterator = this.recipeList.entrySet().iterator();
         Entry entry;
@@ -72,13 +69,13 @@ public class FermenterRecipes
         }
         while (!this.func_151397_a(p_151395_1_, (ItemStack)entry.getKey()));
 
-        return (ItemStack)entry.getValue();
+        return (FluidStack)entry.getValue();
     }
     
     public float getPressureUse(ItemStack par1)
     {
     	
-        Iterator iterator = this.pressureList.entrySet().iterator();
+        Iterator iterator = this.heatList.entrySet().iterator();
         Entry entry;
 
         do

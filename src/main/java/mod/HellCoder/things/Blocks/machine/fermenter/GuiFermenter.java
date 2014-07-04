@@ -34,12 +34,14 @@ public class GuiFermenter extends GuiContainer
     protected void drawGuiContainerForegroundLayer(int p_146979_1_, int p_146979_2_)
     {
         String s = this.tile.hasCustomInventoryName() ? this.tile.getInventoryName() : I18n.format(this.tile.getInventoryName(), new Object[0]);
-        String pressure = String.valueOf(this.tile.pressure);
+        String pressure = String.valueOf(this.tile.heat);
         String energy = String.valueOf(this.tile.mjStored);
+        String fluid = String.valueOf(this.tile.tank.getFluidAmount());
         this.fontRendererObj.drawString(s, this.xSize / 2 - this.fontRendererObj.getStringWidth(s) / 2, 6, 4210752);
         this.fontRendererObj.drawString(I18n.format("container.inventory", new Object[0]), 8, this.ySize - 96 + 2, 4210752);
         this.fontRendererObj.drawString(pressure + " C", 8, 8, 4210752);
         this.fontRendererObj.drawString(energy + " MJ", 137, 8, 4210752);
+        this.fontRendererObj.drawString(fluid, 30, 25, 4210752);
     }
 
     @Override
