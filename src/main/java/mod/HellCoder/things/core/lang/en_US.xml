@@ -30,6 +30,8 @@
     <entry key="item.PressureRegulator.name">Pressure Regulator</entry>
     <entry key="item.PressureTank.name">Pressure Tank</entry>
     <entry key="item.SpecialPipe.name">Special Pipe</entry>
+    <entry key="item.GoldGear.name">Gold Gear</entry>
+    <entry key="item.IronGear.name">Iron Gear</entry>
     
     <entry key="tile.friendscraft.material.ingotCopper.name">Copper Ingot</entry>
         

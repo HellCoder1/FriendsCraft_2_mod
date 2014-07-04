@@ -86,6 +86,16 @@ public class Recipes {
 		GameRegistry.addRecipe(new ItemStack(RegItems.scythe), new Object[] {
 			" A ", " Z ", " Z ", Character.valueOf('A'), RegItems.scytheBlade, 
 			Character.valueOf('Z'), Items.stick});
+		GameRegistry.addRecipe(new ItemStack(RegItems.GoldGear), new Object[] {
+			" Z ", "Z Z", " Z ", Character.valueOf('Z'), Items.gold_ingot});
+		GameRegistry.addRecipe(new ItemStack(RegItems.IronGear), new Object[] {
+			" Z ", "Z Z", " Z ", Character.valueOf('Z'), Items.iron_ingot});
+		GameRegistry.addRecipe(new ItemStack(RegItems.GoldRedstoneGear), new Object[] {
+			" Z ", "ZAZ", " Z ", Character.valueOf('A'), RegItems.GoldGear,
+			Character.valueOf('Z'), Items.redstone});
+		GameRegistry.addRecipe(new ItemStack(RegItems.IronRedstoneGear), new Object[] {
+			" Z ", "ZAZ", " Z ", Character.valueOf('A'), RegItems.IronGear,
+			Character.valueOf('Z'), Items.redstone});
 		
 		/**
 		 * Blocks

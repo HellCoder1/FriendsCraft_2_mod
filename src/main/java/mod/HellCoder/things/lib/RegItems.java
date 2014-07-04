@@ -59,6 +59,8 @@ public class RegItems {
 	public static Item pressureRegulator;
 	public static Item pressureTank;
 	public static Item rawOrganicMaterial;
+	public static Item GoldGear;
+	public static Item IronGear;
 	
 	public static ItemBase itemMaterial;
 	
@@ -91,6 +93,8 @@ public class RegItems {
 		pressureRegulator = registerItem(new Item().setUnlocalizedName("PressureRegulator").setTextureName("friendscraft:PressureRegulator").setCreativeTab(FriendsCraft2mod.tabsFC));
 		pressureTank = registerItem(new Item().setUnlocalizedName("PressureTank").setTextureName("friendscraft:PressureTank").setCreativeTab(FriendsCraft2mod.tabsFC));
 		rawOrganicMaterial = registerItem(new Item().setUnlocalizedName("Raw_Organic_Material").setTextureName("friendscraft:RawOrganicMaterial").setCreativeTab(FriendsCraft2mod.tabsFC));
+		GoldGear = registerItem(new Item().setUnlocalizedName("GoldGear").setTextureName("friendscraft:GoldGear").setCreativeTab(FriendsCraft2mod.tabsFC));
+		IronGear = registerItem(new Item().setUnlocalizedName("IronGear").setTextureName("friendscraft:IronGear").setCreativeTab(FriendsCraft2mod.tabsFC));
 		
 		/**
 		 * Tools
