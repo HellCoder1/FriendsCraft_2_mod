@@ -48,11 +48,12 @@ public class Recipes {
 		
 		GameRegistry.addRecipe(new ItemStack(RegItems.Rollers), new Object[] {
 			" A ", "ZGZ", " A ", Character.valueOf('Z'), Items.stick, 
-			Character.valueOf('G'), new ItemStack(Items.redstone, 3),
-			Character.valueOf('A'), RegItems.IronRedstoneGear});
+			Character.valueOf('A'), Items.redstone,
+			Character.valueOf('Z'), Blocks.stone,
+			Character.valueOf('G'), RegItems.IronRedstoneGear});
 		GameRegistry.addRecipe(new ItemStack(RegItems.Press), new Object[] {
 			"AAZ", "  G", "AAZ", Character.valueOf('Z'), Items.iron_ingot, 
-			Character.valueOf('G'), new ItemStack(Items.stick, 2),
+			Character.valueOf('G'), Blocks.piston,
 			Character.valueOf('A'), Blocks.stone});
 		
 		GameRegistry.addRecipe(new ItemStack(RegItems.rawOrganicMaterial), new Object[] {

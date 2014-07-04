@@ -52,13 +52,13 @@ public class RegItems {
 	public static Item ironPlate;
 	public static Item smallIronPlate;
 	public static Item compressedPlants;
-	public static Item rawOrganicMaterial;
 	public static Item smallTank;
 	public static Item scytheBlade;
 	public static Item scissors;
 	public static Item termalDispenser;
 	public static Item pressureRegulator;
 	public static Item pressureTank;
+	public static Item rawOrganicMaterial;
 	
 	public static ItemBase itemMaterial;
 	
@@ -84,13 +84,13 @@ public class RegItems {
 		ironPlate = registerItem(new Item().setUnlocalizedName("IronPlate").setTextureName("friendscraft:IronPlate").setCreativeTab(FriendsCraft2mod.tabsFC));
 		smallIronPlate = registerItem(new Item().setUnlocalizedName("SmallIronPlate").setTextureName("friendscraft:SmallIronPlate").setCreativeTab(FriendsCraft2mod.tabsFC));
 		compressedPlants = registerItem(new Item().setUnlocalizedName("CompressedPlants").setTextureName("friendscraft:CompressedPlants").setCreativeTab(FriendsCraft2mod.tabsFC));
-		rawOrganicMaterial = registerItem(new Item().setUnlocalizedName("Raw_Organic_Material").setTextureName("friendscraft:RawOrganicMaterial").setCreativeTab(FriendsCraft2mod.tabsFC));
 		smallTank = registerItem(new Item().setUnlocalizedName("SmallTank").setTextureName("friendscraft:SmallTank").setCreativeTab(FriendsCraft2mod.tabsFC));
 		scytheBlade = registerItem(new Item().setUnlocalizedName("ScytheBlade").setTextureName("friendscraft:ScytheBlade").setCreativeTab(FriendsCraft2mod.tabsFC));
 		scissors = registerItem(new Item().setUnlocalizedName("Scissors").setTextureName("friendscraft:Scissors").setCreativeTab(FriendsCraft2mod.tabsFC));
 		termalDispenser = registerItem(new Item().setUnlocalizedName("TermalDispenser").setTextureName("friendscraft:TermalDispenser").setCreativeTab(FriendsCraft2mod.tabsFC));
 		pressureRegulator = registerItem(new Item().setUnlocalizedName("PressureRegulator").setTextureName("friendscraft:PressureRegulator").setCreativeTab(FriendsCraft2mod.tabsFC));
 		pressureTank = registerItem(new Item().setUnlocalizedName("PressureTank").setTextureName("friendscraft:PressureTank").setCreativeTab(FriendsCraft2mod.tabsFC));
+		rawOrganicMaterial = registerItem(new Item().setUnlocalizedName("Raw_Organic_Material").setTextureName("friendscraft:RawOrganicMaterial").setCreativeTab(FriendsCraft2mod.tabsFC));
 		
 		/**
 		 * Tools
