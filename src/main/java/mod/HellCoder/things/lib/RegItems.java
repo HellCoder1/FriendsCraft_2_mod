@@ -40,11 +40,13 @@ public class RegItems {
 	public static Item FCChest;
 	public static Item FCLegs;
 	public static Item FCBoots;
-	public static Item CoolantBlock;
+	public static Item IronGear;
+	public static Item GoldGear;
+	public static Item IronRedstoneGear;
 	public static Item GoldRedstoneGear;
+	public static Item CoolantBlock;
 	public static Item HighTemperaturePlate;
 	public static Item Insulator;
-	public static Item IronRedstoneGear;
 	public static Item MeltingForm;
 	public static Item Press;
 	public static Item Rollers;
@@ -59,8 +61,6 @@ public class RegItems {
 	public static Item pressureRegulator;
 	public static Item pressureTank;
 	public static Item rawOrganicMaterial;
-	public static Item GoldGear;
-	public static Item IronGear;
 	
 	public static ItemBase itemMaterial;
 	
@@ -75,10 +75,12 @@ public class RegItems {
 		 */
 		diga = registerItem(new Item().setUnlocalizedName("diga").setTextureName("friendscraft:digaAnim").setCreativeTab(FriendsCraft2mod.tabsFC));
 		digaingot = registerItem(new Item().setUnlocalizedName("digaingot").setTextureName("friendscraft:digaingotAnim").setCreativeTab(FriendsCraft2mod.tabsFC));
-		CoolantBlock = registerItem(new Item().setUnlocalizedName("CoolantBlock").setTextureName("friendscraft:CoolantBlock").setCreativeTab(FriendsCraft2mod.tabsFC));
-		GoldRedstoneGear = registerItem(new Item().setUnlocalizedName("GoldRedstoneGear").setTextureName("friendscraft:GoldRedstoneGear").setCreativeTab(FriendsCraft2mod.tabsFC));
-		HighTemperaturePlate = registerItem(new Item().setUnlocalizedName("HighTemperaturePlate").setTextureName("friendscraft:HighTemperaturePlate").setCreativeTab(FriendsCraft2mod.tabsFC));
+		IronGear = registerItem(new Item().setUnlocalizedName("IronGear").setTextureName("friendscraft:IronGear").setCreativeTab(FriendsCraft2mod.tabsFC));
+		GoldGear = registerItem(new Item().setUnlocalizedName("GoldGear").setTextureName("friendscraft:GoldGear").setCreativeTab(FriendsCraft2mod.tabsFC));
 		IronRedstoneGear = registerItem(new Item().setUnlocalizedName("IronRedstoneGear").setTextureName("friendscraft:IronRedstoneGear").setCreativeTab(FriendsCraft2mod.tabsFC));
+		GoldRedstoneGear = registerItem(new Item().setUnlocalizedName("GoldRedstoneGear").setTextureName("friendscraft:GoldRedstoneGear").setCreativeTab(FriendsCraft2mod.tabsFC));
+		CoolantBlock = registerItem(new Item().setUnlocalizedName("CoolantBlock").setTextureName("friendscraft:CoolantBlock").setCreativeTab(FriendsCraft2mod.tabsFC));
+		HighTemperaturePlate = registerItem(new Item().setUnlocalizedName("HighTemperaturePlate").setTextureName("friendscraft:HighTemperaturePlate").setCreativeTab(FriendsCraft2mod.tabsFC));
 		MeltingForm = registerItem(new Item().setUnlocalizedName("MeltingForm").setTextureName("friendscraft:MeltingForm").setCreativeTab(FriendsCraft2mod.tabsFC));
 		Press = registerItem(new Item().setUnlocalizedName("Press").setTextureName("friendscraft:Press").setCreativeTab(FriendsCraft2mod.tabsFC));
 		Rollers = registerItem(new Item().setUnlocalizedName("Rollers").setTextureName("friendscraft:Rollers").setCreativeTab(FriendsCraft2mod.tabsFC));
@@ -93,8 +95,8 @@ public class RegItems {
 		pressureRegulator = registerItem(new Item().setUnlocalizedName("PressureRegulator").setTextureName("friendscraft:PressureRegulator").setCreativeTab(FriendsCraft2mod.tabsFC));
 		pressureTank = registerItem(new Item().setUnlocalizedName("PressureTank").setTextureName("friendscraft:PressureTank").setCreativeTab(FriendsCraft2mod.tabsFC));
 		rawOrganicMaterial = registerItem(new Item().setUnlocalizedName("Raw_Organic_Material").setTextureName("friendscraft:RawOrganicMaterial").setCreativeTab(FriendsCraft2mod.tabsFC));
-		GoldGear = registerItem(new Item().setUnlocalizedName("GoldGear").setTextureName("friendscraft:GoldGear").setCreativeTab(FriendsCraft2mod.tabsFC));
-		IronGear = registerItem(new Item().setUnlocalizedName("IronGear").setTextureName("friendscraft:IronGear").setCreativeTab(FriendsCraft2mod.tabsFC));
+		
+		
 		
 		/**
 		 * Tools
