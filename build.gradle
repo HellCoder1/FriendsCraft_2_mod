@@ -22,7 +22,7 @@ group= "mod.HellCoder.things" // http://maven.apache.org/guides/mini/guide-namin
 archivesBaseName = "FriendsCraft_2_mod"
 
 minecraft {
-    version = "1.7.10-10.13.0.1160"
+    version = "1.7.10-10.13.0.1198"
     assetDir = "eclipse/assets"
 }
 
