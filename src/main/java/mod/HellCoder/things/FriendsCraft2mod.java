@@ -24,6 +24,7 @@ import mod.HellCoder.HellCoderCore.Utils.VersionChecker;
 import mod.HellCoder.things.Blocks.machine.fermenter.TileEntityFermenter;
 import mod.HellCoder.things.Blocks.machine.rollingmachine.TileEntityRM;
 import mod.HellCoder.things.TileEntity.TileEntityHermeticPipe;
+import mod.HellCoder.things.TileEntity.TileEntityTest3DBlock;
 import mod.HellCoder.things.core.Localization.LocalizationHandler;
 import mod.HellCoder.things.fluid.FCFluids;
 import mod.HellCoder.things.handler.ConfigurationHandler;
@@ -118,7 +119,7 @@ public class FriendsCraft2mod {
 
 		// tile Entity register
 		GameRegistry.registerTileEntity(TileEntityRM.class, "RollingMachine");
-		GameRegistry.registerTileEntity(TileEntityFermenter.class, "Fermenter");		
+		GameRegistry.registerTileEntity(TileEntityFermenter.class, "FCFermenter");
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
 		
 		GameRegistry.registerTileEntity(TileEntityHermeticPipe.class, "HermeticPipe");
@@ -130,6 +131,7 @@ public class FriendsCraft2mod {
 		proxy.registerTickHandler();
 		proxy.registerDisplayInformation();
 		proxy.initRenderingAndTextures();
+		proxy.registerRenderThings();
 		
 		MinecraftForge.EVENT_BUS.register(proxy);
 		FMLCommonHandler.instance().bus().register(instance);

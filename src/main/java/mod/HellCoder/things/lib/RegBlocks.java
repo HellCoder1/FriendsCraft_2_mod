@@ -9,6 +9,7 @@ import mod.HellCoder.things.Blocks.BlockMetals;
 import mod.HellCoder.things.Blocks.BlockOre;
 import mod.HellCoder.things.Blocks.DigaOre;
 import mod.HellCoder.things.Blocks.DigaBlock;
+import mod.HellCoder.things.Blocks.Test3DBlock;
 import mod.HellCoder.things.Blocks.blockpipe;
 import mod.HellCoder.things.Blocks.machine.fermenter.FermenterBlock;
 import mod.HellCoder.things.Blocks.machine.rollingmachine.RMblock;
@@ -39,6 +40,8 @@ public class RegBlocks {
 
     public static BlockOre blockOre;
     public static BlockMetals blockMetal;
+    
+    public static Block testblock;
     
 	public static void init() {
 
@@ -73,6 +76,12 @@ public class RegBlocks {
         
         digablock = new DigaBlock().setBlockName("digablock");
         GameRegistry.registerBlock(digablock, LightItemBlock.class, "digablock");
+        
+        /*
+         * 3D blocks
+         */
+        testblock = new Test3DBlock(Material.iron).setBlockName("test").setCreativeTab(FriendsCraft2mod.tabsFC);
+        GameRegistry.registerBlock(testblock, "test");
         
         /*
          * Metals

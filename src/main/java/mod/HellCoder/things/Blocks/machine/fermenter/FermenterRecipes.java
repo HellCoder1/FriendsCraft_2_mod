@@ -34,7 +34,9 @@ public class FermenterRecipes
     {
 //        this.regBlock(Blocks.iron_block, new ItemStack(RegItems.ironPlate), 250);
 //        this.reg(Items.iron_ingot, new ItemStack(RegItems.smallIronPlate), 150);
-        this.reg(Items.leather, new FluidStack(FluidRegistry.getFluid("methane"), 1000), 100);
+    	
+    	//need 400 pieces of items for full fluid buffer (60000/150 = 400)
+        this.reg(RegItems.rawOrganicMaterial, new FluidStack(FluidRegistry.getFluid("methane"), 150), 100);
 
 
     }

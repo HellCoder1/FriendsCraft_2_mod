@@ -8,6 +8,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
+import net.minecraftforge.oredict.OreDictionary;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -96,6 +97,12 @@ public class Recipes {
 		GameRegistry.addRecipe(new ItemStack(RegItems.IronRedstoneGear), new Object[] {
 			" Z ", "ZAZ", " Z ", Character.valueOf('A'), RegItems.IronGear,
 			Character.valueOf('Z'), Items.redstone});
+		GameRegistry.addRecipe(new ItemStack(RegItems.Hammer), new Object[] {
+			" B ", " A ", " A ", Character.valueOf('A'), Items.stick,
+			Character.valueOf('B'), Items.iron_ingot});
+//		GameRegistry.addShapedRecipe(new ItemStack(RegItems.smallIronPlate), new Object[] {
+//			"BA", Character.valueOf('A'), Items.iron_ingot,
+//			Character.valueOf('B'), RegItems.Hammer});
 		
 		/**
 		 * Blocks

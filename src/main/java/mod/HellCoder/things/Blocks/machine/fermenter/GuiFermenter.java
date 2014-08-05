@@ -75,7 +75,7 @@ public class GuiFermenter extends GuiContainer
 		}
 		IIcon icon = fluid.getFluid().getIcon(fluid);
 		mc.renderEngine.bindTexture(BLOCK_TEXTURE);
-		this.setGLColorFromInt(fluid.getFluid().getColor(fluid));
+//		this.setGLColorFromInt(fluid.getFluid().getColor(fluid));
 		int fullX = width / 16;
 		int fullY = height / 16;
 		int lastX = width - fullX * 16;

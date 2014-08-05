@@ -11,13 +11,17 @@ import mod.HellCoder.mainmenu.client.MenuClientTickHandler;
 import mod.HellCoder.things.Blocks.render.BlockCustomDigaOreRender;
 import mod.HellCoder.things.Blocks.render.BlockHermeticPipeRender;
 import mod.HellCoder.things.Blocks.render.DigaBlockRender;
+import mod.HellCoder.things.Blocks.render.TestBlock3DRender;
+import mod.HellCoder.things.TileEntity.TileEntityTest3DBlock;
 import mod.HellCoder.things.fluid.FCFluids;
 import mod.HellCoder.things.lib.RegBlocks;
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.registry.GameRegistry;
 
 public class ClientProxy extends CommonProxy
 {
@@ -49,6 +53,12 @@ public class ClientProxy extends CommonProxy
 		   RegBlocks.tubeRenderID = RenderingRegistry.getNextAvailableRenderId();
 		   registerBlockRenderer(new BlockHermeticPipeRender());
 	  }
+	
+	  @Override
+	  public void registerRenderThings() {
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTest3DBlock.class, new TestBlock3DRender());
+		GameRegistry.registerTileEntity(TileEntityTest3DBlock.class, "3Dblock");
+      }
 	
 	  public void registerBlockRenderer(ISimpleBlockRenderingHandler renderer)
 	  {

@@ -35,4 +35,8 @@ public class CommonProxy {
 	public void initializeIcons(TextureStitchEvent.Post event) {
 
 	}
+
+	public void registerRenderThings() {
+		
+	}
 }

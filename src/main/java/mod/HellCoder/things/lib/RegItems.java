@@ -22,6 +22,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntitySkull;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class RegItems {
 
@@ -61,6 +62,7 @@ public class RegItems {
 	public static Item pressureRegulator;
 	public static Item pressureTank;
 	public static Item rawOrganicMaterial;
+	public static Item Hammer;
 	
 	public static ItemBase itemMaterial;
 	
@@ -87,6 +89,7 @@ public class RegItems {
 		Insulator = registerItem(new Item().setUnlocalizedName("Insulator").setTextureName("friendscraft:Insulator").setCreativeTab(FriendsCraft2mod.tabsFC));
 		ironPlate = registerItem(new Item().setUnlocalizedName("IronPlate").setTextureName("friendscraft:IronPlate").setCreativeTab(FriendsCraft2mod.tabsFC));
 		smallIronPlate = registerItem(new Item().setUnlocalizedName("SmallIronPlate").setTextureName("friendscraft:SmallIronPlate").setCreativeTab(FriendsCraft2mod.tabsFC));
+		OreDictionary.registerOre("plateIron", smallIronPlate);
 		compressedPlants = registerItem(new Item().setUnlocalizedName("CompressedPlants").setTextureName("friendscraft:CompressedPlants").setCreativeTab(FriendsCraft2mod.tabsFC));
 		smallTank = registerItem(new Item().setUnlocalizedName("SmallTank").setTextureName("friendscraft:SmallTank").setCreativeTab(FriendsCraft2mod.tabsFC));
 		scytheBlade = registerItem(new Item().setUnlocalizedName("ScytheBlade").setTextureName("friendscraft:ScytheBlade").setCreativeTab(FriendsCraft2mod.tabsFC));
@@ -106,6 +109,7 @@ public class RegItems {
 		
 		scythe = registerItem((new Scythe(ToolMaterial.IRON).setUnlocalizedName("Scythe").setTextureName("friendscraft:scythe").setCreativeTab(FriendsCraft2mod.tabsFC)));
 		
+		Hammer = registerItem(new Hammer().setUnlocalizedName("Hammer").setTextureName("friendscraft:Hammer").setCreativeTab(FriendsCraft2mod.tabsFC));
 		/**
 		 * Armor
 		 */

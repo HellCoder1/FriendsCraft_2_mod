@@ -40,7 +40,7 @@ public class TileEntityFermenter extends TileEntity implements ISidedInventory, 
 
 	public int heat = 0;
 	final float cookingPressure = 100f;
-	int pressuremax = 250;
+	int maxheat = 300;
 	public int useHeatPerUse = 0;
 
 	static final float powerConst = 1.4f;
@@ -51,7 +51,7 @@ public class TileEntityFermenter extends TileEntity implements ISidedInventory, 
     private static final int[] slotsBottom = new int[] {1};
     private static final int[] slotsSides = new int[] {0,1};
     
-    public static FluidTank tank = new FluidTank(FluidContainerRegistry.BUCKET_VOLUME * 10);
+    public static FluidTank tank = new FluidTank(FluidContainerRegistry.BUCKET_VOLUME * 60);
     
     private static int maxCapacity = 500;
     private static int POWER_USAGE = 25;
@@ -279,13 +279,13 @@ public class TileEntityFermenter extends TileEntity implements ISidedInventory, 
     @SideOnly(Side.CLIENT)
 	public int getHeat(int par1){
     	
-		return (heat * par1) / pressuremax;
+		return (heat * par1) / maxheat;
 	}
     
     @SideOnly(Side.CLIENT)
     public int getFluidScale(int par1){
     	
-    	return (tank.getFluidAmount() * par1) / 10;
+    	return (tank.getFluidAmount() * par1) / 60000;
     }
     
     @SideOnly(Side.CLIENT)
@@ -313,7 +313,7 @@ public class TileEntityFermenter extends TileEntity implements ISidedInventory, 
 			boolean flag1 = false;
 
 			float oldpressure = heat;
-			if(heat < pressuremax){
+			if(heat < maxheat){
 				updatePressure();
 			}
 			if(heat != oldpressure){flagStateChange = true;}
@@ -364,8 +364,8 @@ public class TileEntityFermenter extends TileEntity implements ISidedInventory, 
 		if(heat < 0){
 			heat = 0;
         }
-		if(heat >= (pressuremax + 1)){
-			heat = pressuremax;
+		if(heat >= (maxheat + 1)){
+			heat = maxheat;
         }
 	}
 
