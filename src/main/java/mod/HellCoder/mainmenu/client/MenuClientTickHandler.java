@@ -47,7 +47,7 @@ public class MenuClientTickHandler
        if (((guiscreen instanceof GuiIngameMenu)) && (guiscreen.getClass() != minecraftMenu.getClass()))
        { 
             	 FCLog.info("Patched GuiIngameMenu.class");
-         Minecraft.getMinecraft().displayGuiScreen(new mod.HellCoder.mainmenu.ingamemenu.GuiIngameMenu());
+         Minecraft.getMinecraft().displayGuiScreen(new mod.HellCoder.mainmenu.InGameMenu.GuiIngameMenu());
        }
    }
 

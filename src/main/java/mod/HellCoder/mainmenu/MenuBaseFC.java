@@ -21,7 +21,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
-import mod.HellCoder.mainmenu.ingamemenu.GuiButtonMainMenu;
+import mod.HellCoder.mainmenu.InGameMenu.GuiButtonMainMenu;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
