@@ -1,4 +1,4 @@
-package mod.HellCoder.mainmenu.ingamemenu;
+package mod.HellCoder.mainmenu.InGameMenu;
 
 import java.util.ArrayList;
 import java.util.List;

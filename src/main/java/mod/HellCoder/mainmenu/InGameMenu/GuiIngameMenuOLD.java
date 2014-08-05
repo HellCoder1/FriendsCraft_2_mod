@@ -1,4 +1,4 @@
-package mod.HellCoder.mainmenu.ingamemenu;
+package mod.HellCoder.mainmenu.InGameMenu;
 
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.GuiIngameModOptions;
