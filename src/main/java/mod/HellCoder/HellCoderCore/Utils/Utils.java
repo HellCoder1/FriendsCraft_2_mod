@@ -1,16 +1,16 @@
 package mod.HellCoder.HellCoderCore.Utils;
 
-import buildcraft.api.core.Position;
 import mod.HellCoder.HellCoderCore.Utils.InventoryIterator.IInvSlot;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
 
 public class Utils {
 	public static final Random rng = new Random();
@@ -59,37 +59,6 @@ public class Utils {
 		world.spawnEntityInWorld(entity);
 
 		return true;
-	}
-	
-	public static ForgeDirection get2dOrientation(Position pos1, Position pos2) {
-		double Dx = pos1.x - pos2.x;
-		double Dz = pos1.z - pos2.z;
-		double angle = Math.atan2(Dz, Dx) / Math.PI * 180 + 180;
-
-		if (angle < 45 || angle > 315) {
-			return ForgeDirection.EAST;
-		} else if (angle < 135) {
-			return ForgeDirection.SOUTH;
-		} else if (angle < 225) {
-			return ForgeDirection.WEST;
-		} else {
-			return ForgeDirection.NORTH;
-		}
-	}
-
-	public static int addToRandomInventory(World world, int x, int y, int z, ItemStack stack) {
-		Collections.shuffle(directions);
-		for (ForgeDirection direction : directions) {
-			Position pos = new Position(x, y, z, direction);
-			pos.moveForwards(1.0);
-			TileEntity tileOnSide = world.getTileEntity((int)pos.x, (int)pos.y, (int)pos.z);
-			if (tileOnSide instanceof ISidedInventory || tileOnSide instanceof IInventory) {
-				if (add((IInventory) tileOnSide, stack, direction.getOpposite(), true).stackSize > 0) {
-					return add((IInventory) tileOnSide, stack, direction.getOpposite(), false).stackSize;
-				}
-			}
-		}
-		return 0;
 	}
 
 	private static ItemStack add(IInventory inventory, ItemStack stack, ForgeDirection side, boolean simulate) {

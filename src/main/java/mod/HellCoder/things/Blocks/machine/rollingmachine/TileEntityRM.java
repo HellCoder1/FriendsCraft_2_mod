@@ -1,31 +1,20 @@
 package mod.HellCoder.things.Blocks.machine.rollingmachine;
 
-import buildcraft.api.mj.MjBattery;
-import cpw.mods.fml.common.registry.GameRegistry;
+import cofh.api.energy.EnergyStorage;
+import cofh.api.energy.IEnergyHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import mod.HellCoder.HellCoderCore.Utils.Utils;
-import mod.HellCoder.things.FriendsCraft2mod;
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemHoe;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemSword;
-import net.minecraft.item.ItemTool;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class TileEntityRM extends TileEntity implements ISidedInventory
+public class TileEntityRM extends TileEntity implements ISidedInventory, IEnergyHandler
 {
 
 	public int pressure = 0;
@@ -41,10 +30,10 @@ public class TileEntityRM extends TileEntity implements ISidedInventory
     private static final int[] slotsBottom = new int[] {1};
     private static final int[] slotsSides = new int[] {0,1};
     
-    private static int maxCapacity = 500;
+    private static int maxCapacity = 10000;
     private static int POWER_USAGE = 25;
-    @MjBattery (maxReceivedPerCycle = 10, maxCapacity = 500)
-	public double mjStored = 0;
+
+    public EnergyStorage rfStored = new EnergyStorage(10000);
 
     int cookTime = 0;
     final int cookTimeDone = 100;
@@ -59,6 +48,41 @@ public class TileEntityRM extends TileEntity implements ISidedInventory
     
     public TileEntityRM(){
 
+    }
+
+    @Override
+    public void setWorldObj(World p_145834_1_) {
+        super.setWorldObj(p_145834_1_);
+    }
+
+    @Override
+    public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
+        return this.rfStored.receiveEnergy(maxReceive, simulate);
+    }
+
+    @Override
+    public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
+        return 0;
+    }
+
+    @Override
+    public int getEnergyStored(ForgeDirection from) {
+        return this.rfStored.getEnergyStored();
+    }
+
+    @Override
+    public int getMaxEnergyStored(ForgeDirection from) {
+        return this.rfStored.getEnergyStored();
+    }
+
+    @Override
+    public boolean canConnectEnergy(ForgeDirection from) {
+        return true;
+    }
+
+    @Override
+    public World getWorldObj() {
+        return super.getWorldObj();
     }
 
     /**
@@ -178,7 +202,7 @@ public class TileEntityRM extends TileEntity implements ISidedInventory
 
         this.pressure = p_145839_1_.getShort("Pressure");
         this.cookTime = p_145839_1_.getShort("CookTime");
-        this.mjStored = p_145839_1_.getShort("Energy");
+        this.rfStored.readFromNBT(p_145839_1_);
 
         if (p_145839_1_.hasKey("CustomName"))
         {
@@ -194,7 +218,7 @@ public class TileEntityRM extends TileEntity implements ISidedInventory
         super.writeToNBT(par1NBTTagCompound);
         par1NBTTagCompound.setShort("Pressure", (short) this.pressure);
         par1NBTTagCompound.setShort("CookTime", (short)this.cookTime);
-        par1NBTTagCompound.setShort("Energy", (short) this.mjStored);
+        this.rfStored.writeToNBT(par1NBTTagCompound);
         NBTTagList nbttaglist = new NBTTagList();
 
         for (int i = 0; i < this.furnaceItemStacks.length; ++i)
@@ -238,12 +262,12 @@ public class TileEntityRM extends TileEntity implements ISidedInventory
     	
 		return (pressure * par1) / pressuremax;
 	}
-    
+
     @SideOnly(Side.CLIENT)
     public int getEnergy(int par1){
-    	
-		return (int) ((this.mjStored * par1) / maxCapacity);
-		
+
+		return ((this.rfStored.getEnergyStored() * par1) / maxCapacity);
+
     }
 
     public void updateEntity()
@@ -253,7 +277,7 @@ public class TileEntityRM extends TileEntity implements ISidedInventory
 			return;
 		}
 
-		boolean flagStateChange = false;
+//		boolean flagStateChange = false;
 
 		redstoneSignal = getWorld().getBlockPowerInput(this.xCoord,	this.yCoord, this.zCoord);
 
@@ -263,13 +287,13 @@ public class TileEntityRM extends TileEntity implements ISidedInventory
 			
 			boolean flag1 = false;
 
-			float oldpressure = pressure;
+//			float oldpressure = pressure;
 			if(pressure < pressuremax){
 				updatePressure();
 			}
-			if(pressure != oldpressure){flagStateChange = true;}
+//			if(pressure != oldpressure){flagStateChange = true;}
 
-			int oldCookTime = cookTime;
+//			int oldCookTime = cookTime;
 			if (redstoneSignal == 0) {
 
 				if (canSmelt()) {
@@ -290,16 +314,16 @@ public class TileEntityRM extends TileEntity implements ISidedInventory
 
 			}
 
-			if(oldCookTime != cookTime){
-				flagStateChange = true;
-			}
+//			if(oldCookTime != cookTime){
+//				flagStateChange = true;
+//			}
 
 			if (flag1 ) {
 				this.markDirty();
 			}
-			if(flagStateChange){
-				worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-			}
+//			if(flagStateChange){
+//				worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+//			}
 		}
     }
 
@@ -308,14 +332,14 @@ public class TileEntityRM extends TileEntity implements ISidedInventory
 	}
     
 	private void updatePressure(){
-		
-		if((int)mjStored < 0){
-			mjStored = 0;
+
+		if(rfStored.getEnergyStored() < 0){
+			rfStored.setEnergyStored(0);
 		}
-		
-		if((int)mjStored >= 20){
-		mjStored = mjStored - 20;
-		pressure = pressure + 1;
+
+		if(rfStored.getEnergyStored() >= 200){
+		rfStored.extractEnergy(200, false);
+		pressure += 2;
 		}
 		
 		if(pressure < 0){

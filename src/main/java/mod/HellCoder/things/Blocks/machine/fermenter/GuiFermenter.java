@@ -9,9 +9,7 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
-
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
@@ -35,12 +33,12 @@ public class GuiFermenter extends GuiContainer
     {
         String s = this.tile.hasCustomInventoryName() ? this.tile.getInventoryName() : I18n.format(this.tile.getInventoryName(), new Object[0]);
         String pressure = String.valueOf(this.tile.heat);
-        String energy = String.valueOf(this.tile.mjStored);
+        String energy = String.valueOf(this.tile.rfStored.getEnergyStored());
         String fluid = String.valueOf(this.tile.tank.getFluidAmount());
         this.fontRendererObj.drawString(s, this.xSize / 2 - this.fontRendererObj.getStringWidth(s) / 2, 6, 4210752);
         this.fontRendererObj.drawString(I18n.format("container.inventory", new Object[0]), 8, this.ySize - 96 + 2, 4210752);
         this.fontRendererObj.drawString(pressure + " C", 8, 8, 4210752);
-        this.fontRendererObj.drawString(energy + " MJ", 137, 8, 4210752);
+        this.fontRendererObj.drawString(energy + "RF", 137, 8, 4210752);
         this.fontRendererObj.drawString(fluid, 30, 25, 4210752);
     }
 
@@ -62,10 +60,9 @@ public class GuiFermenter extends GuiContainer
         this.drawTexturedModalRect(k + 8, l + 17 + 48 - i2, 176, 68 - i2, 10, i2);
 
         int i3 = this.tile.getEnergy(48);
-        this.drawTexturedModalRect(k + 157, l + 17 + 48 - i3, 186, 68 - i3, 10, i3);        
+        this.drawTexturedModalRect(k + 157, l + 17 + 48 - i3, 186, 68 - i3, 10, i3);
 
         drawFluid(this.tile.tank.getFluid(), this.tile.getFluidScale(59), k + 95, l + 19, 31, 59);
-        
 //        drawTexturedModalRect(k + 95, l + 18, 176, 68, 31, 59);
     }
     
@@ -109,12 +106,5 @@ public class GuiFermenter extends GuiContainer
 			tess.addVertexWithUV(x + width, y + cut, zLevel, icon.getInterpolatedU(width), icon.getInterpolatedV(cut));
 			tess.addVertexWithUV(x, y + cut, zLevel, icon.getMinU(), icon.getInterpolatedV(cut));
 			tess.draw();
-		}
-		
-		public static void setGLColorFromInt(int color) {
-			float red = (color >> 16 & 255) / 255.0F;
-			float green = (color >> 8 & 255) / 255.0F;
-			float blue = (color & 255) / 255.0F;
-			GL11.glColor4f(red, green, blue, 1.0F);
 		}
 }

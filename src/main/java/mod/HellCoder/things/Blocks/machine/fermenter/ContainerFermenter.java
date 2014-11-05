@@ -1,6 +1,5 @@
 package mod.HellCoder.things.Blocks.machine.fermenter;
 
-import buildcraft.api.power.PowerHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -45,7 +44,7 @@ public class ContainerFermenter extends Container
         super.addCraftingToCrafters(par1ICrafting);
         par1ICrafting.sendProgressBarUpdate(this, 0, this.tile.cookTime);
         par1ICrafting.sendProgressBarUpdate(this, 1, this.tile.heat);
-        par1ICrafting.sendProgressBarUpdate(this, 2, (int) this.tile.mjStored);
+        par1ICrafting.sendProgressBarUpdate(this, 2, this.tile.rfStored.getEnergyStored());
     }
 
     /**
@@ -67,14 +66,14 @@ public class ContainerFermenter extends Container
             {
                 icrafting.sendProgressBarUpdate(this, 1, this.tile.heat);
             }
-            if (this.energy != (int) this.tile.mjStored) {
-                icrafting.sendProgressBarUpdate(this, 2, (int) this.tile.mjStored);
+            if (this.energy != this.tile.rfStored.getEnergyStored()) {
+                icrafting.sendProgressBarUpdate(this, 2, this.tile.rfStored.getEnergyStored());
             }
         }
 
         this.lastCookTime = this.tile.cookTime;
         this.pressure = this.tile.heat;
-        this.energy = (int) this.tile.mjStored;
+        this.energy = this.tile.rfStored.getEnergyStored();
     }
 
     @SideOnly(Side.CLIENT)
@@ -90,7 +89,7 @@ public class ContainerFermenter extends Container
         }
         if (par1 == 2){
         	
-        	this.tile.mjStored = par2;
+        	this.tile.rfStored.setEnergyStored(par2);
         }
 
 

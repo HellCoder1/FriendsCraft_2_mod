@@ -3,11 +3,9 @@ package mod.HellCoder.things.Blocks.machine.rollingmachine;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
-
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
@@ -29,12 +27,10 @@ public class GuiRM extends GuiContainer
     protected void drawGuiContainerForegroundLayer(int p_146979_1_, int p_146979_2_)
     {
         String s = this.tile.hasCustomInventoryName() ? this.tile.getInventoryName() : I18n.format(this.tile.getInventoryName(), new Object[0]);
-        String pressure = String.valueOf(this.tile.pressure);
-        String energy = String.valueOf(this.tile.mjStored);
         this.fontRendererObj.drawString(s, this.xSize / 2 - this.fontRendererObj.getStringWidth(s) / 2, 6, 4210752);
         this.fontRendererObj.drawString(I18n.format("container.inventory", new Object[0]), 8, this.ySize - 96 + 2, 4210752);
-        this.fontRendererObj.drawString(pressure + " bar", 8, 8, 4210752);
-        this.fontRendererObj.drawString(energy + " MJ", 137, 8, 4210752);
+        this.fontRendererObj.drawString(this.tile.pressure + " bar", 8, 8, 4210752);
+        this.fontRendererObj.drawString(this.tile.rfStored.getEnergyStored() + "RF", 137, 8, 4210752);
     }
 
     @Override
@@ -46,7 +42,6 @@ public class GuiRM extends GuiContainer
         int l = (this.height - this.ySize) / 2;
         this.drawTexturedModalRect(k, l, 0, 0, this.xSize, this.ySize);
         int i1;
-        float Pressure;
 
         i1 = this.tile.getCookProgressScaled(40);
         this.drawTexturedModalRect(k + 67, l + 31, 176, 0, i1 + 1, 18);

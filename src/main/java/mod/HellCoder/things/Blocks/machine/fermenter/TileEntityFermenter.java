@@ -1,41 +1,24 @@
 package mod.HellCoder.things.Blocks.machine.fermenter;
 
-import buildcraft.api.mj.MjBattery;
-import cpw.mods.fml.common.registry.GameRegistry;
+import cofh.api.energy.EnergyStorage;
+import cofh.api.energy.IEnergyHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import mod.HellCoder.HellCoderCore.Utils.Utils;
-import mod.HellCoder.things.FriendsCraft2mod;
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemHoe;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemSword;
-import net.minecraft.item.ItemTool;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTank;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
+import net.minecraftforge.fluids.*;
 
-public class TileEntityFermenter extends TileEntity implements ISidedInventory, IFluidHandler
+public class TileEntityFermenter extends TileEntity implements ISidedInventory, IFluidHandler, IEnergyHandler
 {
 
 	public int heat = 0;
@@ -51,12 +34,11 @@ public class TileEntityFermenter extends TileEntity implements ISidedInventory, 
     private static final int[] slotsBottom = new int[] {1};
     private static final int[] slotsSides = new int[] {0,1};
     
-    public static FluidTank tank = new FluidTank(FluidContainerRegistry.BUCKET_VOLUME * 60);
+    public static FluidTank tank = new FluidTank(FluidContainerRegistry.BUCKET_VOLUME * 20);
     
-    private static int maxCapacity = 500;
+    private static int maxCapacity = 10000;
     private static int POWER_USAGE = 25;
-    @MjBattery (maxReceivedPerCycle = 10, maxCapacity = 500)
-	public double mjStored = 0;
+   public EnergyStorage rfStored = new EnergyStorage(10000);
 
     int cookTime = 0;
     final int cookTimeDone = 100;
@@ -72,6 +54,36 @@ public class TileEntityFermenter extends TileEntity implements ISidedInventory, 
     
     public TileEntityFermenter(){
 
+    }
+
+    @Override
+    public World getWorldObj() {
+        return super.getWorldObj();
+    }
+
+    @Override
+    public boolean canConnectEnergy(ForgeDirection from) {
+        return true;
+    }
+
+    @Override
+    public int getMaxEnergyStored(ForgeDirection from) {
+        return this.rfStored.getMaxEnergyStored();
+    }
+
+    @Override
+    public int getEnergyStored(ForgeDirection from) {
+        return this.rfStored.getEnergyStored();
+    }
+
+    @Override
+    public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
+        return 0;
+    }
+
+    @Override
+    public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
+        return this.rfStored.receiveEnergy(maxReceive, simulate);
     }
 
     /**
@@ -215,7 +227,7 @@ public class TileEntityFermenter extends TileEntity implements ISidedInventory, 
 
         this.heat = par1NBTTagCompound.getShort("Heat");
         this.cookTime = par1NBTTagCompound.getShort("CookTime");
-        this.mjStored = par1NBTTagCompound.getShort("Energy");
+        this.rfStored.readFromNBT(par1NBTTagCompound);
         
         if (par1NBTTagCompound.hasKey("methane"))
         {
@@ -236,8 +248,8 @@ public class TileEntityFermenter extends TileEntity implements ISidedInventory, 
         super.writeToNBT(par1NBTTagCompound);
         par1NBTTagCompound.setShort("Heat", (short) this.heat);
         par1NBTTagCompound.setShort("CookTime", (short)this.cookTime);
-        par1NBTTagCompound.setShort("Energy", (short) this.mjStored);
         par1NBTTagCompound.setShort("methane", (short) this.tank.getFluidAmount());
+        this.rfStored.writeToNBT(par1NBTTagCompound);
         NBTTagList nbttaglist = new NBTTagList();
 
         for (int i = 0; i < this.fermenterItemStacks.length; ++i)
@@ -285,13 +297,13 @@ public class TileEntityFermenter extends TileEntity implements ISidedInventory, 
     @SideOnly(Side.CLIENT)
     public int getFluidScale(int par1){
     	
-    	return (tank.getFluidAmount() * par1) / 60000;
+    	return (tank.getFluidAmount() * par1) / 20000;
     }
     
     @SideOnly(Side.CLIENT)
     public int getEnergy(int par1){
     	
-		return (int) ((this.mjStored * par1) / maxCapacity);
+		return ((this.rfStored.getEnergyStored() * par1) / this.rfStored.getMaxEnergyStored());
 		
     }
 
@@ -352,13 +364,13 @@ public class TileEntityFermenter extends TileEntity implements ISidedInventory, 
     
 	private void updatePressure(){
 		
-		if((int)mjStored < 0){
-			mjStored = 0;
+		if(rfStored.getEnergyStored() < 0){
+			rfStored.setEnergyStored(0);
 		}
 		
-		if((int)mjStored >= 20){
-		mjStored = mjStored - 20;
-		heat = heat + 1;
+		if(rfStored.getEnergyStored() >= 200){
+		rfStored.extractEnergy(200, false);
+		heat = heat + 2;
 		}
 		
 		if(heat < 0){

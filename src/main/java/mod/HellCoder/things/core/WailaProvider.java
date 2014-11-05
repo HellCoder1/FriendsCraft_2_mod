@@ -27,7 +27,7 @@ public class WailaProvider implements IWailaDataProvider {
 	@Override
 	public List<String> getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
 		if(accessor.getTileEntity() instanceof TileEntityRM)
-			currenttip.add("Pressure: " + String.valueOf( ((TileEntityRM)accessor.getTileEntity()).mjStored));
+			currenttip.add("Pressure: " + String.valueOf( ((TileEntityRM)accessor.getTileEntity()).rfStored));
 		return currenttip;
 	}
  

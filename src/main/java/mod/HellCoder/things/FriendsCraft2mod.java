@@ -1,55 +1,32 @@
 package mod.HellCoder.things;
 
-import cpw.mods.fml.client.registry.RenderingRegistry;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.ModMetadata;
-import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.Mod.Instance;
+import cpw.mods.fml.common.*;
 import cpw.mods.fml.common.Mod.Metadata;
-import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLInterModComms;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import mod.HellCoder.HellCoderCore.Utils.FCLog;
 import mod.HellCoder.HellCoderCore.Utils.VersionChecker;
 import mod.HellCoder.things.Blocks.machine.fermenter.TileEntityFermenter;
 import mod.HellCoder.things.Blocks.machine.rollingmachine.TileEntityRM;
 import mod.HellCoder.things.TileEntity.TileEntityHermeticPipe;
-import mod.HellCoder.things.TileEntity.TileEntityTest3DBlock;
 import mod.HellCoder.things.core.Localization.LocalizationHandler;
 import mod.HellCoder.things.fluid.FCFluids;
 import mod.HellCoder.things.handler.ConfigurationHandler;
 import mod.HellCoder.things.handler.GuiHandler;
+import mod.HellCoder.things.lib.Recipes;
 import mod.HellCoder.things.lib.RegBlocks;
 import mod.HellCoder.things.lib.RegItems;
-import mod.HellCoder.things.lib.Recipes;
 import mod.HellCoder.things.tab.FCTab;
 import mod.HellCoder.things.world.DigaOreGenerator;
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EntityList;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.stats.Achievement;
-import net.minecraft.stats.AchievementList;
-import net.minecraft.stats.StatBase;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
 
-@Mod(modid = FriendsCraft2mod.MOD_ID, name = FriendsCraft2mod.modname, version = "1.7.10-1.1", acceptedMinecraftVersions = "1.7.10", 
-useMetadata = true, guiFactory = "mod.HellCoder.things.gui.client.GuiFactory")
+@Mod(modid = FriendsCraft2mod.MOD_ID, name = FriendsCraft2mod.modname, version = "1.7.10-0.1.1", acceptedMinecraftVersions = "1.7.10", 
+useMetadata = true,  guiFactory = "mod.HellCoder.things.gui.client.GuiFactory")
 public class FriendsCraft2mod {
 	
 	public static final String MOD_ID = "FC2";

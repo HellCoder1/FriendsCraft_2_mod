@@ -1,14 +1,13 @@
 package mod.HellCoder.things.Blocks.machine.rollingmachine;
 
-import buildcraft.api.power.PowerHandler;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class ContainerRM extends Container
 {
@@ -45,7 +44,7 @@ public class ContainerRM extends Container
         super.addCraftingToCrafters(par1ICrafting);
         par1ICrafting.sendProgressBarUpdate(this, 0, this.tile.cookTime);
         par1ICrafting.sendProgressBarUpdate(this, 1, this.tile.pressure);
-        par1ICrafting.sendProgressBarUpdate(this, 2, (int) this.tile.mjStored);
+        par1ICrafting.sendProgressBarUpdate(this, 2, this.tile.rfStored.getEnergyStored());
     }
 
     /**
@@ -67,14 +66,14 @@ public class ContainerRM extends Container
             {
                 icrafting.sendProgressBarUpdate(this, 1, this.tile.pressure);
             }
-            if (this.energy != (int) this.tile.mjStored) {
-                icrafting.sendProgressBarUpdate(this, 2, (int) this.tile.mjStored);
+            if (this.energy != this.tile.rfStored.getEnergyStored()) {
+                icrafting.sendProgressBarUpdate(this, 2, this.tile.rfStored.getEnergyStored());
             }
         }
 
         this.lastCookTime = this.tile.cookTime;
         this.pressure = this.tile.pressure;
-        this.energy = (int) this.tile.mjStored;
+        this.energy = this.tile.rfStored.getEnergyStored();
     }
 
     @SideOnly(Side.CLIENT)
@@ -89,8 +88,8 @@ public class ContainerRM extends Container
         	this.tile.pressure = par2;
         }
         if (par1 == 2){
-        	
-        	this.tile.mjStored = par2;
+
+        	this.tile.rfStored.setEnergyStored(par2);
         }
 
 
@@ -104,6 +103,7 @@ public class ContainerRM extends Container
     /**
      * Called when a player shift-clicks on a slot. You must override this or you will crash when someone does that.
      */
+    @Override
     public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slotIndex)
     {
     	// copied from ContainerFurnace
