@@ -168,7 +168,7 @@ public class TileEntityFermenter extends TileEntity implements ISidedInventory, 
      */
     public String getInventoryName()
     {
-        return this.hasCustomInventoryName() ? this.displayName : "Rolling Machine";
+        return this.hasCustomInventoryName() ? this.displayName : "Fermenter";
     }
 
     /**
