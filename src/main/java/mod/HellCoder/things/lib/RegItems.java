@@ -2,8 +2,8 @@ package mod.HellCoder.things.lib;
 
 import java.util.List;
 
-import cofh.item.ItemBase;
-import cofh.util.ItemHelper;
+import cofh.core.item.ItemBase;
+import cofh.lib.util.helpers.ItemHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 import mod.HellCoder.things.FriendsCraft2mod;
 import mod.HellCoder.things.Items.*;
@@ -78,7 +78,9 @@ public class RegItems {
 		diga = registerItem(new Item().setUnlocalizedName("diga").setTextureName("friendscraft:digaAnim").setCreativeTab(FriendsCraft2mod.tabsFC));
 		digaingot = registerItem(new Item().setUnlocalizedName("digaingot").setTextureName("friendscraft:digaingotAnim").setCreativeTab(FriendsCraft2mod.tabsFC));
 		IronGear = registerItem(new Item().setUnlocalizedName("IronGear").setTextureName("friendscraft:IronGear").setCreativeTab(FriendsCraft2mod.tabsFC));
+		OreDictionary.registerOre("gearIron", IronGear);
 		GoldGear = registerItem(new Item().setUnlocalizedName("GoldGear").setTextureName("friendscraft:GoldGear").setCreativeTab(FriendsCraft2mod.tabsFC));
+        OreDictionary.registerOre("gearGold", GoldGear);
 		IronRedstoneGear = registerItem(new Item().setUnlocalizedName("IronRedstoneGear").setTextureName("friendscraft:IronRedstoneGear").setCreativeTab(FriendsCraft2mod.tabsFC));
 		GoldRedstoneGear = registerItem(new Item().setUnlocalizedName("GoldRedstoneGear").setTextureName("friendscraft:GoldRedstoneGear").setCreativeTab(FriendsCraft2mod.tabsFC));
 		CoolantBlock = registerItem(new Item().setUnlocalizedName("CoolantBlock").setTextureName("friendscraft:CoolantBlock").setCreativeTab(FriendsCraft2mod.tabsFC));
@@ -98,8 +100,6 @@ public class RegItems {
 		pressureRegulator = registerItem(new Item().setUnlocalizedName("PressureRegulator").setTextureName("friendscraft:PressureRegulator").setCreativeTab(FriendsCraft2mod.tabsFC));
 		pressureTank = registerItem(new Item().setUnlocalizedName("PressureTank").setTextureName("friendscraft:PressureTank").setCreativeTab(FriendsCraft2mod.tabsFC));
 		rawOrganicMaterial = registerItem(new Item().setUnlocalizedName("Raw_Organic_Material").setTextureName("friendscraft:RawOrganicMaterial").setCreativeTab(FriendsCraft2mod.tabsFC));
-		
-		
 		
 		/**
 		 * Tools

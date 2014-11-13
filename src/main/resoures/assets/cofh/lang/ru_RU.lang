@@ -1,0 +1,103 @@
+#ru_RU
+
+chat.cofh.secure.0=Примечание: Операторы сервера могут свободно получить доступ к "защищённым" блокам на этом сервере.
+chat.cofh.secure.1=Это личная вещь и принадлежит
+chat.cofh.secure.2=Вы могли потерять руку!
+
+enchant.cofh.holding=Удержание
+
+info.cofh.access=Доступ
+info.cofh.accessMode=Режим доступа
+info.cofh.accessPublic=Публичный
+info.cofh.accessRestricted=Ограниченный
+info.cofh.accessPrivate=Приватный
+info.cofh.all=Все
+info.cofh.amount=Количество
+info.cofh.augmentation=Прирост
+info.cofh.blank=Пусто
+info.cofh.capacity=Ёмкость
+info.cofh.charge=Заряд
+info.cofh.configuration=Конфигурация
+info.cofh.contents=Содержит
+info.cofh.controlStatus=Режим управления
+info.cofh.damageAttack=Урон
+info.cofh.damageFlux=Флаксовый урон
+info.cofh.disabled=Выключен
+info.cofh.dry=Сухая
+info.cofh.empty=Пусто
+info.cofh.enabled=Включен
+info.cofh.energy=Энергия
+info.cofh.energyConsume=Расход энергии
+info.cofh.energyProduce=Выходная энергия
+info.cofh.energyStored=Хранимая энергия
+info.cofh.fluid=Жидкость
+info.cofh.forDetails=для деталей
+info.cofh.frequency=Частота
+info.cofh.friendsList=Список друзей
+info.cofh.hasInfo=Есть информация
+info.cofh.high=Высокий
+info.cofh.hold=Удерживайте
+info.cofh.ignored=Игнорировать
+info.cofh.information=Информация
+info.cofh.infinite=Бесконечный
+info.cofh.item=Предмет
+info.cofh.items=Предметы
+info.cofh.level=Уровень
+info.cofh.locked=Закрыто
+info.cofh.low=Низкий
+info.cofh.maxEnergyPerTick=Макс. энергия
+info.cofh.none=Нет
+info.cofh.owner=Владелец
+info.cofh.perUse=За использование
+info.cofh.press=Нажмите
+info.cofh.receive=Принимает
+info.cofh.receiving=Приём
+info.cofh.redstoneControl=Красный контроль
+info.cofh.security=Безопасность
+info.cofh.send=Передаёт
+info.cofh.sending=Передача
+info.cofh.shift=Shift
+info.cofh.signal=Сигнал
+info.cofh.signalRequired=Требуется сигнал
+info.cofh.soaked=Смоченная
+info.cofh.source=Источник
+info.cofh.transfer=Передача
+info.cofh.tutorial=Руководство
+info.cofh.unlocked=Открыто
+
+info.cofh.command.friend=Команда, чтобы добавить и удалить друзей из вашего списка друзей.
+info.cofh.command.help=Команда, чтобы помочь с другими командами!
+info.cofh.command.killall=Убивает всех существ данного имени и по умолчанию убивает всех враждебных мобов..
+info.cofh.command.tps=Получает такты в секунду на сервере. На прекрасном сервере это должно быть 20.
+info.cofh.command.tpx=Улучшенная версия команды /tp, которая работает между измерениями.
+info.cofh.command.version=Выдаёт версию этого мода.
+
+info.cofh.command.syntaxError=Неправильный синтаксис.
+
+info.cofh.command.friend.0=успшено добавлен в ваш список друзей.
+info.cofh.command.friend.1=Извините, возникла проблема при добавлении
+info.cofh.command.friend.2=в ваш список.
+info.cofh.command.friend.3=Извините, это имя не допустимо.
+info.cofh.command.friend.4=успешно удалён из вашего списка друзей.
+info.cofh.command.friend.5=не был вашим другом.
+info.cofh.command.help.0=Доступны следующие команды:
+info.cofh.command.killall.0=
+info.cofh.command.killall.1=
+info.cofh.command.killall.2=Не найдено враждебных мобов!
+info.cofh.command.version.0=Этот мод работает на версии
+
+info.cofh.tutorial.fluxRequired=Для работы необходим Redstone Flux.
+info.cofh.tutorial.tabAugment=Вкладка "Прирост" предоставляет модульные дополнения.
+info.cofh.tutorial.tabConfiguration=Эта вкладка конфигурации определяет, как предметы попадают и покидают устройство.
+info.cofh.tutorial.tabConfiguration2=Эта вкладка конфигурации определяет режим работы этого устройства.
+info.cofh.tutorial.tabRedstone=Вкладка "Красный контроль" настраивает поведение устройства на сигнал красного камня.
+info.cofh.tutorial.tabSecurity=Вкладка "Безопасность" позволяет владельцу контролировать, кто может управлять этим устройством.
+
+item.invalid.name=Неизвестный предмет (Уничтожить)
+
+#Fluid Name Fixes
+
+fluid.tile.water=Вода
+fluid.tile.lava=Лава
+fluid.fuel=Топливо
+fluid.oil=Нефть

@@ -1,7 +1,6 @@
 package mod.HellCoder.things.lib;
 
-import cofh.fluid.BlockFluidCoFHBase;
-import cofh.util.ItemHelper;
+import cofh.core.fluid.BlockFluidCoFHBase;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import mod.HellCoder.things.FriendsCraft2mod;
@@ -50,7 +49,7 @@ public class RegBlocks {
 		 */
 		
         rollingmachine = new RMblock(false).setBlockName("rollingmachine").setCreativeTab(FriendsCraft2mod.tabsFC);
-        fermenter = new FermenterBlock().setBlockName("Fermenter").setCreativeTab(FriendsCraft2mod.tabsFC); 
+        fermenter = new FermenterBlock().setBlockName("fermenter").setCreativeTab(FriendsCraft2mod.tabsFC); 
         
         GameRegistry.registerBlock(rollingmachine, "rollingmachine");
         GameRegistry.registerBlock(fermenter, "Fermenter");

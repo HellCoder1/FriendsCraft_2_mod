@@ -1,10 +1,11 @@
 package mod.HellCoder.mainmenu.InGameMenu;
 
-import java.util.ArrayList;
-import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import org.lwjgl.opengl.GL11;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class GuiButtonPanel extends GuiButton
 {
@@ -29,23 +30,12 @@ public class GuiButtonPanel extends GuiButton
     updatePosition(containerWidth, containerHeight);
   }
 
-  public GuiButtonMainMenu addButton(String displayText)
-  {
-    return addButton(displayText, this.nextButtonId++);
-  }
-
   public GuiButtonMainMenu addButton(String displayText, int buttonId)
   {
     GuiButtonMainMenu button = new GuiButtonMainMenu(buttonId, displayText);
     this.buttons.add(button);
     updateButtonPositions();
     return button;
-  }
-
-  public void removeButton(GuiButtonMainMenu button)
-  {
-    this.buttons.remove(button);
-    updateButtonPositions();
   }
 
   public void updatePosition(int containerWidth, int containerHeight)
@@ -126,11 +116,6 @@ public class GuiButtonPanel extends GuiButton
     return this.pressedButton;
   }
 
-  public int getPressedButtonId()
-  {
-    return this.pressedButton != null ? this.pressedButton.id : -1;
-  }
-
   public boolean mousePressed(Minecraft minecraft, int mouseX, int mouseY)
   {
     mouseX -= this.xPosition;
@@ -155,26 +140,6 @@ public class GuiButtonPanel extends GuiButton
       this.pressedButton.mouseReleased(mouseX, mouseY);
       this.pressedButton = null;
     }
-  }
-
-  public boolean isMouseOver(GuiButtonMainMenu button, Minecraft minecraft, int mouseX, int mouseY)
-  {
-    if (!this.buttons.contains(button)) return false;
-
-    mouseX -= this.xPosition;
-    mouseY -= this.yPosition;
-
-    return button.mousePressed(minecraft, mouseX, mouseY);
-  }
-
-  public int getAdjustedXPosition(GuiButtonMainMenu button)
-  {
-    return (!this.buttons.contains(button) ? 0 : button.xPosition) + this.xPosition;
-  }
-
-  public int getAdjustedYPosition(GuiButtonMainMenu button)
-  {
-    return (!this.buttons.contains(button) ? 0 : button.yPosition) + this.yPosition;
   }
 
   public static enum AnchorType

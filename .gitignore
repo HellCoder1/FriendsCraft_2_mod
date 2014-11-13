@@ -7,6 +7,7 @@
 .metadata
 bin/
 tmp/
+out/
 *.tmp
 *.bak
 *.swp
@@ -17,6 +18,9 @@ local.properties
 .loadpath
 eclipse/
 .gradle/
+*.iml
+*.ipr
+*.iws
 
 # External tool builders
 .externalToolBuilders/

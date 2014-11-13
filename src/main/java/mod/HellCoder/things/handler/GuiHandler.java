@@ -20,8 +20,8 @@ public class GuiHandler implements IGuiHandler
 		TileEntity tile_entity = world.getTileEntity(x, y, z);
 		switch(id)
 		{
-		case 0: return new ContainerRM(player.inventory, (TileEntityRM) tile_entity);
-		case 1: return new ContainerFermenter(player.inventory, (TileEntityFermenter) tile_entity);
+		case 0: return new ContainerFermenter(player.inventory, (TileEntityFermenter) tile_entity);
+		case 1: return new ContainerRM(player.inventory, (TileEntityRM) tile_entity);
 		}
 		return null;
 	}
@@ -32,8 +32,8 @@ public class GuiHandler implements IGuiHandler
 		TileEntity tile_entity = world.getTileEntity(x, y, z);
 		switch(id)
 		{
-		case 0: return new GuiRM(player.inventory, (TileEntityRM) tile_entity);
-		case 1: return new GuiFermenter(player.inventory, (TileEntityFermenter) tile_entity);
+		case 0: return new GuiFermenter(player.inventory, (TileEntityFermenter) tile_entity);
+		case 1: return new GuiRM(player.inventory, (TileEntityRM) tile_entity);
 		}
 		return null;
 	}

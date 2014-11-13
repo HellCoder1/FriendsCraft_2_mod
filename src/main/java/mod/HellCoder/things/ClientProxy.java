@@ -1,12 +1,15 @@
 package mod.HellCoder.things;
 
-import cofh.render.IconRegistry;
-import cofh.util.StringHelper;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.item.Item;
-import net.minecraftforge.client.MinecraftForgeClient;
-import net.minecraftforge.client.event.TextureStitchEvent;
-import net.minecraftforge.fluids.Fluid;
+import cofh.core.render.IconRegistry;
+import cofh.lib.util.helpers.StringHelper;
+import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.client.registry.ClientRegistry;
+import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
+import cpw.mods.fml.client.registry.RenderingRegistry;
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.registry.GameRegistry;
+import mod.HellCoder.mainmenu.MenuFC;
 import mod.HellCoder.mainmenu.client.MenuClientTickHandler;
 import mod.HellCoder.things.Blocks.render.BlockCustomDigaOreRender;
 import mod.HellCoder.things.Blocks.render.BlockHermeticPipeRender;
@@ -15,16 +18,13 @@ import mod.HellCoder.things.Blocks.render.TestBlock3DRender;
 import mod.HellCoder.things.TileEntity.TileEntityTest3DBlock;
 import mod.HellCoder.things.fluid.FCFluids;
 import mod.HellCoder.things.lib.RegBlocks;
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.client.registry.ClientRegistry;
-import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
-import cpw.mods.fml.client.registry.RenderingRegistry;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraftforge.client.event.TextureStitchEvent;
+import net.minecraftforge.fluids.Fluid;
 
 public class ClientProxy extends CommonProxy
 {
+    MenuFC menu;
 
 	@Override
 	protected void registerTickHandler()
@@ -32,14 +32,14 @@ public class ClientProxy extends CommonProxy
 		FMLCommonHandler.instance().bus().register(new FriendsCraftTicker());
 		FMLCommonHandler.instance().bus().register(new MenuClientTickHandler());
     }
-	
+
 	@Override
 	 public int particleCount(int base)
 	  {
 	    if (FMLClientHandler.instance().getClient().gameSettings.particleSetting == 2) return 0;
-	    return FMLClientHandler.instance().getClient().gameSettings.particleSetting == 1 ? base * 1 : base * 2;
+	    return FMLClientHandler.instance().getClient().gameSettings.particleSetting == 1 ? base : base * 2;
 	  }
-	@Override
+	  @Override
 	  public void registerDisplayInformation()
 	  {
 		  RegBlocks.blockCustomDigaOreRI = RenderingRegistry.getNextAvailableRenderId();

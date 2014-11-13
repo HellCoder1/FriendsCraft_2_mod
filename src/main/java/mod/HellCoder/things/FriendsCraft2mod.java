@@ -25,7 +25,7 @@ import mod.HellCoder.things.world.DigaOreGenerator;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraftforge.common.MinecraftForge;
 
-@Mod(modid = FriendsCraft2mod.MOD_ID, name = FriendsCraft2mod.modname, version = "1.7.10-0.1.1", acceptedMinecraftVersions = "1.7.10", 
+@Mod(modid = FriendsCraft2mod.MOD_ID, name = FriendsCraft2mod.modname, version = "1.7.10-0.1.1", dependencies = "required-after:CoFHCore", acceptedMinecraftVersions = "1.7.10", 
 useMetadata = true,  guiFactory = "mod.HellCoder.things.gui.client.GuiFactory")
 public class FriendsCraft2mod {
 	
@@ -95,8 +95,9 @@ public class FriendsCraft2mod {
 		FCLog.info("Load Recipes");
 
 		// tile Entity register
-		GameRegistry.registerTileEntity(TileEntityRM.class, "RollingMachine");
+
 		GameRegistry.registerTileEntity(TileEntityFermenter.class, "FCFermenter");
+		GameRegistry.registerTileEntity(TileEntityRM.class, "RollingMachine");
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
 		
 		GameRegistry.registerTileEntity(TileEntityHermeticPipe.class, "HermeticPipe");

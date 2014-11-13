@@ -36,20 +36,20 @@ public class FermenterRecipes
 //        this.reg(Items.iron_ingot, new ItemStack(RegItems.smallIronPlate), 150);
     	
     	//need 400 pieces of items for full fluid buffer (60000/150 = 400)
-        this.reg(RegItems.rawOrganicMaterial, new FluidStack(FluidRegistry.getFluid("methane"), 150), 100);
+        this.reg(RegItems.rawOrganicMaterial, new FluidStack(FluidRegistry.getFluid("methane"), 300), 100);
 
 
     }
 
-    public void reg(Item item, FluidStack stack, int pressure)
+    public void reg(Item item, FluidStack stack, int heat)
     {
-        this.addList(new ItemStack(item, 1, 32767), stack, pressure);
+        this.addList(new ItemStack(item, 1, 32767), stack, heat);
     }
 
-    public void addList(ItemStack stack, FluidStack stack2, int pressure)
+    public void addList(ItemStack stack, FluidStack stack2, int heat)
     {
         this.recipeList.put(stack, stack2);
-        this.heatList.put(stack, Float.valueOf(pressure));
+        this.heatList.put(stack, Float.valueOf(heat));
     }
 
     /**
@@ -74,7 +74,7 @@ public class FermenterRecipes
         return (FluidStack)entry.getValue();
     }
     
-    public float getPressureUse(ItemStack par1)
+    public float getHeatUse(ItemStack par1)
     {
     	
         Iterator iterator = this.heatList.entrySet().iterator();

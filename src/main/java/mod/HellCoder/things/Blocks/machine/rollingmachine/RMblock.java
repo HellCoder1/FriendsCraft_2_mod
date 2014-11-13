@@ -146,7 +146,7 @@ public class RMblock extends BlockContainer
     		TileEntityRM var10 = (TileEntityRM) par1World.getTileEntity(par2, par3, par4);
     		if (var10 != null)
     		{
-    			par5EntityPlayer.openGui(FriendsCraft2mod.instance, 0, par1World, par2, par3, par4);
+    			par5EntityPlayer.openGui(FriendsCraft2mod.instance, 1, par1World, par2, par3, par4);
     		}
     		return true;
     	}

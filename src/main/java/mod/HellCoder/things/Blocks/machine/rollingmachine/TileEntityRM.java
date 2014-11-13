@@ -1,7 +1,9 @@
 package mod.HellCoder.things.Blocks.machine.rollingmachine;
 
 import cofh.api.energy.EnergyStorage;
+import cofh.api.energy.IEnergyContainerItem;
 import cofh.api.energy.IEnergyHandler;
+import cofh.api.tileentity.IEnergyInfo;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import mod.HellCoder.HellCoderCore.Utils.Utils;
@@ -14,7 +16,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class TileEntityRM extends TileEntity implements ISidedInventory, IEnergyHandler
+public class TileEntityRM extends TileEntity implements ISidedInventory, IEnergyHandler, IEnergyInfo
 {
 
 	public int pressure = 0;
@@ -328,7 +330,7 @@ public class TileEntityRM extends TileEntity implements ISidedInventory, IEnergy
     }
 
 	public void UsePressure(){		
-        pressure = pressure - (int)RMRecipes.init().getPressureUse(this.furnaceItemStacks[0]);
+        pressure -= (int)RMRecipes.init().getPressureUse(this.furnaceItemStacks[0]);
 	}
     
 	private void updatePressure(){
@@ -434,4 +436,40 @@ public class TileEntityRM extends TileEntity implements ISidedInventory, IEnergy
 	public World getWorld() {
 		return this.worldObj;
 	}
+
+	@Override
+	public int getInfoEnergyPerTick() {
+		// TODO Автоматически созданная заглушка метода
+		return 0;
+	}
+
+	@Override
+	public int getInfoMaxEnergyPerTick() {
+		// TODO Автоматически созданная заглушка метода
+		return 0;
+	}
+
+	@Override
+	public int getInfoEnergyStored() {
+		return this.rfStored.getEnergyStored();
+	}
+
+	@Override
+	public int getInfoMaxEnergyStored() {
+		return this.rfStored.getMaxEnergyStored();
+	}
+	
+	protected int calcEnergy()
+	  {
+	    int i = 0;
+
+//	    if (this.rfStored.getEnergyStored() > this.energyConfig.maxPowerLevel)
+//	      i = this.energyConfig.maxPower;
+//	    else if (this.rfStored.getEnergyStored() < this.energyConfig.energyRamp)
+//	      i = this.energyConfig.minPower;
+//	    else {
+//	      i = this.rfStored.getEnergyStored() / this.energyConfig.energyRamp;
+//	    }
+	    return i;
+	  }
 }

@@ -109,6 +109,10 @@ public class Recipes {
 		 */
 		GameRegistry.addRecipe(new ItemStack(RegBlocks.digablock),
 				new Object[] { "ZZZ", "ZZZ", "ZZZ", Character.valueOf('Z'), RegItems.digaingot, });
+		GameRegistry.addRecipe(new ItemStack(RegBlocks.rollingmachine), 
+				new Object[] { "AWA", "E S", "ADA", Character.valueOf('A'), RegItems.IronRedstoneGear, 
+			Character.valueOf('W'), Items.redstone, Character.valueOf('E'), RegItems.Rollers, 
+			Character.valueOf('S'), RegItems.Press, Character.valueOf('D'), Blocks.piston});
 
 		/**
 		 * Furnace

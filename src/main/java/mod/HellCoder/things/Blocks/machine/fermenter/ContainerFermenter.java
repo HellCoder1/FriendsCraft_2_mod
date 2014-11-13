@@ -13,7 +13,7 @@ public class ContainerFermenter extends Container
 {
     private TileEntityFermenter tile;
     private int lastCookTime;
-    private int pressure;
+    private int heat;
     private int energy;
     
 
@@ -62,7 +62,7 @@ public class ContainerFermenter extends Container
             {
                 icrafting.sendProgressBarUpdate(this, 0, this.tile.cookTime);
             }
-            if (this.pressure != this.tile.heat)
+            if (this.heat != this.tile.heat)
             {
                 icrafting.sendProgressBarUpdate(this, 1, this.tile.heat);
             }
@@ -72,7 +72,7 @@ public class ContainerFermenter extends Container
         }
 
         this.lastCookTime = this.tile.cookTime;
-        this.pressure = this.tile.heat;
+        this.heat = this.tile.heat;
         this.energy = this.tile.rfStored.getEnergyStored();
     }
 

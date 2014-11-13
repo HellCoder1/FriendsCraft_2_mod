@@ -1,13 +1,13 @@
 package mod.HellCoder.things.Blocks;
 
-import cofh.util.ItemHelper;
-import cofh.util.StringHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 import java.util.List;
 
+import cofh.lib.util.helpers.ItemHelper;
+import cofh.lib.util.helpers.StringHelper;
 import mod.HellCoder.things.FriendsCraft2mod;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;

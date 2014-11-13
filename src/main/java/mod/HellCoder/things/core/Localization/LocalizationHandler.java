@@ -4,8 +4,8 @@
 /*    */ 
 /*    */ public class LocalizationHandler
 /*    */ {
-/*    */   private static final String LANG_RESOURCE_LOCATION = "/mod/HellCoder/things/core/lang/";
-/*  9 */   public static String[] localeFiles = { "/mod/HellCoder/things/core/lang/en_US.xml" };
+/*    */   private static final String LANG_RESOURCE_LOCATION = "/assets/friendscraft/lang/";
+/*  9 */   public static String[] localeFiles = { "/assets/friendscraft/lang/en_US.xml" };
 /*    */ 
 /*    */   public static void loadLanguages()
 /*    */   {

@@ -2,10 +2,19 @@ package mod.HellCoder.things.Blocks.machine.fermenter;
 
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyHandler;
+import cofh.api.energy.IEnergyStorage;
+import cofh.api.tileentity.IEnergyInfo;
+import cofh.core.block.TileCoFHBase;
+import cofh.core.util.fluid.FluidTankAdv;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import mod.HellCoder.HellCoderCore.Utils.Utils;
+import mod.HellCoder.things.fluid.Tank;
+import mod.HellCoder.things.fluid.TankManager;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Container;
+import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -18,27 +27,20 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
 
-public class TileEntityFermenter extends TileEntity implements ISidedInventory, IFluidHandler, IEnergyHandler
+public class TileEntityFermenter extends TileCoFHBase implements ISidedInventory, IFluidHandler, IEnergyHandler
 {
-
 	public int heat = 0;
-	final float cookingPressure = 100f;
 	int maxheat = 300;
-	public int useHeatPerUse = 0;
-
-	static final float powerConst = 1.4f;
-	static final float lossConst = 0.00005f ;
-	static final float coolrate = 0.25f;
 	
 	private static final int[] slotsTop = new int[] {0};
     private static final int[] slotsBottom = new int[] {1};
     private static final int[] slotsSides = new int[] {0,1};
     
-    public static FluidTank tank = new FluidTank(FluidContainerRegistry.BUCKET_VOLUME * 20);
+    public Tank tank = new Tank("main", 20000, this);
+    private TankManager<Tank> tankManager = new TankManager<Tank>();
     
     private static int maxCapacity = 10000;
-    private static int POWER_USAGE = 25;
-   public EnergyStorage rfStored = new EnergyStorage(10000);
+    public EnergyStorage rfStored = new EnergyStorage(10000);
 
     int cookTime = 0;
     final int cookTimeDone = 100;
@@ -53,12 +55,9 @@ public class TileEntityFermenter extends TileEntity implements ISidedInventory, 
     private ItemStack[] fermenterItemStacks = new ItemStack[2]; // 0=input, 1=output
     
     public TileEntityFermenter(){
+    	super();
+    	tankManager.add(tank);
 
-    }
-
-    @Override
-    public World getWorldObj() {
-        return super.getWorldObj();
     }
 
     @Override
@@ -86,6 +85,11 @@ public class TileEntityFermenter extends TileEntity implements ISidedInventory, 
         return this.rfStored.receiveEnergy(maxReceive, simulate);
     }
 
+
+	public IEnergyStorage getEnergyStorage() {
+	   return this.rfStored;
+	}
+    
     /**
      * Returns the number of slots in the inventory.
      */
@@ -183,31 +187,24 @@ public class TileEntityFermenter extends TileEntity implements ISidedInventory, 
     {
         this.displayName = p_145951_1_;
     }
-    
-	@Override
+
+    @Override
 	public Packet getDescriptionPacket()
 	{
-    	super.getDescriptionPacket();
-        NBTTagCompound access = new NBTTagCompound();
-        access.setInteger("methane",tank.getFluidAmount());
-        access.setShort("Heat", (short)this.heat);
-        access.setShort("CookTime", (short)this.cookTime);
+    	NBTTagCompound nbtData = new NBTTagCompound();
+        this.writeToNBT(nbtData);
+        return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 0, nbtData);
 
-        return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, access);
 	}
 	    
 
     @Override
     public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
     {
-    	super.onDataPacket(net, pkt);
-    	NBTTagCompound access = pkt.func_148857_g();
-    	this.tank.setFluid(new FluidStack(FluidRegistry.getFluid("methane"),access.getInteger("methane")));
-    	this.heat = access.getShort("Heat");
-    	this.cookTime = access.getShort("CookTime");
-        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+    	NBTTagCompound nbt = pkt.func_148857_g();
+    	this.readFromNBT(nbt);
     }
-
+    
     public void readFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.readFromNBT(par1NBTTagCompound);
@@ -228,32 +225,20 @@ public class TileEntityFermenter extends TileEntity implements ISidedInventory, 
         this.heat = par1NBTTagCompound.getShort("Heat");
         this.cookTime = par1NBTTagCompound.getShort("CookTime");
         this.rfStored.readFromNBT(par1NBTTagCompound);
-        
-        if (par1NBTTagCompound.hasKey("methane"))
-        {
-        	this.tank.setFluid(new FluidStack(FluidRegistry.getFluid("methane"),par1NBTTagCompound.getShort("methane")));
-        }
-
-        if (par1NBTTagCompound.hasKey("CustomName"))
-        {
-            this.displayName = par1NBTTagCompound.getString("CustomName");
-        }
+        tankManager.readFromNBT(par1NBTTagCompound);
     }
     
-    /**
-     * Writes a tile entity to NBT.
-     */
-	@Override public void writeToNBT(NBTTagCompound par1NBTTagCompound)
+	public void writeToNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.writeToNBT(par1NBTTagCompound);
         par1NBTTagCompound.setShort("Heat", (short) this.heat);
         par1NBTTagCompound.setShort("CookTime", (short)this.cookTime);
-        par1NBTTagCompound.setShort("methane", (short) this.tank.getFluidAmount());
         this.rfStored.writeToNBT(par1NBTTagCompound);
+        tankManager.writeToNBT(par1NBTTagCompound);
+        
         NBTTagList nbttaglist = new NBTTagList();
-
-        for (int i = 0; i < this.fermenterItemStacks.length; ++i)
-        {
+        
+        for (int i = 0; i < this.fermenterItemStacks.length; ++i){
             if (this.fermenterItemStacks[i] != null)
             {
                 NBTTagCompound nbttagcompound1 = new NBTTagCompound();
@@ -264,47 +249,33 @@ public class TileEntityFermenter extends TileEntity implements ISidedInventory, 
         }
 
         par1NBTTagCompound.setTag("Items", nbttaglist);
-
-        if (this.hasCustomInventoryName())
-        {
-            par1NBTTagCompound.setString("CustomName", this.displayName);
-        }
     }
-
+	
     @Override
 	public int getInventoryStackLimit()
     {
         return 64;
     }
     /** just to be sure! */
-    @Override public boolean canUpdate()
+    @Override 
+    public boolean canUpdate()
     {
         return true;
     }
 
     @SideOnly(Side.CLIENT)
-    public int getCookProgressScaled(int par1)
-    {
+    public int getCookProgressScaled(int par1){
         return (cookTime * par1) / cookTimeDone;
     }
     
     @SideOnly(Side.CLIENT)
-	public int getHeat(int par1){
-    	
-		return (heat * par1) / maxheat;
+	public int getHeat(int par1){    	
+	   return (heat * par1) / maxheat;
 	}
     
     @SideOnly(Side.CLIENT)
-    public int getFluidScale(int par1){
-    	
-    	return (tank.getFluidAmount() * par1) / 20000;
-    }
-    
-    @SideOnly(Side.CLIENT)
-    public int getEnergy(int par1){
-    	
-		return ((this.rfStored.getEnergyStored() * par1) / this.rfStored.getMaxEnergyStored());
-		
+    public int getEnergy(int par1){   	
+		return ((this.rfStored.getEnergyStored() * par1) / this.rfStored.getMaxEnergyStored());		
     }
 
     public void updateEntity()
@@ -389,14 +360,16 @@ public class TileEntityFermenter extends TileEntity implements ISidedInventory, 
 	        }
 	        else
 	        {   
-	        	useHeatPerUse = (int)FermenterRecipes.init().getPressureUse(this.fermenterItemStacks[0]);
-	        	if (heat >= useHeatPerUse){
+	        	int NeedHeat = (int)FermenterRecipes.init().getHeatUse(this.fermenterItemStacks[0]);
+	        	if (heat >= NeedHeat){
 	        		FluidStack fluidstack = FermenterRecipes.init().getSmeltingResult(this.fermenterItemStacks[0]);
-	              if (fluidstack == null) {return false;}
-	              if (this.fermenterItemStacks[1] == null) return true;
-	              if (!this.tank.equals(fluidstack)) return false;
-	              int result = this.tank.getFluidAmount() + fluidstack.amount;
-	              return (result <= FluidContainerRegistry.BUCKET_VOLUME);
+	                if (fluidstack == null) {
+	            	    return false;
+	                }
+	                if((this.tank.getCapacity() - this.tank.getFluidAmount()) < NeedHeat){
+	                	return false;
+	                }
+	              return true;
 	        	}else{
 	        		return false;
 	        	}
@@ -409,14 +382,6 @@ public class TileEntityFermenter extends TileEntity implements ISidedInventory, 
         {
         	FluidStack fluidstack = FermenterRecipes.init().getSmeltingResult(this.fermenterItemStacks[0]);
 
-//            if (this.tank.getFluidAmount() == 0)
-//            {
-//                fluidstack.copy();
-//            }
-//            else if (this.tank.equals(fluidstack))
-//            {
-//                this.tank.fill(fluidstack, true);
-//            }
         	this.tank.fill(fluidstack, true);
 
             --this.fermenterItemStacks[0].stackSize;
@@ -481,37 +446,28 @@ public class TileEntityFermenter extends TileEntity implements ISidedInventory, 
 	
 	@Override
 	public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
-		
-		if (resource == null) {
-            return 0;
-    }
-
-    FluidStack resourceCopy = resource.copy();
-    int totalUsed = 0;
-    
-    totalUsed += tank.fill(resourceCopy, doFill);
-    
-    return totalUsed;
+    return 0;
 	}
 
 	@Override
 	public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
-		
-	if (resource == null)
-            return null;
-    if (!resource.isFluidEqual(tank.getFluid()))
-            return null;
-    return drain(from, resource.amount, doDrain);
+		return null;
 	}
 
 	@Override
 	public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
-		return tank.drain(maxDrain, doDrain);
+		FluidStack fluid = tank.drain(maxDrain, doDrain);
+		return fluid;
 	}
 
 	@Override
 	public boolean canFill(ForgeDirection from, Fluid fluid) {
-		return true;
+		return false;
+	}
+	
+	@Override
+	public FluidTankInfo[] getTankInfo(ForgeDirection from) {		
+		return new FluidTankInfo[]{this.tank.getInfo()};
 	}
 
 	@Override
@@ -519,11 +475,13 @@ public class TileEntityFermenter extends TileEntity implements ISidedInventory, 
 		return true;
 	}
 
-	private FluidTankInfo[] tankInfo = new FluidTankInfo[1];
-	
 	@Override
-	public FluidTankInfo[] getTankInfo(ForgeDirection from) {		
-		tankInfo[0] = tank.getInfo();
-        return tankInfo;
+	public String getName() {
+		return this.displayName;
+	}
+
+	@Override
+	public int getType() {
+		return 0;
 	}
 }
